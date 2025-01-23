@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV-Daten anzeigen</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV-Daten von GitHub anzeigen</h1>
+    <table id="csv-table"></table>
+
+    <script>
+        // URL zur CSV-Datei auf GitHub
+        fetch('https://raw.githubusercontent.com/Benutzername/Repository-name/main/daten.csv')
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n');
+                const table = document.getElementById('csv-table');
+                let headerAdded = false;
+
+                rows.forEach((row, index) => {
+                    const rowData = row.split(',');
+                    const tr = document.createElement('tr');
+                    
+                    rowData.forEach((cell, cellIndex) => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+
+                    if (!headerAdded) {
+                        // Füge die Überschriften in die Tabelle ein
+                        table.innerHTML = ''; // Leere die Tabelle
+                        const headerRow = document.createElement('tr');
+                        ['Name', 'Alter', 'Stadt'].forEach(heading => {
+                            const th = document.createElement('th');
+                            th.textContent = heading;
+                            headerRow.appendChild(th);
+                        });
+                        table.appendChild(headerRow);
+                        headerAdded = true;
+                    }
+
+                    table.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Fehler beim Laden der CSV:', error));
+    </script>
+</body>
+</html>
