@@ -29,6 +29,11 @@
             z-index: 1; /* Sorgt dafür, dass die Kopfzeile immer über den Daten bleibt */
         }
 
+        /* Zeile oberhalb der CSV-Daten */
+        .csv-header-row {
+            background-color: #f2f2f2; /* Weiße Hintergrundfarbe für die Kopfzeile */
+        }
+
         table, th, td {
             border: 1px solid black;
         }
@@ -87,7 +92,7 @@
         // Funktion zum Parsen der CSV-Daten
         function parseCSV(data) {
             const rows = data.split('\n');
-            const result = rows.map(row => row.split(',').map(cell => cell.trim()));
+            const result = rows.map(row => row.split(',').map(cell => cell.trim())).filter(row => row.length > 1); // Filtert leere Zeilen
             return result;
         }
 
@@ -96,7 +101,7 @@
             const table = document.getElementById('csv-table');
             table.innerHTML = '';  // Tabelle leeren
 
-            // Kopfzeile hinzufügen
+            // Eine zusätzliche Kopfzeile (weiße Zeile) für die CSV-Daten
             const headerRow = document.createElement('tr');
             const headers = data[0]; // Die erste Zeile enthält die Spaltenüberschriften
             headers.forEach(header => {
@@ -106,9 +111,22 @@
             });
             table.appendChild(headerRow);
 
-            // Datenzeilen erstellen
-            data.slice(1).forEach(row => {
+            // Zeile oberhalb der CSV-Daten mit gleichen Spaltenüberschriften
+            const csvHeaderRow = document.createElement('tr');
+            csvHeaderRow.classList.add('csv-header-row'); // Verwendet die Hintergrundfarbe #f2f2f2
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                csvHeaderRow.appendChild(th);
+            });
+            table.appendChild(csvHeaderRow);
+
+            // Datenzeilen erstellen (erste Zeile bekommt weißen Hintergrund)
+            data.slice(1).forEach((row, index) => {
                 const tr = document.createElement('tr');
+                if (index === 0) {
+                    tr.style.backgroundColor = '#fff'; // Weißer Hintergrund für die erste Datenzeile
+                }
                 row.forEach(cell => {
                     const td = document.createElement('td');
                     td.textContent = cell;
