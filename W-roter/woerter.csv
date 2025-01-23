@@ -1,6 +1,6 @@
-Name,Alter,Stadt
-Max Mustermann,28,Berlin
-Julia Schmidt,34,Hamburg
-Lukas Meier,22,München
-Anna Müller,45,Köln
-Mensch, 100, Deutsch
+Name,Alter,Stadt, Familie
+Max Mustermann,28,Berlin, ja
+Julia Schmidt,34,Hamburg, ja
+Lukas Meier,22,München, nein
+Anna Müller,45,Köln, nein
+Mensch, 100, Deutsch, ja
