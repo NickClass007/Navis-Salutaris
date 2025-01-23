@@ -5,48 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSV-Daten mit Suchfunktion und mehreren Dateien anzeigen</title>
     <style>
-        /* Grundlegendes Styling für die Seite */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #f4f4f4;
-        }
-
-        /* Fixierter Bereich für Header und Suchfeld */
-        header {
-            background-color: #fff;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            flex-shrink: 0; /* Verhindert das Schrumpfen */
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-
-        /* Eingabefeld für die Suche */
-        input[type="text"] {
-            margin: 10px 0;
-            padding: 8px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-
-        /* Container für die Tabelle mit Scrollfunktion */
-        .table-container {
-            overflow-x: auto;
-            overflow-y: auto;
-            max-height: calc(100vh - 160px); /* Höhe der Seite minus Header und Abstand */
-            margin-top: 10px;
-        }
-
         /* Grundlegendes Styling für die Tabellen */
         table {
             width: 100%;
@@ -76,16 +34,28 @@
             border: 1px solid black;
         }
 
+        /* Optional: Styling für das Eingabefeld */
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Container für die Tabelle mit Scrollfunktion */
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+    <h1>CSV-Daten mit Suchfunktion und mehreren Dateien anzeigen</h1>
 
-    <header>
-        <h1>CSV-Daten mit Suchfunktion und mehreren Dateien anzeigen</h1>
-
-        <!-- Eingabefeld für die Suche -->
-        <input type="text" id="search-input" placeholder="Suche nach Name, Alter oder Stadt..." />
-    </header>
+    <!-- Eingabefeld für die Suche -->
+    <input type="text" id="search-input" placeholder="Suche nach Name, Alter oder Stadt..." />
 
     <!-- Obere Tabelle mit eigenen Daten (beschreibbar im Code) -->
     <h2>Obere Tabelle:</h2>
@@ -101,6 +71,7 @@
         </table>
     </div>
 
+   
     <div class="table-container">
         <table id="csv-table"></table>
     </div>
@@ -194,4 +165,3 @@
     </script>
 </body>
 </html>
-
