@@ -23,8 +23,8 @@
     <table id="csv-table"></table>
 
     <script>
-        // URL zur CSV-Datei auf GitHub
-        fetch('https://raw.githubusercontent.com/Benutzername/Repository-name/main/daten.csv')
+        // URL zur CSV-Datei im Ordner "W-rter" auf GitHub
+        fetch('https://raw.githubusercontent.com/nickclass007/Repository-name/main/W-rter/woerter.csv')
             .then(response => response.text())
             .then(data => {
                 const rows = data.split('\n');
