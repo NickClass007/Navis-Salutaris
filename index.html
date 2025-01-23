@@ -7,9 +7,10 @@
     <style>
         /* Grundlegendes Styling für die Tabelle */
         table {
-            width: 100%;  /* Tabelle nimmt 100% der verfügbaren Breite */
+            width: 100%;
+            max-width: 100%; /* Maximale Breite auf 100% setzen, damit sie den Bildschirm ausfüllt */
             border-collapse: collapse;
-            table-layout: fixed;  /* Verteilt die Spalten gleichmäßig */
+            table-layout: auto; /* Automatische Spaltenbreite */
         }
 
         th, td {
@@ -42,10 +43,9 @@
 
         /* Container für die Tabelle mit horizontaler Scrollbar */
         .table-container {
-            overflow-x: auto;  /* Ermöglicht horizontales Scrollen */
+            overflow-x: auto; /* Ermöglicht horizontales Scrollen */
             max-width: 100%;   /* Sorgt dafür, dass der Container nicht breiter als der Bildschirm wird */
         }
-
     </style>
 </head>
 <body>
@@ -84,8 +84,9 @@
 
         // Funktion zum Parsen der CSV-Daten
         function parseCSV(data) {
-            const rows = data.split('\n').map(row => row.split(',').map(cell => cell.trim()));
-            return rows;
+            const rows = data.split('\n');
+            const result = rows.map(row => row.split(',').map(cell => cell.trim()));
+            return result;
         }
 
         // CSV-Daten in einer Tabelle anzeigen
@@ -93,11 +94,9 @@
             const table = document.getElementById('csv-table');
             table.innerHTML = '';  // Tabelle leeren
 
-            if (data.length === 0) return;
-
-            // Kopfzeile erstellen (dynamisch für jede Spalte)
+            // Kopfzeile hinzufügen
             const headerRow = document.createElement('tr');
-            const headers = data[0]; // Erste Zeile ist die Kopfzeile
+            const headers = data[0]; // Die erste Zeile enthält die Spaltenüberschriften
             headers.forEach(header => {
                 const th = document.createElement('th');
                 th.textContent = header;
