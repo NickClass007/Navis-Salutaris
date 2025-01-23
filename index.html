@@ -25,9 +25,9 @@
             background-color: #f2f2f2;
         }
 
-        /* Fixierte Kopfzeile für die CSV-Daten */
+        /* Styling für die erste Zeile der CSV-Tabelle (weißer Hintergrund) */
         .csv-header-row {
-            background-color: #f2f2f2;
+            background-color: #ffffff;
         }
 
         table, th, td {
@@ -68,8 +68,16 @@
                 <th>Spalte 3</th>
                 <th>Spalte 4</th>
             </tr>
+            <tr>
+                <td>Beispiel 1</td>
+                <td>Beispiel 2</td>
+                <td>Beispiel 3</td>
+                <td>Beispiel 4</td>
+            </tr>
         </table>
     </div>
+
+    <h2>CSV-Inhalt:</h2>
     <div class="table-container">
         <table id="csv-table"></table>
     </div>
@@ -119,6 +127,10 @@
                 headerRow.appendChild(th);
             });
             table.appendChild(headerRow);
+
+            // Setzt die Hintergrundfarbe der ersten Zeile auf Weiß
+            const firstRow = table.querySelector('tr');
+            firstRow.classList.add('csv-header-row');
 
             // Datenzeilen erstellen
             data.slice(1).forEach(row => {
