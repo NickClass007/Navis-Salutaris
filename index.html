@@ -5,22 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSV-Daten mit Suchfunktion und mehreren Dateien anzeigen</title>
     <style>
+        /* Grundlegendes Styling für die Tabelle */
         table {
             width: 100%;
             border-collapse: collapse;
+            max-height: 400px; /* Maximale Höhe der Tabelle, damit sie scrollbar wird */
+            overflow-y: auto;  /* Vertikale Scrollleiste aktivieren */
+            display: block; /* Tabelle als Block-Element, um die Scrollbarkeit zu ermöglichen */
         }
-        table, th, td {
-            border: 1px solid black;
-        }
+
         th, td {
             padding: 8px;
             text-align: left;
         }
+
+        /* Fixierte Kopfzeile */
+        th {
+            background-color: #f2f2f2;
+            position: sticky; /* Macht die Kopfzeile sticky */
+            top: 0; /* Fixiert die Kopfzeile oben */
+            z-index: 1; /* Sorgt dafür, dass die Kopfzeile immer über den Daten bleibt */
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        /* Styling für das Eingabefeld */
         input[type="text"] {
             margin: 10px 0;
             padding: 8px;
             width: 100%;
             max-width: 400px;
+        }
+
+        /* Optional: Styling für die Tabelle um sie besser zu visualisieren */
+        th {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -31,7 +52,9 @@
     <input type="text" id="search-input" placeholder="Suche nach Name, Alter oder Stadt..." />
 
     <h2>CSV-Inhalt:</h2>
-    <table id="csv-table"></table>
+    <div style="overflow-x: auto;">
+        <table id="csv-table"></table>
+    </div>
 
     <script>
         // URLs zu den CSV-Dateien
@@ -40,6 +63,7 @@
             // Weitere CSV-Dateien hinzufügen, falls gewünscht
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/woerter1.csv'
         ];
+
 
         let allCsvData = [];
 
@@ -68,9 +92,9 @@
             const table = document.getElementById('csv-table');
             table.innerHTML = '';  // Tabelle leeren
 
-            // Headerzeile erstellen (die erste Zeile aus den Daten)
+            // Kopfzeile hinzufügen
             const headerRow = document.createElement('tr');
-            const headers = data[0]; // Wir nehmen die erste Zeile als Header
+            const headers = ['Name', 'Alter', 'Stadt']; // Statische Kopfzeilen, die immer gleich bleiben
             headers.forEach(header => {
                 const th = document.createElement('th');
                 th.textContent = header;
@@ -102,5 +126,4 @@
 </body>
 </html>
 
-        fetch('https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/woerter.csv')
-            
+        
