@@ -5,33 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSV-Daten mit Suchfunktion und mehreren Dateien anzeigen</title>
     <style>
-        /* Grundlegendes Styling für die Tabelle */
+        /* Grundlegendes Styling für die Tabellen */
         table {
             width: 100%;
-            max-width: 100%; /* Maximale Breite auf 100% setzen, damit sie den Bildschirm ausfüllt */
+            max-width: 100%;
             border-collapse: collapse;
-            table-layout: auto; /* Automatische Spaltenbreite */
+            table-layout: auto;
         }
 
         th, td {
             padding: 8px;
             text-align: left;
-            white-space: nowrap; /* Verhindert das Umbrechen von Text */
-            overflow: hidden; /* Verhindert das Überlaufen des Inhalts */
-            text-overflow: ellipsis; /* Zeigt '...' an, wenn der Text abgeschnitten wird */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Fixierte Kopfzeile */
         th {
             background-color: #f2f2f2;
-            position: sticky; /* Macht die Kopfzeile sticky */
-            top: 0; /* Fixiert die Kopfzeile oben */
-            z-index: 1; /* Sorgt dafür, dass die Kopfzeile immer über den Daten bleibt */
         }
 
-        /* Zeile oberhalb der CSV-Daten */
+        /* Fixierte Kopfzeile für die CSV-Daten */
         .csv-header-row {
-            background-color: #f2f2f2; /* Weiße Hintergrundfarbe für die Kopfzeile */
+            background-color: #f2f2f2;
         }
 
         table, th, td {
@@ -46,12 +42,12 @@
             max-width: 400px;
         }
 
-        /* Container für die Tabelle mit horizontaler und vertikaler Scrollbar */
+        /* Container für die Tabelle mit Scrollfunktion */
         .table-container {
-            overflow-x: auto; /* Ermöglicht horizontales Scrollen */
-            overflow-y: auto; /* Ermöglicht vertikales Scrollen */
-            max-height: 400px;   /* Maximale Höhe des Tabellenbereichs */
-            margin-top: 10px; /* Abstand nach oben */
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -60,6 +56,24 @@
 
     <!-- Eingabefeld für die Suche -->
     <input type="text" id="search-input" placeholder="Suche nach Name, Alter oder Stadt..." />
+
+    <!-- Obere Tabelle mit eigenen Daten (beschreibbar im Code) -->
+    <h2>Obere Tabelle:</h2>
+    <div class="table-container">
+        <table id="header-table">
+            <!-- Kopfzeile wird hier manuell beschrieben -->
+            <tr>
+                <th>Spalte 1</th>
+                <th>Spalte 2</th>
+                <th>Spalte 3</th>
+            </tr>
+            <tr>
+                <td>Beispiel 1</td>
+                <td>Beispiel 2</td>
+                <td>Beispiel 3</td>
+            </tr>
+        </table>
+    </div>
 
     <h2>CSV-Inhalt:</h2>
     <div class="table-container">
@@ -84,6 +98,7 @@
                     allCsvData = allCsvData.concat(parseCSV(data));
                 });
                 displayCSV(allCsvData);  // CSV-Daten anzeigen
+                syncColumnWidths();  // Spaltenbreiten synchronisieren
             })
             .catch(error => {
                 console.error('Fehler beim Laden der CSV-Dateien:', error);
@@ -101,9 +116,9 @@
             const table = document.getElementById('csv-table');
             table.innerHTML = '';  // Tabelle leeren
 
-            // Eine zusätzliche Kopfzeile (weiße Zeile) für die CSV-Daten
+            // Die erste Zeile enthält die Spaltenüberschriften
             const headerRow = document.createElement('tr');
-            const headers = data[0]; // Die erste Zeile enthält die Spaltenüberschriften
+            const headers = data[0];
             headers.forEach(header => {
                 const th = document.createElement('th');
                 th.textContent = header;
@@ -111,28 +126,31 @@
             });
             table.appendChild(headerRow);
 
-            // Zeile oberhalb der CSV-Daten mit gleichen Spaltenüberschriften
-            const csvHeaderRow = document.createElement('tr');
-            csvHeaderRow.classList.add('csv-header-row'); // Verwendet die Hintergrundfarbe #f2f2f2
-            headers.forEach(header => {
-                const th = document.createElement('th');
-                th.textContent = header;
-                csvHeaderRow.appendChild(th);
-            });
-            table.appendChild(csvHeaderRow);
-
-            // Datenzeilen erstellen (erste Zeile bekommt weißen Hintergrund)
-            data.slice(1).forEach((row, index) => {
+            // Datenzeilen erstellen
+            data.slice(1).forEach(row => {
                 const tr = document.createElement('tr');
-                if (index === 0) {
-                    tr.style.backgroundColor = '#fff'; // Weißer Hintergrund für die erste Datenzeile
-                }
                 row.forEach(cell => {
                     const td = document.createElement('td');
                     td.textContent = cell;
                     tr.appendChild(td);
                 });
                 table.appendChild(tr);
+            });
+        }
+
+        // Synchronisiert die Spaltenbreiten zwischen der oberen Tabelle und der CSV-Tabelle
+        function syncColumnWidths() {
+            const headerTable = document.getElementById('header-table');
+            const csvTable = document.getElementById('csv-table');
+
+            const headerCells = headerTable.querySelectorAll('th');
+            const csvHeaderCells = csvTable.querySelectorAll('th');
+
+            // Für jede Spalte in der oberen Tabelle die gleiche Breite wie die CSV-Tabelle übernehmen
+            headerCells.forEach((cell, index) => {
+                if (csvHeaderCells[index]) {
+                    cell.style.width = `${csvHeaderCells[index].offsetWidth}px`;
+                }
             });
         }
 
