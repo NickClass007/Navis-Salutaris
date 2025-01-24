@@ -27,11 +27,23 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        select {
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
     <h1>Vokabeltrainer</h1>
+    <label for="lektion">Wähle eine Lektion:</label>
+    <select id="lektion" onchange="loadSelectedCSV()">
+        <option value="LW1.csv">Lektion 1</option>
+        <option value="LW2.csv">Lektion 2</option>
+        <option value="LW3.csv">Lektion 3</option>
+    </select>
+
     <div class="card" id="card">
         <p id="vokabel"></p>
         <input type="text" id="user-answer" placeholder="Deine Antwort...">
@@ -40,28 +52,23 @@
     </div>
 
     <script>
-        const files = ['LW1.csv', 'LW2.csv', 'LW3.csv'];
         let currentVocab = [];
         let currentIndex = 0;
-        let currentFile = 0;
 
-        // CSV einlesen und in ein Array umwandeln
+        // Funktion zum Einlesen der CSV-Datei
         async function loadCSV(file) {
-            const response = await fetch(file);
+            const response = await fetch(`W-roter/${file}`);
             const text = await response.text();
             const rows = text.split('\n').map(row => row.split(','));
             return rows.slice(1); // Überspringe die Kopfzeile
         }
 
-        // Alle CSV-Dateien laden
-        async function loadAllCSV() {
-            const data = [];
-            for (let file of files) {
-                const fileData = await loadCSV(file);
-                data.push(...fileData);
-            }
-            currentVocab = data;
-            nextVokabel();
+        // Lädt die ausgewählte CSV-Datei
+        async function loadSelectedCSV() {
+            const selectedFile = document.getElementById('lektion').value;
+            currentVocab = await loadCSV(selectedFile);
+            currentIndex = 0; // Rücksetzen des Indexes
+            nextVokabel(); // Zeige die erste Vokabel an
         }
 
         // Zeigt die nächste Vokabel an
@@ -93,8 +100,8 @@
             setTimeout(nextVokabel, 2000); // Nächste Vokabel nach 2 Sekunden
         }
 
-        // Initialisieren der CSV-Daten
-        loadAllCSV();
+        // Initialisieren der ersten Lektion (Standard: Lektion 1)
+        loadSelectedCSV();
     </script>
 
 </body>
