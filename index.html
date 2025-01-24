@@ -1,175 +1,150 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Vokabeltrainer</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-        /* Stil für den Vokabeltrainer */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+        .left, .right{
+            display:inline-block;
+            margin-right:20px;
         }
-        #main {
-            width: 60%;
-            margin: 0 auto;
+
+        input.green {
+            background-color:#dff5d5;
         }
-        h2 {
-            text-align: center;
+
+        input.red {
+            background-color:#ff877b;
         }
-        .input-field {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-        button {
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .vocabulary-table th, .vocabulary-table td {
-            padding: 8px;
+
+        th {
             text-align: left;
-        }
-        .vocabulary-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .vocabulary-table th {
-            background-color: #4CAF50;
+            background-color:#3d94f6;
             color: white;
+            text-shadow: none;
         }
-        .vocabulary-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+
+        input {
+            max-width:90%;
+            transition: background-color 100ms linear;
+        }
+
+        #main {
+            position:relative;
+            width:95%;
+            margin:auto;
+            margin-top: 20px;
         }
     </style>
 
-</head>
-<body>
+<script>
 
+    // Vokabeln im CSV-Format (jede Zeile ein Eintrag: Deutsch, Fremdsprache, Kategorie)
+    var csvData = `Deutsch,Fremdsprache,Kategorie
+    Apfel,Apple,Obst
+    Hund,Dog,Tiere
+    Haus,House,Bauwerke
+    Auto,Car,Verkehr`;
+
+    // Parsing der CSV-Daten und Erstellen des Vokabel-Arrays
+    var dictionary = [];
+    var rows = csvData.split("\n");
+    for (var i = 1; i < rows.length; i++) {  // Start bei 1, um die Kopfzeile zu überspringen
+        var cols = rows[i].split(",");
+        if (cols.length == 3) {
+            dictionary.push({
+                german: cols[0].trim(),
+                foreign: cols[1].trim(),
+                category: cols[2].trim()
+            });
+        }
+    }
+
+    var learnIndex = 0;
+    var willSkipEvaluation = false;
+
+    // Funktion zum Starten der Abfrage
+    function startQuestioning() {
+        shuffleDic();
+        $("#modeinput").hide();
+        $("#modelearn").show();
+
+        learnIndex = 0;
+        showEntry(dictionary[learnIndex]);
+    }
+
+    // Vokabeln mischen
+    function shuffleDic() {
+        for (var j, x, i = dictionary.length; i; j = Math.floor(Math.random() * i), x = dictionary[--i], dictionary[i] = dictionary[j], dictionary[j] = x);
+    }
+
+    // Zeige die Vokabel für das Abfragen
+    function showEntry(entry) {
+        var a = entry.german;
+        $("#vokabel").html(a + "<br>Vokabel  " + (learnIndex + 1) + " von " + dictionary.length);
+        $("#inputvokabel").val(""); // Eingabefeld leeren
+    }
+
+    // Weiter zur nächsten Vokabel
+    function nextVokabel() {
+        var entry = dictionary[learnIndex];
+        var userInput = $("#inputvokabel").val().trim();
+
+        if (userInput.toLowerCase() === entry.foreign.toLowerCase()) {
+            learnIndex++;
+            if (learnIndex < dictionary.length) {
+                showEntry(dictionary[learnIndex]);
+                toast("Richtig!");
+            } else {
+                toast("Glückwunsch, du hast alle Vokabeln richtig beantwortet!");
+                $("#modelearn").hide();
+                $("#modeinput").show();
+            }
+        } else {
+            toast("Leider falsch, versuche es nochmal.");
+        }
+    }
+
+    // Anzeige von Toast-Nachrichten
+    function toast(message) {
+        alert(message); // Einfacher Alert, um Feedback zu geben
+    }
+
+    $(document).ready(function() {
+        $("#startBtn").click(startQuestioning);
+
+        $("#nextBtn").click(function(event) {
+            nextVokabel();
+            event.preventDefault();
+        });
+    });
+
+</script>
+</head>
+
+<body>
 <div id="main">
-    <h2>Vokabeltrainer</h2>
 
     <div id="modeinput">
-        <h3>Vokabeln eingeben</h3>
-        <div>
-            <label for="category">Kategorie</label>
-            <input type="text" id="category" class="input-field" placeholder="z.B. Lektion 1">
-        </div>
-        <div>
-            <label for="germaninput">Deutsch</label>
-            <input type="text" id="germaninput" class="input-field" placeholder="Deutsch">
-        </div>
-        <div>
-            <label for="foreigninput">Fremdsprache</label>
-            <input type="text" id="foreigninput" class="input-field" placeholder="Fremdsprache">
-        </div>
-        <button onclick="addVocabulary()">Vokabel hinzufügen</button>
+        <h2>Vokabeln eingeben (wird automatisch geladen)</h2>
+        <button id="startBtn">Jetzt Abfragen</button>
     </div>
 
-    <div id="vocabulary-list">
-        <h3>Vokabeln</h3>
-        <table class="vocabulary-table">
-            <thead>
-                <tr>
-                    <th>Deutsch</th>
-                    <th>Fremdsprache</th>
-                    <th>Kategorie</th>
-                    <th>Aktionen</th>
-                </tr>
-            </thead>
-            <tbody id="vocabulary-table-body">
-                <!-- Hier werden die Vokabeln dynamisch eingefügt -->
-            </tbody>
-        </table>
+    <div id="modelearn" style="text-align: center; display: none;">
+        <h2>Vokabel abfragen</h2>
+        <h3 id="vokabel"></h3>
+
+        <form id="vokabelform" onsubmit="nextVokabel();event.preventDefault();return false;">
+            <input autocomplete="off" type="text" size="40" id="inputvokabel" />
+            <br><br>
+            <input type="submit" id="nextBtn" value="Weiter" />
+        </form>
     </div>
+
 </div>
-
-<script>
-// Beispielhafte CSV-Daten, die in das Skript eingebaut werden
-const csvData = `
-Deutsch,Fremdsprache,Kategorie
-Apfel,Apple,Fruits
-Haus,House,Buildings
-Tisch,Table,Furniture
-Auto,Car,Transport
-`;
-
-let vocabulary = [];
-
-// CSV-Daten parsen und in das Wörterbuch laden
-function loadVocabulary() {
-    const rows = csvData.trim().split("\n");
-    rows.forEach((row, index) => {
-        if (index === 0) return; // Überspringe die Kopfzeile
-        const [german, foreign, category] = row.split(",");
-        vocabulary.push({ german: german.trim(), foreign: foreign.trim(), category: category.trim() });
-    });
-    renderVocabularyTable();
-}
-
-// Vokabel hinzufügen
-function addVocabulary() {
-    const german = document.getElementById("germaninput").value.trim();
-    const foreign = document.getElementById("foreigninput").value.trim();
-    const category = document.getElementById("category").value.trim();
-
-    if (german && foreign) {
-        vocabulary.push({ german, foreign, category });
-        renderVocabularyTable();
-
-        // Felder zurücksetzen
-        document.getElementById("germaninput").value = "";
-        document.getElementById("foreigninput").value = "";
-        document.getElementById("category").value = "";
-    } else {
-        alert("Bitte füllen Sie sowohl die Deutsch- als auch die Fremdsprache aus.");
-    }
-}
-
-// Vokabeln in die Tabelle rendern
-function renderVocabularyTable() {
-    const tableBody = document.getElementById("vocabulary-table-body");
-    tableBody.innerHTML = ""; // Vorherige Einträge löschen
-
-    vocabulary.forEach((entry, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${entry.german}</td>
-            <td>${entry.foreign}</td>
-            <td>${entry.category}</td>
-            <td><button onclick="deleteVocabulary(${index})">Löschen</button></td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Vokabel löschen
-function deleteVocabulary(index) {
-    if (confirm("Möchten Sie diese Vokabel wirklich löschen?")) {
-        vocabulary.splice(index, 1);
-        renderVocabularyTable();
-    }
-}
-
-// Seite laden und Vokabeln einfügen
-document.addEventListener("DOMContentLoaded", function() {
-    loadVocabulary();
-});
-</script>
 
 </body>
 </html>
