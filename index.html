@@ -1,150 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vokabeltrainer</title>
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
-        .left, .right{
-            display:inline-block;
-            margin-right:20px;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
         }
-
-        input.green {
-            background-color:#dff5d5;
+        .card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
         }
-
-        input.red {
-            background-color:#ff877b;
-        }
-
-        th {
-            text-align: left;
-            background-color:#3d94f6;
-            color: white;
-            text-shadow: none;
-        }
-
-        input {
-            max-width:90%;
-            transition: background-color 100ms linear;
-        }
-
-        #main {
-            position:relative;
-            width:95%;
-            margin:auto;
+        button {
+            padding: 10px 20px;
             margin-top: 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
-
-<script>
-
-    // Vokabeln im CSV-Format (jede Zeile ein Eintrag: Deutsch, Fremdsprache, Kategorie)
-    var csvData = `Deutsch,Fremdsprache,Kategorie
-    Apfel,Apple,Obst
-    Hund,Dog,Tiere
-    Haus,House,Bauwerke
-    Auto,Car,Verkehr`;
-
-    // Parsing der CSV-Daten und Erstellen des Vokabel-Arrays
-    var dictionary = [];
-    var rows = csvData.split("\n");
-    for (var i = 1; i < rows.length; i++) {  // Start bei 1, um die Kopfzeile zu überspringen
-        var cols = rows[i].split(",");
-        if (cols.length == 3) {
-            dictionary.push({
-                german: cols[0].trim(),
-                foreign: cols[1].trim(),
-                category: cols[2].trim()
-            });
-        }
-    }
-
-    var learnIndex = 0;
-    var willSkipEvaluation = false;
-
-    // Funktion zum Starten der Abfrage
-    function startQuestioning() {
-        shuffleDic();
-        $("#modeinput").hide();
-        $("#modelearn").show();
-
-        learnIndex = 0;
-        showEntry(dictionary[learnIndex]);
-    }
-
-    // Vokabeln mischen
-    function shuffleDic() {
-        for (var j, x, i = dictionary.length; i; j = Math.floor(Math.random() * i), x = dictionary[--i], dictionary[i] = dictionary[j], dictionary[j] = x);
-    }
-
-    // Zeige die Vokabel für das Abfragen
-    function showEntry(entry) {
-        var a = entry.german;
-        $("#vokabel").html(a + "<br>Vokabel  " + (learnIndex + 1) + " von " + dictionary.length);
-        $("#inputvokabel").val(""); // Eingabefeld leeren
-    }
-
-    // Weiter zur nächsten Vokabel
-    function nextVokabel() {
-        var entry = dictionary[learnIndex];
-        var userInput = $("#inputvokabel").val().trim();
-
-        if (userInput.toLowerCase() === entry.foreign.toLowerCase()) {
-            learnIndex++;
-            if (learnIndex < dictionary.length) {
-                showEntry(dictionary[learnIndex]);
-                toast("Richtig!");
-            } else {
-                toast("Glückwunsch, du hast alle Vokabeln richtig beantwortet!");
-                $("#modelearn").hide();
-                $("#modeinput").show();
-            }
-        } else {
-            toast("Leider falsch, versuche es nochmal.");
-        }
-    }
-
-    // Anzeige von Toast-Nachrichten
-    function toast(message) {
-        alert(message); // Einfacher Alert, um Feedback zu geben
-    }
-
-    $(document).ready(function() {
-        $("#startBtn").click(startQuestioning);
-
-        $("#nextBtn").click(function(event) {
-            nextVokabel();
-            event.preventDefault();
-        });
-    });
-
-</script>
 </head>
-
 <body>
-<div id="main">
 
-    <div id="modeinput">
-        <h2>Vokabeln eingeben (wird automatisch geladen)</h2>
-        <button id="startBtn">Jetzt Abfragen</button>
+    <h1>Vokabeltrainer</h1>
+    <div class="card" id="card">
+        <p id="vokabel"></p>
+        <input type="text" id="user-answer" placeholder="Deine Antwort...">
+        <button onclick="checkAnswer()">Überprüfen</button>
+        <div id="result"></div>
     </div>
 
-    <div id="modelearn" style="text-align: center; display: none;">
-        <h2>Vokabel abfragen</h2>
-        <h3 id="vokabel"></h3>
+    <script>
+        const files = ['LW1.csv', 'LW2.csv', 'LW3.csv'];
+        let currentVocab = [];
+        let currentIndex = 0;
+        let currentFile = 0;
 
-        <form id="vokabelform" onsubmit="nextVokabel();event.preventDefault();return false;">
-            <input autocomplete="off" type="text" size="40" id="inputvokabel" />
-            <br><br>
-            <input type="submit" id="nextBtn" value="Weiter" />
-        </form>
-    </div>
+        // CSV einlesen und in ein Array umwandeln
+        async function loadCSV(file) {
+            const response = await fetch(file);
+            const text = await response.text();
+            const rows = text.split('\n').map(row => row.split(','));
+            return rows.slice(1); // Überspringe die Kopfzeile
+        }
 
-</div>
+        // Alle CSV-Dateien laden
+        async function loadAllCSV() {
+            const data = [];
+            for (let file of files) {
+                const fileData = await loadCSV(file);
+                data.push(...fileData);
+            }
+            currentVocab = data;
+            nextVokabel();
+        }
+
+        // Zeigt die nächste Vokabel an
+        function nextVokabel() {
+            if (currentIndex >= currentVocab.length) {
+                currentIndex = 0; // Wieder von vorne starten
+            }
+            const [deutsch, englisch] = currentVocab[currentIndex];
+            document.getElementById('vokabel').textContent = deutsch;
+            document.getElementById('user-answer').value = '';
+            document.getElementById('result').textContent = '';
+        }
+
+        // Überprüft die Antwort des Nutzers
+        function checkAnswer() {
+            const [deutsch, englisch] = currentVocab[currentIndex];
+            const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
+            const correctAnswer = englisch.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById('result').textContent = "Richtig! 😊";
+                document.getElementById('result').style.color = "green";
+            } else {
+                document.getElementById('result').textContent = `Falsch! Die richtige Antwort ist: ${englisch}`;
+                document.getElementById('result').style.color = "red";
+            }
+
+            currentIndex++;
+            setTimeout(nextVokabel, 2000); // Nächste Vokabel nach 2 Sekunden
+        }
+
+        // Initialisieren der CSV-Daten
+        loadAllCSV();
+    </script>
 
 </body>
 </html>
