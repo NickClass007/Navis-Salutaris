@@ -162,16 +162,22 @@
             const searchTerm = this.value.toLowerCase();
             const rows = document.getElementById('csv-table').getElementsByTagName('tr');
 
-            Array.from(rows).forEach(row => {
+            // Durchlaufen der Zeilen ab der zweiten Zeile (erste Zeile ist die Kopfzeile)
+            Array.from(rows).forEach((row, index) => {
+                // Ignoriere die erste Zeile (Kopfzeile)
+                if (index === 0) return;
+
                 const cells = row.getElementsByTagName('td');
                 let rowContainsSearchTerm = false;
 
+                // Überprüfen, ob eine Zelle den Suchbegriff enthält
                 Array.from(cells).forEach(cell => {
                     if (cell.textContent.toLowerCase().includes(searchTerm)) {
                         rowContainsSearchTerm = true;
                     }
                 });
 
+                // Zeile sichtbar oder unsichtbar machen
                 if (rowContainsSearchTerm) {
                     row.style.display = '';  // Zeile sichtbar machen
                 } else {
