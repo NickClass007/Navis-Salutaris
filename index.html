@@ -185,7 +185,6 @@
         // Suchfunktion, um die Tabelle zu filtern
         function filterTable() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            const rows = document.querySelectorAll('#csv-table tr');
             const previewTable = document.getElementById('search-preview-table');
             previewTable.innerHTML = `
                 <tr>
@@ -196,28 +195,23 @@
                 </tr>
             `;  // Clear preview table before adding new results
 
-            rows.forEach((row, rowIndex) => {
-                if (rowIndex > 0) {  // Überspringe die Kopfzeile
-                    const cells = row.getElementsByTagName('td');
-                    let found = false;
-
-                    // Durchlaufe alle Zellen in der Zeile und prüfe, ob eine Zelle das Suchwort enthält
-                    Array.from(cells).forEach(cell => {
-                        if (cell.textContent.toLowerCase().includes(query)) {
-                            found = true;
-                        }
-                    });
-
-                    // Wenn das Wort gefunden wurde, füge es zur Vorschau-Tabelle hinzu
-                    if (found) {
-                        const tr = document.createElement('tr');
-                        Array.from(cells).forEach(cell => {
-                            const td = document.createElement('td');
-                            td.textContent = cell.textContent;
-                            tr.appendChild(td);
-                        });
-                        previewTable.appendChild(tr);
+            // Filtere die CSV-Daten und zeige die Ergebnisse in der Vorschau-Tabelle an
+            allCsvData.slice(1).forEach(row => { // Slice(1) überspringt die Kopfzeile
+                let found = false;
+                row.forEach(cell => {
+                    if (cell.toLowerCase().includes(query)) {
+                        found = true;
                     }
+                });
+
+                if (found) {
+                    const tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    previewTable.appendChild(tr);
                 }
             });
         }
