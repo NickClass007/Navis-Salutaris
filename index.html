@@ -125,25 +125,21 @@
 
     <!-- Abfrage-Sektion -->
     <div id="quiz-section" class="hidden">
-        <h2>Abfrage starten</h2>
-        <label for="lesson-select">Wählen Sie eine Lektion:</label>
-        <select id="lesson-select">
-            <option value="1">Lektion 1</option>
-            <option value="2">Lektion 2</option>
-            <option value="3">Lektion 3</option>
+        <h2>Vokabeltrainer</h2>
+        <label for="lektion">Wähle eine Lektion:</label>
+        <select id="lektion" onchange="loadSelectedCSV()">
+            <option value="LW1.csv">Lektion 1</option>
+            <option value="LW2.csv">Lektion 2</option>
+            <option value="LW3.csv">Lektion 3</option>
         </select>
-        <button id="start-quiz">Starten</button>
 
-        <div id="quiz-word-container" class="hidden">
-            <p id="quiz-word" class="quiz-word"></p>
-            <p id="quiz-meaning" class="hidden"></p>
-            <div class="quiz-buttons">
-                <button id="correct-button" class="hidden">Richtig</button>
-                <button id="incorrect-button" class="hidden">Falsch</button>
-            </div>
+        <div class="card" id="card">
+            <p id="vokabel"></p>
+            <input type="text" id="user-answer" placeholder="Deine Antwort...">
+            <button onclick="checkAnswer()">Überprüfen</button>
+            <div id="result"></div>
         </div>
 
-        <button id="submit-answers" class="hidden">Abschließen</button>
         <div id="end-screen" class="hidden">
             <h3>Ende der Abfrage</h3>
             <p>Prozent: <span id="score-percentage"></span></p>
@@ -152,74 +148,59 @@
     </div>
 
     <script>
-        const csvUrls = [
-            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
-            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv',
-            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv'
-        ];
-
-        let allCsvData = [];
-        let quizData = [];
-        let currentWordIndex = 0;
+        let currentVocab = [];
+        let currentIndex = 0;
         let correctAnswers = 0;
 
-        // CSV-Dateien laden
-        Promise.all(csvUrls.map(url => fetch(url).then(response => response.text())))
-            .then(dataArray => {
-                dataArray.forEach(data => {
-                    allCsvData = allCsvData.concat(parseCSV(data));
-                });
-                displayCSV(allCsvData);
-                syncColumnWidths();
-            })
-            .catch(error => {
-                console.error('Fehler beim Laden der CSV-Dateien:', error);
-            });
-
-        // CSV-Daten parsen
-        function parseCSV(data) {
-            const rows = data.split('\n');
-            const result = rows.map(row => row.split(',').map(cell => cell.trim())).filter(row => row.length > 1);
-            return result;
+        // Funktion zum Einlesen der CSV-Datei
+        async function loadCSV(file) {
+            const response = await fetch(`W-roter/${file}`);
+            const text = await response.text();
+            const rows = text.split('\n').map(row => row.split(','));
+            return rows.slice(1); // Überspringe die Kopfzeile
         }
 
-        // CSV-Daten in einer Tabelle anzeigen
-        function displayCSV(data) {
-            const table = document.getElementById('csv-table');
-            table.innerHTML = '';  // Tabelle leeren
-
-            const headerRow = document.createElement('tr');
-            const headers = data[0];
-            headers.forEach(header => {
-                const th = document.createElement('th');
-                th.textContent = header;
-                headerRow.appendChild(th);
-            });
-            table.appendChild(headerRow);
-
-            data.slice(1).forEach(row => {
-                const tr = document.createElement('tr');
-                row.forEach(cell => {
-                    const td = document.createElement('td');
-                    td.textContent = cell;
-                    tr.appendChild(td);
-                });
-                table.appendChild(tr);
-            });
+        // Lädt die ausgewählte CSV-Datei
+        async function loadSelectedCSV() {
+            const selectedFile = document.getElementById('lektion').value;
+            currentVocab = await loadCSV(selectedFile);
+            currentIndex = 0; // Rücksetzen des Indexes
+            correctAnswers = 0; // Antwortzähler zurücksetzen
+            nextVokabel(); // Zeige die erste Vokabel an
         }
 
-        // Synchronisiert Spaltenbreiten
-        function syncColumnWidths() {
-            const headerTable = document.getElementById('header-table');
-            const csvTable = document.getElementById('csv-table');
-            const headerCells = headerTable.querySelectorAll('th');
-            const csvHeaderCells = csvTable.querySelectorAll('th');
+        // Zeigt die nächste Vokabel an
+        function nextVokabel() {
+            if (currentIndex >= currentVocab.length) {
+                currentIndex = 0; // Wieder von vorne starten
+                const percentage = (correctAnswers / currentVocab.length) * 100;
+                document.getElementById('score-percentage').textContent = `${percentage}%`;
+                document.getElementById('end-screen').style.display = 'block';
+                return;
+            }
+            const [deutsch, englisch] = currentVocab[currentIndex];
+            document.getElementById('vokabel').textContent = deutsch;
+            document.getElementById('user-answer').value = '';
+            document.getElementById('result').textContent = '';
+        }
 
-            headerCells.forEach((cell, index) => {
-                if (csvHeaderCells[index]) {
-                    cell.style.width = `${csvHeaderCells[index].offsetWidth}px`;
-                }
-            });
+        // Überprüft die Antwort des Nutzers
+        function checkAnswer() {
+            const [deutsch, englisch] = currentVocab[currentIndex];
+            const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
+            const correctAnswer = englisch.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById('result').textContent = "Richtig! 😊";
+                document.getElementById('result').style.color = "green";
+                correctAnswers++;
+            } else {
+                document.getElementById('result').textContent = `Falsch! Die richtige Antwort ist: ${englisch}`;
+                document.getElementById('result').style.color = "red";
+            }
+
+            currentIndex++;
+            setTimeout(nextVokabel, 2000); // Nächste Vokabel nach 2 Sekunden
         }
 
         // Menü wechseln
@@ -233,66 +214,16 @@
             document.getElementById('quiz-section').style.display = 'block';
         });
 
-        // Abfrage starten
-        document.getElementById('start-quiz').addEventListener('click', function() {
-            const selectedLesson = document.getElementById('lesson-select').value;
-            startQuiz(selectedLesson);
-        });
-
-        // Quiz starten mit ausgewählter Lektion
-        function startQuiz(lesson) {
-            quizData = allCsvData.filter(row => row[3] === `LW${lesson}`);
-            currentWordIndex = 0;
-            correctAnswers = 0;
-            showNextWord();
-        }
-
-        // Nächste Vokabel anzeigen
-        function showNextWord() {
-            if (currentWordIndex < quizData.length) {
-                const currentWord = quizData[currentWordIndex];
-                document.getElementById('quiz-word').textContent = currentWord[0]; // Zeigt das Wort an
-                document.getElementById('quiz-meaning').classList.add('hidden');
-                document.getElementById('correct-button').classList.remove('hidden');
-                document.getElementById('incorrect-button').classList.remove('hidden');
-                document.getElementById('quiz-word-container').classList.remove('hidden');
-            } else {
-                // Abfrage beenden
-                const percentage = (correctAnswers / quizData.length) * 100;
-                document.getElementById('score-percentage').textContent = `${percentage}%`;
-                document.getElementById('end-screen').style.display = 'block';
-            }
-        }
-
-        // Zeigt die deutsche Bedeutung an, wenn das Wort angeklickt wird
-        document.getElementById('quiz-word').addEventListener('click', function() {
-            const currentWord = quizData[currentWordIndex];
-            document.getElementById('quiz-meaning').textContent = `Bedeutung: ${currentWord[2]}`;
-            document.getElementById('quiz-meaning').classList.remove('hidden');
-        });
-
-        // Richtig geklickt
-        document.getElementById('correct-button').addEventListener('click', function() {
-            correctAnswers++;
-            currentWordIndex++;
-            showNextWord();
-        });
-
-        // Falsch geklickt
-        document.getElementById('incorrect-button').addEventListener('click', function() {
-            // Falsches Wort wieder zufällig einfügen
-            const wrongWord = quizData[currentWordIndex];
-            quizData.push(wrongWord);
-            currentWordIndex++;
-            showNextWord();
-        });
-
         // Zurück zum Menü
         document.getElementById('back-to-menu').addEventListener('click', function() {
             document.getElementById('dictionary-section').style.display = 'block';
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
         });
+
+        // Initialisieren der ersten Lektion (Standard: Lektion 1)
+        loadSelectedCSV();
     </script>
+
 </body>
 </html>
