@@ -82,28 +82,26 @@
     <!-- Menü -->
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
-        <!-- Abfrage-Link entfernt -->
     </div>
 
     <!-- Wörterbuch-Daten anzeigen -->
     <div id="dictionary-section">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." oninput="filterTable()" />
+
+        <!-- Zweite Tabelle für die Suchergebnisse -->
         <div class="table-container">
-            <table id="header-table">
-                <!-- Kopfzeile wird hier manuell beschrieben -->
+            <table id="search-preview-table">
                 <tr>
                     <th>Wort</th>
-                    <th>Stammformen/Genitv</th>
-                    <th>Deutesche Bedeutung</th>
+                    <th>Stammformen/Genitiv</th>
+                    <th>Deutsche Bedeutung</th>
                     <th>Lernwortschaft</th>
                 </tr>
+                <!-- Diese Tabelle wird dynamisch durch die Suchergebnisse befüllt -->
             </table>
         </div>
 
-        <div class="table-container">
-            <table id="csv-table"></table>
-        </div>
-
+        <!-- Erste (Haupt-)Tabelle -->
         <div class="table-container">
             <table id="csv-table">
                 <!-- Die Kopfzeile wird hier hinzugefügt -->
@@ -138,7 +136,7 @@
             return result;
         }
 
-        // CSV-Daten in einer Tabelle anzeigen
+        // CSV-Daten in der Haupttabelle anzeigen
         function displayCSV(data) {
             const table = document.getElementById('csv-table');
             table.innerHTML = '';  // Tabelle leeren
@@ -188,19 +186,39 @@
         function filterTable() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const rows = document.querySelectorAll('#csv-table tr');
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                let found = false;
+            const previewTable = document.getElementById('search-preview-table');
+            previewTable.innerHTML = `
+                <tr>
+                    <th>Wort</th>
+                    <th>Stammformen/Genitiv</th>
+                    <th>Deutsche Bedeutung</th>
+                    <th>Lernwortschaft</th>
+                </tr>
+            `;  // Clear preview table before adding new results
 
-                // Durchlaufe alle Zellen in der Zeile und prüfe, ob eine Zelle das Suchwort enthält
-                Array.from(cells).forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(query)) {
-                        found = true;
+            rows.forEach((row, rowIndex) => {
+                if (rowIndex > 0) {  // Überspringe die Kopfzeile
+                    const cells = row.getElementsByTagName('td');
+                    let found = false;
+
+                    // Durchlaufe alle Zellen in der Zeile und prüfe, ob eine Zelle das Suchwort enthält
+                    Array.from(cells).forEach(cell => {
+                        if (cell.textContent.toLowerCase().includes(query)) {
+                            found = true;
+                        }
+                    });
+
+                    // Wenn das Wort gefunden wurde, füge es zur Vorschau-Tabelle hinzu
+                    if (found) {
+                        const tr = document.createElement('tr');
+                        Array.from(cells).forEach(cell => {
+                            const td = document.createElement('td');
+                            td.textContent = cell.textContent;
+                            tr.appendChild(td);
+                        });
+                        previewTable.appendChild(tr);
                     }
-                });
-
-                // Zeige die Zeile nur, wenn das Wort gefunden wurde
-                row.style.display = found ? '' : 'none';
+                }
             });
         }
     </script>
