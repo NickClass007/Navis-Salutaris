@@ -65,31 +65,13 @@
             background-color: #575757;
         }
 
-        /* Styling für das Abfrage-Interface */
-        #quiz-section {
-            display: none;
-        }
-
+        /* Styling für das Wörterbuch */
         #dictionary-section {
             display: block;
         }
 
-        #end-screen {
-            display: none;
-        }
-
         .hidden {
             display: none;
-        }
-
-        .quiz-word {
-            font-size: 24px;
-            cursor: pointer;
-            color: blue;
-        }
-
-        .quiz-buttons {
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -99,7 +81,6 @@
     <!-- Menü -->
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
-        <a href="#" id="quiz-link">Abfrage</a>
     </div>
 
     <!-- Wörterbuch-Daten anzeigen -->
@@ -111,8 +92,8 @@
                 <!-- Kopfzeile wird hier manuell beschrieben -->
                 <tr>
                     <th>Wort</th>
-                    <th>Stammformen/Genitv</th>
-                    <th>Deutesche Bedeutung</th>
+                    <th>Stammformen/Genitiv</th>
+                    <th>Deutsche Bedeutung</th>
                     <th>Lernwortschaft</th>
                 </tr>
             </table>
@@ -120,34 +101,6 @@
 
         <div class="table-container">
             <table id="csv-table"></table>
-        </div>
-    </div>
-
-    <!-- Abfrage-Sektion -->
-    <div id="quiz-section" class="hidden">
-        <h2>Abfrage starten</h2>
-        <label for="lesson-select">Wählen Sie eine Lektion:</label>
-        <select id="lesson-select">
-            <option value="1">Lektion 1</option>
-            <option value="2">Lektion 2</option>
-            <option value="3">Lektion 3</option>
-        </select>
-        <button id="start-quiz">Starten</button>
-
-        <div id="quiz-word-container" class="hidden">
-            <p id="quiz-word" class="quiz-word"></p>
-            <p id="quiz-meaning" class="hidden"></p>
-            <div class="quiz-buttons">
-                <button id="correct-button" class="hidden">Richtig</button>
-                <button id="incorrect-button" class="hidden">Falsch</button>
-            </div>
-        </div>
-
-        <button id="submit-answers" class="hidden">Abschließen</button>
-        <div id="end-screen" class="hidden">
-            <h3>Ende der Abfrage</h3>
-            <p>Prozent: <span id="score-percentage"></span></p>
-            <button id="back-to-menu">Zurück zum Menü</button>
         </div>
     </div>
 
@@ -159,9 +112,6 @@
         ];
 
         let allCsvData = [];
-        let quizData = [];
-        let currentWordIndex = 0;
-        let correctAnswers = 0;
 
         // CSV-Dateien laden
         Promise.all(csvUrls.map(url => fetch(url).then(response => response.text())))
@@ -170,7 +120,6 @@
                     allCsvData = allCsvData.concat(parseCSV(data));
                 });
                 displayCSV(allCsvData);
-                syncColumnWidths();
             })
             .catch(error => {
                 console.error('Fehler beim Laden der CSV-Dateien:', error);
@@ -197,9 +146,6 @@
             });
             table.appendChild(headerRow);
 
-            const firstRow = table.querySelector('tr');
-            firstRow.classList.add('csv-header-row');
-
             data.slice(1).forEach(row => {
                 const tr = document.createElement('tr');
                 row.forEach(cell => {
@@ -211,89 +157,32 @@
             });
         }
 
-        // Synchronisiert Spaltenbreiten
-        function syncColumnWidths() {
-            const headerTable = document.getElementById('header-table');
-            const csvTable = document.getElementById('csv-table');
-            const headerCells = headerTable.querySelectorAll('th');
-            const csvHeaderCells = csvTable.querySelectorAll('th');
+        // Suche in der Tabelle
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.getElementById('csv-table').getElementsByTagName('tr');
 
-            headerCells.forEach((cell, index) => {
-                if (csvHeaderCells[index]) {
-                    cell.style.width = `${csvHeaderCells[index].offsetWidth}px`;
+            Array.from(rows).forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                let rowContainsSearchTerm = false;
+
+                Array.from(cells).forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        rowContainsSearchTerm = true;
+                    }
+                });
+
+                if (rowContainsSearchTerm) {
+                    row.style.display = '';  // Zeile sichtbar machen
+                } else {
+                    row.style.display = 'none';  // Zeile ausblenden
                 }
             });
-        }
+        });
 
         // Menü wechseln
         document.getElementById('dictionary-link').addEventListener('click', function() {
             document.getElementById('dictionary-section').style.display = 'block';
-            document.getElementById('quiz-section').style.display = 'none';
-        });
-
-        document.getElementById('quiz-link').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'none';
-            document.getElementById('quiz-section').style.display = 'block';
-        });
-
-        // Abfrage starten
-        document.getElementById('start-quiz').addEventListener('click', function() {
-            const selectedLesson = document.getElementById('lesson-select').value;
-            startQuiz(selectedLesson);
-        });
-
-        // Beispielhafte Quiz-Funktion
-        function startQuiz(lesson) {
-            quizData = allCsvData.filter(row => row[3] === `LW${lesson}`);
-            currentWordIndex = 0;
-            correctAnswers = 0;
-            showNextWord();
-        }
-
-        function showNextWord() {
-            if (currentWordIndex < quizData.length) {
-                const currentWord = quizData[currentWordIndex];
-                document.getElementById('quiz-word').textContent = currentWord[0]; // Lateinisches Wort
-                document.getElementById('quiz-meaning').classList.add('hidden');
-                document.getElementById('correct-button').classList.remove('hidden');
-                document.getElementById('incorrect-button').classList.remove('hidden');
-                document.getElementById('quiz-word-container').classList.remove('hidden');
-            } else {
-                // Alle Wörter richtig beantwortet
-                const percentage = (correctAnswers / quizData.length) * 100;
-                document.getElementById('score-percentage').textContent = `${percentage}%`;
-                document.getElementById('end-screen').style.display = 'block';
-            }
-        }
-
-        // Zeige deutsche Bedeutung
-        document.getElementById('quiz-word').addEventListener('click', function() {
-            const currentWord = quizData[currentWordIndex];
-            document.getElementById('quiz-meaning').textContent = `Bedeutung: ${currentWord[2]}`;
-            document.getElementById('quiz-meaning').classList.remove('hidden');
-        });
-
-        // Richtig geklickt
-        document.getElementById('correct-button').addEventListener('click', function() {
-            correctAnswers++;
-            currentWordIndex++;
-            showNextWord();
-        });
-
-        // Falsch geklickt
-        document.getElementById('incorrect-button').addEventListener('click', function() {
-            // Falsches Wort wieder zufällig einfügen
-            const wrongWord = quizData[currentWordIndex];
-            quizData.push(wrongWord);
-            currentWordIndex++;
-            showNextWord();
-        });
-
-        // Zurück zum Menü
-        document.getElementById('back-to-menu').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'block';
-            document.getElementById('quiz-section').style.display = 'none';
-            document.getElementById('end-screen').style.display = 'none';
         });
     </script>
 </body>
