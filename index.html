@@ -15,7 +15,7 @@
         }
 
         th, td {
-            padding: 12px; /* Größerer Puffer für ein moderneres Gefühl */
+            width: 25%; /* Stellt gleiche Größe für jede Spalte sicher */
             text-align: left;
             white-space: nowrap;
             overflow: hidden;
@@ -159,10 +159,10 @@
             <table class="scroll">
                 <thead>
                     <tr id="table-head">
-                        <th>Spalte 1</th>
-                        <th>Spalte 2</th>
-                        <th>Spalte 3</th>
-                        <th>Spalte 4</th>
+                        <th>Grundform</th>
+                        <th>Formen/Genitiv</th>
+                        <th>Deutsche Bedeutung</th>
+                        <th>Lernwortschatz</th>
                         <!-- Füge hier deine weiteren Überschriften hinzu -->
                     </tr>
                 </thead>
@@ -174,7 +174,10 @@
     <script>
         // CSV-Dateien laden
         async function loadCSV() {
-            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
+            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv';
+            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv';
+            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv';
+            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW4.csv';// Setze hier die URL zu deiner GitHub CSV-Datei ein
             const response = await fetch(url);
             const data = await response.text();
             const rows = data.split('\n');
