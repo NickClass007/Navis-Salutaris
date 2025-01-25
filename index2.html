@@ -34,54 +34,50 @@
 <body>
     <table class="scroll">
         <thead>
-            <tr id="table-head"></tr>
-            <th>Spalte 1</th>
-            <th>Spalte 2</th>
-            <th>Spalte 3</th>
-            <th>Spalte 4</th>
+            <tr id="table-head">
+                <th>Spalte 1</th>
+                <th>Spalte 2</th>
+                <th>Spalte 3</th>
+                <th>Spalte 4</th>
+                <!-- Füge hier deine weiteren Überschriften hinzu -->
+            </tr>
         </thead>
         <tbody id="table-body"></tbody>
     </table>
 
     <script>
-// JavaScript lädt und analysiert die CSV-Datei von GitHub und fügt sie in die Tabelle ein
-
-async function loadCSV() {
-    const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
-    const response = await fetch(url);
-    const data = await response.text();
-    const rows = data.split('\n');
-    populateTable(rows);
-}
-
-function populateTable(rows) {
-    //const tableHead = document.getElementById('table-head');
-    const tableBody = document.getElementById('table-body');
-    
-    rows.forEach((row, rowIndex) => {
-        const cols = row.split(',');
-        if (rowIndex === 0) {
-            const headerRow = document.createElement('tr');
-            cols.forEach(col => {
-                const th = document.createElement('th');
-                th.innerText = col;
-                headerRow.appendChild(th);
-            });
-            tableHead.appendChild(headerRow);
-        } else {
-            const bodyRow = document.createElement('tr');
-            cols.forEach(col => {
-                const td = document.createElement('td');
-                td.innerText = col;
-                bodyRow.appendChild(td);
-            });
-            tableBody.appendChild(bodyRow);
+        async function loadCSV() {
+            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
+            const response = await fetch(url);
+            const data = await response.text();
+            const rows = data.split('\n');
+            populateTable(rows);
         }
-    });
-}
 
-//Lade die CSV-Datei beim Laden der Seite
-window.onload = loadCSV;
+        function populateTable(rows) {
+            const tableBody = document.getElementById('table-body');
+            
+            // Entferne die erste Zeile, wenn du die Kopfzeile nicht aus der CSV-Datei laden möchtest
+            rows.shift();
+            
+            rows.forEach(row => {
+                const cols = row.split(',');
+                const bodyRow = document.createElement('tr');
+                cols.forEach(col => {
+                    const td = document.createElement('td');
+                    td.innerText = col;
+                    bodyRow.appendChild(td);
+                });
+                tableBody.appendChild(bodyRow);
+            });
+        }
+
+        //Lade die CSV-Datei beim Laden der Seite
+        window.onload = loadCSV;
     </script>
 </body>
 </html>
+
+
+
+   
