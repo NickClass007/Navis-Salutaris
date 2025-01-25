@@ -174,23 +174,26 @@
         </div>
     </div>
 
-    <script>
-        // CSV-Dateien laden
-        async function loadCSV() {
-            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv';
-            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv';
-            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv';
-            const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW4.csv';// Setze hier die URL zu deiner GitHub CSV-Datei ein
-            const response = await fetch(url);
-            const data = await response.text();
-            const rows = data.split('\n');
-            populateTable(rows);
-        }
+   <script>
+    const urls = [
+        'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
+        'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv',
+        'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv',
+        'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW4.csv'
+    ];
 
-        function populateTable(rows) {
-            const tableBody = document.getElementById('table-body');
-            
-            rows.forEach(row => {
+    async function loadCSV() {
+        const requests = urls.map(url => fetch(url).then(response => response.text()));
+        const data = await Promise.all(requests);
+        const allRows = data.flatMap(csv => csv.split('\n'));
+        populateTable(allRows);
+    }
+
+    function populateTable(rows) {
+        const tableBody = document.getElementById('table-body');
+
+        rows.forEach((row, index) => {
+            if(row.trim() !== ""){
                 const cols = row.split(',');
                 const bodyRow = document.createElement('tr');
                 cols.forEach(col => {
@@ -199,45 +202,34 @@
                     bodyRow.appendChild(td);
                 });
                 tableBody.appendChild(bodyRow);
-            });
-        }
+            }
+        });
+    }
 
-        //Lade die CSV-Datei beim Laden der Seite
-        window.onload = loadCSV;
+    window.onload = loadCSV;
 
-        // Suche in der Tabelle
-        document.getElementById('search-input').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.getElementById('csv-table').getElementsByTagName('tr');
+    document.getElementById('search-input').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
-            // Durchlaufen der Zeilen ab der zweiten Zeile (erste Zeile ist die Kopfzeile)
-            Array.from(rows).forEach((row, index) => {
-                // Ignoriere die erste Zeile (Kopfzeile)
-                if (index === 0) return;
+        Array.from(rows).forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            let rowContainsSearchTerm = false;
 
-                const cells = row.getElementsByTagName('td');
-                let rowContainsSearchTerm = false;
-
-                // Überprüfen, ob eine Zelle den Suchbegriff enthält
-                Array.from(cells).forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
-                        rowContainsSearchTerm = true;
-                    }
-                });
-
-                // Zeile sichtbar oder unsichtbar machen
-                if (rowContainsSearchTerm) {
-                    row.style.display = '';  // Zeile sichtbar machen
-                } else {
-                    row.style.display = 'none';  // Zeile ausblenden
+            Array.from(cells).forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    rowContainsSearchTerm = true;
                 }
             });
-        });
 
-        // Menü wechseln
-        document.getElementById('dictionary-link').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'block';
+            row.style.display = rowContainsSearchTerm ? '' : 'none';
         });
-    </script>
+    });
+
+    document.getElementById('dictionary-link').addEventListener('click', function() {
+        document.getElementById('dictionary-section').style.display = 'block';
+    });
+</script>
+
 </body>
 </html>
