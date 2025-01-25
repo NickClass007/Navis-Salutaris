@@ -43,7 +43,7 @@
 // JavaScript lädt und analysiert die CSV-Datei von GitHub und fügt sie in die Tabelle ein
 
 async function loadCSV() {
-    const url = 'URL_ZU_DEINER_CSV_DATEI'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
+    const url = 'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
     const response = await fetch(url);
     const data = await response.text();
     const rows = data.split('\n');
