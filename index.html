@@ -4,136 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navis Salutaris</title>
-    <style>
-        /* Grundlegendes Styling für die Tabellen */
-        table {
-            width: 100%;
-            max-width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-            font-family: Arial, sans-serif;
-        }
+ <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex: 1; /* Gleiche Größe für alle Spalten */
-            border: 1px solid #ddd; /* Hellere Rahmenfarbe */
-        }
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-        th {
-            background-color: #f2f2f2;
-            color: #333;
-            padding: 12px;
-            min-width: 150px; /* Mindestbreite je nach Inhalt anpassbar */
-        }
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
 
-        table, th, td {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+    .scroll {
+        display: block;
+        overflow-x: auto;
+    }
 
-        table thead tr {
-            display: flex;
-            width: 100%; /* Stellt sicher, dass die gesamte Breite ausgefüllt wird */
-        }
+    .scroll thead,
+    .scroll tbody {
+        display: block;
+    }
 
-        table tbody tr {
-            display: flex;
-        }
+    .scroll thead tr {
+        display: flex;
+    }
 
-        /* Optional: Styling für das Eingabefeld */
-        input[type="text"] {
-            margin: 10px 0;
-            padding: 8px;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
+    .scroll tbody tr {
+        display: flex;
+    }
 
-        /* Container für die Tabelle mit Scrollfunktion */
-        .table-container {
-            overflow-x: auto;
-            overflow-y: auto;
-            max-height: 400px;
-            margin-top: 10px;
-        }
+    .scroll thead th,
+    .scroll tbody td {
+        flex: 1;
+    }
 
-        /* Styling für das Menü */
-        #menu {
-            display: flex;
-            justify-content: space-around;
-            background-color: #333;
-            padding: 10px;
-            color: white;
-            font-size: 16px;
-        }
+    .scroll tbody {
+        overflow-y: auto;
+        max-height: 200px;
+    }
 
-        #menu a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+</style>
 
-        #menu a:hover {
-            background-color: #575757;
-        }
-
-        /* Styling für das Wörterbuch */
-        #dictionary-section {
-            display: block;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Scrollbar Eigenschaften für die Tabelle */
-        .scroll {
-            display: block;
-        }
-
-        .scroll thead th {
-            flex: 1;
-            display: block;
-        }
-
-        .scroll tbody {
-            display: block;
-            width: 100%;
-            overflow-y: auto;
-            height: auto;
-            max-height: 200px;
-        }
-
-        .scroll thead tr, .scroll tbody tr {
-            display: flex;
-        }
-
-        .scroll tbody tr td {
-            flex: 1;
-            word-wrap: break-word;
-        }
-
-        /* Allgemeiner Seitenstil */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
