@@ -38,7 +38,6 @@
                 <th>Spalte 1</th>
                 <th>Spalte 2</th>
                 <th>Spalte 3</th>
-                <th>Spalte 4</th>
                 <!-- Füge hier deine weiteren Überschriften hinzu -->
             </tr>
         </thead>
@@ -56,9 +55,6 @@
 
         function populateTable(rows) {
             const tableBody = document.getElementById('table-body');
-            
-            // Entferne die erste Zeile, wenn du die Kopfzeile nicht aus der CSV-Datei laden möchtest
-            rows.shift();
             
             rows.forEach(row => {
                 const cols = row.split(',');
@@ -78,6 +74,4 @@
 </body>
 </html>
 
-
-
-   
+            
