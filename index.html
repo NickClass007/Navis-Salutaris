@@ -19,6 +19,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
         }
 
         th {
@@ -86,7 +87,7 @@
         }
 
         .scroll thead th {
-            flex: 1 auto;
+            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
             display: block;
         }
 
@@ -104,7 +105,7 @@
         }
 
         .scroll tbody tr td {
-            flex: 1 1 auto;
+            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
             word-wrap: break-word;
         }
     </style>
