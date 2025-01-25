@@ -4,57 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navis Salutaris</title>
- <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: Arial, sans-serif;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d; /* Dunklerer Hintergrund für modernen Look */
+            color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+            margin: 0;
+            padding: 20px;
+        }
 
-    th, td {
-        padding: 12px;
-        text-align: left;
-        border: 1px solid #ddd;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff8c00; /* Leuchtende Farbe für den Titel */
+        }
 
-    th {
-        background-color: #f2f2f2;
-        color: #333;
-    }
+        #menu {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 10px;
+            border-radius: 8px;
+        }
 
-    .scroll {
-        display: block;
-        overflow-x: auto;
-    }
+        #menu a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-    .scroll thead,
-    .scroll tbody {
-        display: block;
-    }
+        #menu a:hover {
+            background-color: #ff8c00;
+        }
 
-    .scroll thead tr {
-        display: flex;
-    }
+        .container {
+            background-color: #363636;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    .scroll tbody tr {
-        display: flex;
-    }
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+        }
 
-    .scroll thead th,
-    .scroll tbody td {
-        flex: 1;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .scroll tbody {
-        overflow-y: auto;
-        max-height: 200px;
-    }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #555;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-</style>
+        th {
+            background-color: #666;
+            color: #e0e0e0;
+        }
 
+        .scroll {
+            display: block;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .scroll thead, .scroll tbody {
+            display: block;
+        }
+
+        .scroll thead tr {
+            display: flex;
+        }
+
+        .scroll tbody tr {
+            display: flex;
+        }
+
+        .scroll thead th, .scroll tbody td {
+            flex: 1;
+        }
+
+        .scroll tbody {
+            overflow-y: auto;
+            max-height: 200px;
+        }
+    </style>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
@@ -65,7 +111,7 @@
     </div>
 
     <!-- Wörterbuch-Daten anzeigen -->
-    <div id="dictionary-section">
+    <div class="container" id="dictionary-section">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
 
         <div class="table-container scroll">
@@ -83,9 +129,6 @@
             </table>
         </div>
     </div>
-
-
-
 
    <script>
     const urls = [
