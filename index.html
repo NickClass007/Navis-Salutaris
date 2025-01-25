@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #2d2d2d; /* Dunkler Hintergrund für modern Look */
+            background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
             color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
             margin: 0;
             padding: 20px;
@@ -64,12 +64,14 @@
         }
 
         th, td {
-            padding: 16px; /* Größeres Padding für größere Höhe */
+            padding: 16px; /* Größeres Padding für eine größere Höhe */
             text-align: left;
             border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            word-wrap: break-word; /* Automatischer Zeilenumbruch */
+            word-break: break-all; /* Automatischer Zeilenumbruch */
+            white-space: normal; /* Erlaubt Zeilenumbruch */
             border-radius: 8px; /* Abgerundete Ecken für die Zellen */
         }
 
@@ -86,7 +88,7 @@
 
         .scroll thead, .scroll tbody {
             display: block;
-            border-radius: 8px; /* Abgerundete Ecken für Table Scroll */
+            border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
         }
 
         .scroll thead tr {
@@ -95,7 +97,7 @@
 
         .scroll tbody tr {
             display: flex;
-            border-radius: 8px; /* Abgerundete Ecken für Table Rows */
+            border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
         }
 
         .scroll thead th, .scroll tbody td {
@@ -104,7 +106,7 @@
 
         .scroll tbody {
             overflow-y: auto;
-            max-height: 500px; /* Größere max-height für die Tabelle */
+            max-height: 300px; /* Größere max-height für die Tabelle */
             scrollbar-width: none; /* Für Firefox */
         }
 
