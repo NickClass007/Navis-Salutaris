@@ -59,7 +59,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
             overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
         }
 
@@ -71,12 +70,37 @@
             text-overflow: ellipsis;
             word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
             white-space: normal; /* Erlaubt Zeilenumbruch */
-            border-radius: 8px; /* Abgerundete Ecken für die Zellen */
         }
 
         th {
             background-color: #666;
             color: #e0e0e0;
+        }
+
+        /* Abgerundete Ecken nur an den Rändern */
+        thead th:first-child, tbody tr:first-child td:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        thead th:last-child, tbody tr:first-child td:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+
+        tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+
+        /* Abwechselnde Farben für die Zeilen */
+        tbody tr:nth-child(odd) {
+            background-color: #f2f2f2; /* Hellgrau */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #e0e0e0; /* Dunkelgrau */
         }
 
         .scroll {
@@ -87,7 +111,6 @@
 
         .scroll thead, .scroll tbody {
             display: block;
-            border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
         }
 
         .scroll thead tr {
@@ -96,7 +119,6 @@
 
         .scroll tbody tr {
             display: flex;
-            border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
         }
 
         .scroll thead th, .scroll tbody td {
@@ -141,6 +163,7 @@
             </table>
         </div>
     </div>
+
 
 
 
