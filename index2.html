@@ -3,106 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+        table.scroll thead tr:after {
+            content: '';
+            overflow-y: scroll;
+            visibility: hidden;
         }
-        .card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            width: 300px;
-            margin: 0 auto;
-            background-color: #f9f9f9;
+        table.scroll thead th {
+            flex: 1 auto;
+            display: block;
         }
-        button {
-            padding: 10px 20px;
-            margin-top: 20px;
-            font-size: 16px;
-            cursor: pointer;
+        table.scroll tbody {
+            display: block;
+            width: 100%;
+            overflow-y: auto;
+            height: auto;
+            max-height: 200px;
         }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
+        table.scroll thead tr,
+        table.scroll tbody tr {
+            display: flex;
         }
-        select {
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 16px;
+        table.scroll tbody tr td {
+            flex: 1 auto;
+            word-wrap: break;
         }
     </style>
+    <title>CSV Tabelle</title>
 </head>
 <body>
-
-    <h1>Vokabeltrainer</h1>
-    <label for="lektion">Wähle eine Lektion:</label>
-    <select id="lektion" onchange="loadSelectedCSV()">
-        <option value="LW1.csv">Lektion 1</option>
-        <option value="LW2.csv">Lektion 2</option>
-        <option value="LW3.csv">Lektion 3</option>
-    </select>
-
-    <div class="card" id="card">
-        <p id="vokabel"></p>
-        <input type="text" id="user-answer" placeholder="Deine Antwort...">
-        <button onclick="checkAnswer()">Überprüfen</button>
-        <div id="result"></div>
-    </div>
+    <table class="scroll">
+        <thead>
+            <tr id="table-head"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
 
     <script>
-        let currentVocab = [];
-        let currentIndex = 0;
+// JavaScript lädt und analysiert die CSV-Datei von GitHub und fügt sie in die Tabelle ein
 
-        // Funktion zum Einlesen der CSV-Datei
-        async function loadCSV(file) {
-            const response = await fetch(`W-roter/${file}`);
-            const text = await response.text();
-            const rows = text.split('\n').map(row => row.split(','));
-            return rows.slice(1); // Überspringe die Kopfzeile
+async function loadCSV() {
+    const url = 'URL_ZU_DEINER_CSV_DATEI'; // Setze hier die URL zu deiner GitHub CSV-Datei ein
+    const response = await fetch(url);
+    const data = await response.text();
+    const rows = data.split('\n');
+    populateTable(rows);
+}
+
+function populateTable(rows) {
+    const tableHead = document.getElementById('table-head');
+    const tableBody = document.getElementById('table-body');
+    
+    rows.forEach((row, rowIndex) => {
+        const cols = row.split(',');
+        if (rowIndex === 0) {
+            const headerRow = document.createElement('tr');
+            cols.forEach(col => {
+                const th = document.createElement('th');
+                th.innerText = col;
+                headerRow.appendChild(th);
+            });
+            tableHead.appendChild(headerRow);
+        } else {
+            const bodyRow = document.createElement('tr');
+            cols.forEach(col => {
+                const td = document.createElement('td');
+                td.innerText = col;
+                bodyRow.appendChild(td);
+            });
+            tableBody.appendChild(bodyRow);
         }
+    });
+}
 
-        // Lädt die ausgewählte CSV-Datei
-        async function loadSelectedCSV() {
-            const selectedFile = document.getElementById('lektion').value;
-            currentVocab = await loadCSV(selectedFile);
-            currentIndex = 0; // Rücksetzen des Indexes
-            nextVokabel(); // Zeige die erste Vokabel an
-        }
-
-        // Zeigt die nächste Vokabel an
-        function nextVokabel() {
-            if (currentIndex >= currentVocab.length) {
-                currentIndex = 0; // Wieder von vorne starten
-            }
-            const [deutsch, englisch] = currentVocab[currentIndex];
-            document.getElementById('vokabel').textContent = deutsch;
-            document.getElementById('user-answer').value = '';
-            document.getElementById('result').textContent = '';
-        }
-
-        // Überprüft die Antwort des Nutzers
-        function checkAnswer() {
-            const [deutsch, englisch] = currentVocab[currentIndex];
-            const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
-            const correctAnswer = englisch.toLowerCase();
-
-            if (userAnswer === correctAnswer) {
-                document.getElementById('result').textContent = "Richtig! 😊";
-                document.getElementById('result').style.color = "green";
-            } else {
-                document.getElementById('result').textContent = `Falsch! Die richtige Antwort ist: ${englisch}`;
-                document.getElementById('result').style.color = "red";
-            }
-
-            currentIndex++;
-            setTimeout(nextVokabel, 2000); // Nächste Vokabel nach 2 Sekunden
-        }
-
-        // Initialisieren der ersten Lektion (Standard: Lektion 1)
-        loadSelectedCSV();
+//Lade die CSV-Datei beim Laden der Seite
+window.onload = loadCSV;
     </script>
-
 </body>
 </html>
