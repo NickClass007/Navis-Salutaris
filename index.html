@@ -20,18 +20,17 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
+            flex: 1; /* Gleiche Größe für alle Spalten und Header */
             border: 1px solid #ddd; /* Hellere Rahmenfarbe */
         }
 
         th {
             background-color: #f2f2f2; /* Leichte Hintergrundfarbe */
             color: #333; /* Dunklere Textfarbe */
-            min-width: 150px; /* Beispiel: Erhöhte Mindestbreite */
-            padding: 12px 20px; /* Beispiel: Erhöhtes Padding für größere Kästchen */
-            flex: 1 1 25%; /* Option: Passt die Breite an, um gleiche Größen sicherzustellen */
+            padding: 12px; /* Gleiches Padding wie bei td */
+            min-width: 150px; /* Gleiche Mindestbreite wie bei td */
+            flex: 1; 
         }
-
 
         table, th, td {
             border: 1px solid #ddd; /* Einheitliche Rahmenfarbe */
@@ -44,9 +43,6 @@
 
         table tbody tr {
             display: flex;
-            &:nth-child(even) {
-                background-color: #f9f9f9; /* Leicht gestreifte Zeilen für bessere Übersicht */
-            }
         }
 
         /* Optional: Styling für das Eingabefeld */
@@ -102,14 +98,8 @@
             display: block;
         }
 
-        .scroll thead tr:after {
-            content: '';
-            overflow-y: scroll;
-            visibility: hidden;
-        }
-
         .scroll thead th {
-            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
+            flex: 1;
             display: block;
         }
 
@@ -121,13 +111,12 @@
             max-height: 200px; /* Füge deine max-height hinzu */
         }
 
-        .scroll thead tr,
-        .scroll tbody tr {
+        .scroll thead tr, .scroll tbody tr {
             display: flex;
         }
 
         .scroll tbody tr td {
-            flex: 1 1 25%; /* Gleiche Größe für alle Spalten */
+            flex: 1; /* Gleiche Größe für alle Spalten */
             word-wrap: break-word;
         }
 
@@ -173,6 +162,8 @@
             </table>
         </div>
     </div>
+
+
 
    <script>
     const urls = [
