@@ -15,7 +15,7 @@
         }
 
         th, td {
-            width: 25%; /* Stellt gleiche Größe für jede Spalte sicher */
+            padding: 12px;
             text-align: left;
             white-space: nowrap;
             overflow: hidden;
@@ -27,8 +27,11 @@
         th {
             background-color: #f2f2f2; /* Leichte Hintergrundfarbe */
             color: #333; /* Dunklere Textfarbe */
-            min-width: 100px; /* Stellt sicher, dass Header groß genug sind */
+            min-width: 150px; /* Beispiel: Erhöhte Mindestbreite */
+            padding: 12px 20px; /* Beispiel: Erhöhtes Padding für größere Kästchen */
+            flex: 1 1 25%; /* Option: Passt die Breite an, um gleiche Größen sicherzustellen */
         }
+
 
         table, th, td {
             border: 1px solid #ddd; /* Einheitliche Rahmenfarbe */
