@@ -73,6 +73,40 @@
         .hidden {
             display: none;
         }
+
+        /* Scrollbar Eigenschaften für die Tabelle */
+        .scroll {
+            display: block;
+        }
+
+        .scroll thead tr:after {
+            content: '';
+            overflow-y: scroll;
+            visibility: hidden;
+        }
+
+        .scroll thead th {
+            flex: 1 auto;
+            display: block;
+        }
+
+        .scroll tbody {
+            display: block;
+            width: 100%;
+            overflow-y: auto;
+            height: auto;
+            max-height: 200px; /* Füge deine max-height hinzu */
+        }
+
+        .scroll thead tr,
+        .scroll tbody tr {
+            display: flex;
+        }
+
+        .scroll tbody tr td {
+            flex: 1 1 auto;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -87,7 +121,7 @@
     <div id="dictionary-section">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
 
-        <div class="table-container">
+        <div class="table-container scroll">
             <table id="csv-table"></table>
         </div>
     </div>
