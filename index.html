@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navis Salutaris</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
+            color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff8c00; /* Leuchtende Farbe für den Titel */
+        }
+
+        #menu {
+            display: flex;
+            justify-content: space-between; /* Verteile die Buttons gleichmäßig */
+            background-color: #444;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        #menu a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #menu a:hover {
+            background-color: #ff8c00;
+        }
+
+        .container {
+            background-color: #363636;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            background-color: #d3d3d3; /* Leicht graues Suchfeld */
+            box-sizing: border-box; /* Stellt sicher, dass die Breite des Suchfelds korrekt berechnet wird */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
+            overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
+        }
+
+        th, td {
+            padding: 16px; /* Größeres Padding für eine größere Höhe */
+            text-align: left;
+            border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
+            white-space: normal; /* Erlaubt Zeilenumbruch */
+            border-radius: 8px; /* Abgerundete Ecken für die Zellen */
+        }
+
+        th {
+            background-color: #666;
+            color: #e0e0e0;
+        }
+
+        .scroll {
+            display: block;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .scroll thead, .scroll tbody {
+            display: block;
+            border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+        }
+
+        .scroll thead tr {
+            display: flex;
+        }
+
+        .scroll tbody tr {
+            display: flex;
+            border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+        }
+
+        .scroll thead th, .scroll tbody td {
+            flex: 1;
+        }
+
+        .scroll tbody {
+            overflow-y: auto;
+            max-height: 300px; /* Größere max-height für die Tabelle */
+            scrollbar-width: none; /* Für Firefox */
+        }
+
+        .scroll tbody::-webkit-scrollbar {
+            display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
+        }
+    </style>
+</head>
+<body>
+    <h1>Navis Salutaris</h1>
+
+    <div id="menu">
+        <a href="#" id="dictionary-link">Wörterbuch</a>
+        <a href="#" id="query-link">Abfrage</a>
+        <a href="#" id="download-link">Download</a>
+    </div>
+
+    <div class="container" id="dictionary-section">
+        <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
+
+        <div class="table-container scroll">
+            <table class="scroll">
+                <thead>
+                    <tr id="table-head">
+                        <th>Grundform</th>
+                        <th>Formen/Genitiv</th>
+                        <th>Deutsche Bedeutung</th>
+                        <th>Lernwortschatz</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const urls = [
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW4.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW5.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW6.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW7.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW8.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW9.csv'
+        ];
+
+        async function loadCSV() {
+            const requests = urls.map(url => fetch(url).then(response => response.text()));
+            const data = await Promise.all(requests);
+            const allRows = data.flatMap(csv => csv.split('\n'));
+            const mergedData = mergeRows(allRows);
+            populateTable(mergedData);
+        }
+
+        function mergeRows(rows) {
+            const merged = {};
+            rows.forEach(row => {
+                if(row.trim() !== "") {
+                    const cols = row.split(',');
+                    const [grundform, ...rest] = cols;
+                    const key = grundform;
+                    if(!merged[key]) {
+                        merged[key] = {
+                            grundform,
+                            columns: rest.map(value => new Set(value ? [value] : []))
+                        };
+                    } else {
+                        rest.forEach((value, index) => {
+                            if(value) merged[key].columns[index].add(value);
+                        });
+                    }
+                }
+            });
+            return Object.values(merged).map(({grundform, columns}) => 
+                [grundform, ...columns.map(set => [...set].join('; '))].join(',')
+            );
+        }
+
+        function populateTable(rows) {
+            const tableBody = document.getElementById('table-body');
+
+            rows.forEach((row) => {
+                const cols = row.split(',');
+                const bodyRow = document.createElement('tr');
+                cols.forEach(col => {
+                    const td = document.createElement('td');
+                    td.innerText = col;
+                    bodyRow.appendChild(td);
+                });
+                tableBody.appendChild(bodyRow);
+            });
+        }
+
+        window.onload = loadCSV;
+
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.getElementById('table-body').getElementsByTagName('tr');
+
+            Array.from(rows).forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                let rowContainsSearchTerm = false;
+
+                Array.from(cells).forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                        rowContainsSearchTerm = true;
+                    }
+                });
+
+                row.style.display = rowContainsSearchTerm ? '' : 'none';
+            });
+        });
+
+        document.getElementById('dictionary-link').addEventListener('click', function() {
+            document.getElementById('dictionary-section').style.display = 'block';
+        });
+
+        document.getElementById('query-link').addEventListener('click', function() {
+            alert('Coming soon');
+        });
+
+        document.getElementById('download-link').addEventListener('click', function() {
+            alert('Coming soon');
+        });
+    </script>
+</body>
+</html>
