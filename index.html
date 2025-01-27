@@ -50,7 +50,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .download-button {
+        .download-button, .download-zip-button {
             display: none;
             background-color: #ff8c00;
             color: #2d2d2d;
@@ -62,7 +62,7 @@
             margin-top: 20px;
         }
 
-        .download-button:hover {
+        .download-button:hover, .download-zip-button:hover {
             background-color: #ff6500;
         }
 
@@ -140,6 +140,7 @@
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
         <button id="download-button">Download</button>
+        <button id="download-zip-button">Download ZIP</button>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -161,6 +162,7 @@
 
         <div class="download-button" id="download-section">
             <button class="download-button">Download</button>
+            <button class="download-zip-button">Download ZIP</button>
         </div>
     </div>
 
@@ -250,10 +252,4 @@
             document.getElementById('download-section').style.display = 'none';
         });
 
-        document.getElementById('download-button').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'none';
-            document.getElementById('download-section').style.display = 'block';
-        });
-    </script>
-</body>
-</html>
+        document.getElementById('download-button').addEventListener('[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
