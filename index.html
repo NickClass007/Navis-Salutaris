@@ -235,18 +235,11 @@
 
         document.getElementById('download-link').addEventListener('click', async function () {
             const zip = new JSZip();
-            zip.file("index-0.2-beta.html", document.documentElement.outerHTML);
+            const htmlContent = document.documentElement.outerHTML;
+            zip.file("index-0.2-beta.html", htmlContent);
 
             const downloadCSVFiles = urls.map(url => {
                 return fetch(url)
                     .then(response => response.blob())
                     .then(blob => {
-                        const fileName = url.split('/').pop();
-                        zip.file(fileName, blob);
-                    });
-            });
-
-            await Promise.all(downloadCSVFiles);
-
-            zip.generateAsync({ type: "blob" })
-                .[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
+                        const file
