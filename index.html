@@ -120,10 +120,11 @@
 
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
+        <a href="#" id="query-link">Abfrage</a>
         <a href="#" id="download-link">Download</a>
     </div>
 
-    <div class="container" id="dictionary-section">
+    <div class="container" id="dictionary-section" style="display: none;">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
 
         <div class="table-container scroll">
@@ -168,23 +169,23 @@
         function mergeRows(rows) {
             const merged = {};
             rows.forEach(row => {
-                if(row.trim() !== "") {
+                if (row.trim() !== "") {
                     const cols = row.split(',');
                     const [grundform, ...rest] = cols;
                     const key = grundform;
-                    if(!merged[key]) {
+                    if (!merged[key]) {
                         merged[key] = {
                             grundform,
                             columns: rest.map(value => new Set(value ? [value] : []))
                         };
                     } else {
                         rest.forEach((value, index) => {
-                            if(value) merged[key].columns[index].add(value);
+                            if (value) merged[key].columns[index].add(value);
                         });
                     }
                 }
             });
-            return Object.values(merged).map(({grundform, columns}) => 
+            return Object.values(merged).map(({ grundform, columns }) =>
                 [grundform, ...columns.map(set => [...set].join('; '))].join(',')
             );
         }
@@ -206,7 +207,7 @@
 
         window.onload = loadCSV;
 
-        document.getElementById('search-input').addEventListener('keyup', function() {
+        document.getElementById('search-input').addEventListener('keyup', function () {
             const searchTerm = this.value.toLowerCase();
             const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
@@ -224,11 +225,15 @@
             });
         });
 
-        document.getElementById('dictionary-link').addEventListener('click', function() {
+        document.getElementById('dictionary-link').addEventListener('click', function () {
             document.getElementById('dictionary-section').style.display = 'block';
         });
 
-        document.getElementById('download-link').addEventListener('click', async function() {
+        document.getElementById('query-link').addEventListener('click', function () {
+            alert('Coming soon');
+        });
+
+        document.getElementById('download-link').addEventListener('click', async function () {
             const zip = new JSZip();
             zip.file("index-0.2-beta.html", document.documentElement.outerHTML);
 
@@ -243,4 +248,5 @@
 
             await Promise.all(downloadCSVFiles);
 
-            zip.generateAsync({
+            zip.generateAsync({ type: "blob" })
+                .[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
