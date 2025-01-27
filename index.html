@@ -10,7 +10,7 @@
         #menu { display: flex; justify-content: space-around; background-color: #444; padding: 10px; border-radius: 8px; }
         #menu a { color: #e0e0e0; text-decoration: none; padding: 10px 20px; border-radius: 5px; transition: background-color 0.3s; }
         #menu a:hover { background-color: #ff8c00; }
-        .container { background-color: #363636; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .container { background-color: #363636; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: none; }
         input[type="text"] { margin: 10px 0; padding: 10px; border: none; border-radius: 4px; width: 100%; background-color: #d3d3d3; box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
         th, td { padding: 16px; text-align: left; border: 1px solid #555; overflow: hidden; text-overflow: ellipsis; word-wrap: break-word; white-space: normal; border-radius: 8px; }
@@ -22,12 +22,16 @@
         .scroll thead th, .scroll tbody td { flex: 1; }
         .scroll tbody { overflow-y: auto; max-height: 300px; scrollbar-width: none; }
         .scroll tbody::-webkit-scrollbar { display: none; }
+        .download-container { text-align: center; margin-top: 20px; }
+        .download-btn { background-color: #ff8c00; color: #fff; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .download-btn:hover { background-color: #e07b00; }
     </style>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
+        <a href="#" id="download-link">Download CSV</a>
     </div>
     <div class="container" id="dictionary-section">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
@@ -44,7 +48,11 @@
                 <tbody id="table-body"></tbody>
             </table>
         </div>
-        <button onclick="downloadCSV()">Download CSV</button> <!-- Download-Button -->
+    </div>
+    <div class="container" id="download-section">
+        <div class="download-container">
+            <button class="download-btn" onclick="downloadCSV()">CSV-Dateien herunterladen</button>
+        </div>
     </div>
     <script>
         const urls = [
@@ -123,6 +131,29 @@
             });
         });
         document.getElementById('dictionary-link').addEventListener('click', function() {
+            document.getElementById('dictionary-section').style.display = 'block';
+            document.getElementById('download-section').style.display = 'none';
+        });
+        document.getElementById('download-link').addEventListener('click', function() {
+            document.getElementById('dictionary-section').innerHTML = `
+                <div class="table-container scroll">
+                    <table class="scroll">
+                        <thead>
+                            <tr id="table-head">
+                                <th>Grundform</th>
+                                <th>Formen/Genitiv</th>
+                                <th>Deutsche Bedeutung</th>
+                                <th>Lernwortschatz</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+                <div class="download-container">
+                    <button class="download-btn" onclick="downloadCSV()">CSV-Dateien herunterladen</button>
+                </div>
+            `;
+            loadCSV();
             document.getElementById('dictionary-section').style.display = 'block';
         });
     </script>
