@@ -142,6 +142,15 @@
         </div>
     </div>
 
+    <!-- Popup Fenster für Downloads -->
+    <div id="download-popup" style="display:none;">
+        <div class="container">
+            <h2>Download-Optionen</h2>
+            <button id="online-download">Online Download</button>
+            <button id="offline-download">Offline Download</button>
+        </div>
+    </div>
+
     <script>
         const urls = [
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
@@ -215,7 +224,6 @@
         }
 
         function downloadOffline() {
-            // Funktion zum Herunterladen von HTML und CSV-Dateien als Zip-Datei
             const zip = new JSZip();
             const htmlContent = document.documentElement.outerHTML;
             zip.file('Navis_Salutaris.html', htmlContent);
@@ -244,5 +252,4 @@
             const searchTerm = this.value.toLowerCase();
             const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
-            Array.from(rows).forEach(row => {
-                const cells = row.getElementsByTagName('[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)[_{{{CITATION{{{_2{](https://github.com/intellilab/image-stretcher/tree/81abd9356d738365312a6d1297eb84a7369e7095/src%2Findex.js)
+            Array.from(rows[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)[_{{{CITATION{{{_2{](https://github.com/intellilab/image-stretcher/tree/81abd9356d738365312a6d1297eb84a7369e7095/src%2Findex.js)
