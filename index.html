@@ -22,7 +22,7 @@
 
         #menu {
             display: flex;
-            justify-content: space-between; /* Verteile die Buttons gleichmäßig */
+            justify-content: space-around;
             background-color: #444;
             padding: 10px;
             border-radius: 8px;
@@ -120,8 +120,7 @@
 
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
-        <a href="#" id="query-link">Abfrage</a>
-        <a href="Navis_Salutaris.zip" id="download-link" download="Navis_Salutaris.zip">Download</a>
+        <a href="#" id="download-link">Download</a>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -142,6 +141,8 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
     <script>
         const urls = [
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
@@ -152,7 +153,8 @@
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW6.csv',
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW7.csv',
             'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW8.csv',
-            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW9.csv'
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW9.csv',
+            'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW10.csv'
         ];
 
         async function loadCSV() {
@@ -226,13 +228,19 @@
             document.getElementById('dictionary-section').style.display = 'block';
         });
 
-        document.getElementById('query-link').addEventListener('click', function() {
-            alert('Coming soon');
-        });
+        document.getElementById('download-link').addEventListener('click', async function() {
+            const zip = new JSZip();
+            zip.file("index-0.2-beta.html", document.documentElement.outerHTML);
 
-        document.getElementById('download-link').addEventListener('click', function() {
-            alert('Coming soon');
-        });
-    </script>
-</body>
-</html>
+            const downloadCSVFiles = urls.map(url => {
+                return fetch(url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const fileName = url.split('/').pop();
+                        zip.file(fileName, blob);
+                    });
+            });
+
+            await Promise.all(downloadCSVFiles);
+
+            zip.generateAsync({
