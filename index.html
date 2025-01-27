@@ -202,6 +202,42 @@
             });
         }
 
+        function downloadHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Navis_Salutaris.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function downloadOffline() {
+            // Funktion zum Herunterladen von HTML und CSV-Dateien als Zip-Datei
+            const zip = new JSZip();
+            const htmlContent = document.documentElement.outerHTML;
+            zip.file('Navis_Salutaris.html', htmlContent);
+
+            const requests = urls.map(url => fetch(url).then(response => response.text()));
+            Promise.all(requests).then(data => {
+                data.forEach((csvContent, index) => {
+                    zip.file(`LW${index + 1}.csv`, csvContent);
+                });
+
+                zip.generateAsync({ type: 'blob' }).then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Navis_Salutaris.zip';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            });
+        }
+
         window.onload = loadCSV;
 
         document.getElementById('search-input').addEventListener('keyup', function() {
@@ -209,30 +245,4 @@
             const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
             Array.from(rows).forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                let rowContainsSearchTerm = false;
-
-                Array.from(cells).forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(searchTerm)) {
-                        rowContainsSearchTerm = true;
-                    }
-                });
-
-                row.style.display = rowContainsSearchTerm ? '' : 'none';
-            });
-        });
-
-        document.getElementById('dictionary-link').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'block';
-        });
-
-        document.getElementById('query-link').addEventListener('click', function() {
-            alert('Coming soon');
-        });
-
-        document.getElementById('download-link').addEventListener('click', function() {
-            alert('Coming soon');
-        });
-    </script>
-</body>
-</html>
+                const cells = row.getElementsByTagName('[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)[_{{{CITATION{{{_2{](https://github.com/intellilab/image-stretcher/tree/81abd9356d738365312a6d1297eb84a7369e7095/src%2Findex.js)
