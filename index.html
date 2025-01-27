@@ -121,7 +121,7 @@
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
         <a href="#" id="query-link">Abfrage</a>
-        <a href="Navis_Salutaris.html" id="download-link" download="Navis_Salutaris.html">Download</a>
+        <a href="Navis_Salutaris.zip" id="download-link" download="Navis_Salutaris.zip">Download</a>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -230,11 +230,8 @@
             alert('Coming soon');
         });
 
-        document.getElementById('download-link').addEventListener('click', function(event) {
-            const link = document.createElement('a');
-            link.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(document.documentElement.outerHTML);
-            link.download = 'Navis_Salutaris.html';
-            link.click();
+        document.getElementById('download-link').addEventListener('click', function() {
+            alert('Coming soon');
         });
     </script>
 </body>
