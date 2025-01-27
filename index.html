@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
-            color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+            background-color: #2d2d2d;
+            color: #e0e0e0;
             margin: 0;
             padding: 20px;
         }
@@ -17,7 +17,7 @@
             font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
-            color: #ff8c00; /* Leuchtende Farbe für den Titel */
+            color: #ff8c00;
         }
 
         #menu {
@@ -33,10 +33,10 @@
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
-            border: none;
-            background: none;
-            cursor: pointer;
             transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            background-color: #444;
         }
 
         #menu a:hover, #menu button:hover {
@@ -50,51 +50,32 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .download-section {
-            background-color: #ff8c00;
-            color: #2d2d2d;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .download-section:hover {
-            background-color: #ff6500;
-        }
-
         input[type="text"] {
             margin: 10px 0;
             padding: 10px;
             border: none;
             border-radius: 4px;
             width: 100%;
-            background-color: #d3d3d3; /* Leicht graues Suchfeld */
-            box-sizing: border-box; /* Stellt sicher, dass die Breite des Suchfelds korrekt berechnet wird */
+            background-color: #d3d3d3;
+            box-sizing: border-box;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
-            overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            padding: 16px; /* Größeres Padding für eine größere Höhe */
+            padding: 16px;
             text-align: left;
-            border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
+            border: 1px solid #555;
             overflow: hidden;
             text-overflow: ellipsis;
-            word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
-            white-space: normal; /* Erlaubt Zeilenumbruch */
-            border-radius: 8px; /* Abgerundete Ecken für die Zellen */
+            word-wrap: break-word;
+            white-space: normal;
+            border-radius: 8px;
         }
 
         th {
@@ -110,7 +91,7 @@
 
         .scroll thead, .scroll tbody {
             display: block;
-            border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+            border-radius: 8px;
         }
 
         .scroll thead tr {
@@ -119,7 +100,7 @@
 
         .scroll tbody tr {
             display: flex;
-            border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+            border-radius: 8px;
         }
 
         .scroll thead th, .scroll tbody td {
@@ -128,21 +109,22 @@
 
         .scroll tbody {
             overflow-y: auto;
-            max-height: 300px; /* Größere max-height für die Tabelle */
-            scrollbar-width: none; /* Für Firefox */
+            max-height: 300px;
+            scrollbar-width: none;
         }
 
         .scroll tbody::-webkit-scrollbar {
-            display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
+            display: none;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
 
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
-        <button id="download-button">Download</button>
+        <button id="download-btn">Download W-roter</button>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -161,10 +143,6 @@
                 <tbody id="table-body"></tbody>
             </table>
         </div>
-    </div>
-
-    <div class="hidden download-section" id="download-zip-section">
-        <button id="download-zip-button">Download ZIP</button>
     </div>
 
     <script>
@@ -250,9 +228,25 @@
 
         document.getElementById('dictionary-link').addEventListener('click', function() {
             document.getElementById('dictionary-section').style.display = 'block';
-            document.getElementById('download-zip-section').classList.add('hidden');
         });
 
-        document.getElementById('download-button').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'none';
-            document[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
+        document.getElementById('download-btn').addEventListener('click', async function() {
+            const zip = new JSZip();
+
+            const requests = urls.map(url => fetch(url).then(response => response.blob()).then(blob => {
+                const filename = url.split('/').pop();
+                zip.file(filename, blob);
+            }));
+
+            await Promise.all(requests);
+
+            zip.generateAsync({type: 'blob'}).then(function(content) {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(content);
+                a.download = 'W-roter.zip';
+                a.click();
+            });
+        });
+    </script>
+</body>
+</html>
