@@ -124,7 +124,7 @@
 
     <div id="menu">
         <a href="#" id="dictionary-link">Wörterbuch</a>
-        <button id="download-btn">Download W-roter</button>
+        <button id="download-btn">Download</button>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -243,7 +243,7 @@
             zip.generateAsync({type: 'blob'}).then(function(content) {
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(content);
-                a.download = 'W-roter.zip';
+                a.download = 'Woerter.zip';
                 a.click();
             });
         });
