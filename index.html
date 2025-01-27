@@ -50,19 +50,22 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .download-button {
+        .hidden {
             display: none;
-            background-color: #ff8c00;
-            color: #2d2d2d;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
         }
 
-        .download-button:hover {
+        .download-section {
+            background-color: #ff8c00;
+            color: #2d2d2d;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-section:hover {
             background-color: #ff6500;
         }
 
@@ -158,11 +161,10 @@
                 <tbody id="table-body"></tbody>
             </table>
         </div>
+    </div>
 
-        <div class="download-button" id="download-section">
-            <button class="download-button">Download</button>
-            <button id="download-zip-button">Download ZIP</button> <!-- Neuer Button -->
-        </div>
+    <div class="hidden download-section" id="download-zip-section">
+        <button id="download-zip-button">Download ZIP</button>
     </div>
 
     <script>
@@ -248,8 +250,9 @@
 
         document.getElementById('dictionary-link').addEventListener('click', function() {
             document.getElementById('dictionary-section').style.display = 'block';
-            document.getElementById('download-section').style.display = 'none';
+            document.getElementById('download-zip-section').classList.add('hidden');
         });
 
         document.getElementById('download-button').addEventListener('click', function() {
-            document.getElementById('dictionary-section').style.display = 'none[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
+            document.getElementById('dictionary-section').style.display = 'none';
+            document[_{{{CITATION{{{_1{](https://github.com/hd-code/pandoc-docker/tree/07f83c6deeafbff1710c5f7992a97955c298ad61/example%2Fexample.md)
