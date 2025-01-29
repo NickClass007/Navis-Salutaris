@@ -8,7 +8,8 @@ const urls = [
     'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW7.csv',
     'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW8.csv',
     'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW9.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW10.csv'
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW10.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW11.csv'
 ];
 
 async function loadCSV() {
