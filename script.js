@@ -1,15 +1,15 @@
 const urls = [
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW1.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW2.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW3.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW4.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW5.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW6.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW7.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW8.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW9.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW10.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW11.csv'
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW3.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW4.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW5.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW6.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW7.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW8.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW9.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW10.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW11.csv'
 ];
 
 async function loadCSV() {
