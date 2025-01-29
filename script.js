@@ -1,14 +1,14 @@
 const urls = [
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW1.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW2.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW3.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW4.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW5.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW6.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW7.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW8.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW9.csv',
-    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/W-roter/LW10.csv'
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW1.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW2.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW3.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW4.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW5.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW6.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW7.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW8.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW9.csv',
+    'https://raw.githubusercontent.com/nickclass007/W-rterbuch-/main/Woerter/LW10.csv'
 ];
 
 async function loadCSV() {
