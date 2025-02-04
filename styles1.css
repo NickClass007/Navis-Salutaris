@@ -3,38 +3,44 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    padding: 20px;
 }
 
 #menu {
     display: flex;
     justify-content: center;
     gap: 20px;
-    background-color: #4CAF50; /* Grüner Hintergrund für die Navigation */
+    background-color: #444;
     padding: 15px;
     border-radius: 5px;
 }
 
 #menu a {
     padding: 10px 20px;
-    color: white;
+    color: #e0e0e0;
     text-decoration: none;
     font-size: 16px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    background-color: #444;
 }
 
 #menu a:hover {
-    background-color: #45a049; /* Grün bei Hover */
+    background-color: #ff8c00; /* Orange bei Hover */
 }
 
 #menu a.active {
-    background-color: #2e8b57; /* Dunkleres Grün für den aktiven Button */
+    background-color: #666; /* Dunkleres Grau für den aktiven Button */
 }
 
 .container {
+    background-color: #363636;
     padding: 20px;
     text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 input {
@@ -43,8 +49,9 @@ input {
     margin-bottom: 20px;
     width: 80%;
     max-width: 600px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 4px;
+    border: none;
+    background-color: #d3d3d3;
 }
 
 .table-container {
@@ -56,14 +63,22 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 th, td {
-    padding: 10px;
+    padding: 16px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #555;
+    border-radius: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 th {
-    background-color: #f4f4f4;
+    background-color: #666;
+    color: #e0e0e0;
 }
