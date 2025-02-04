@@ -32,7 +32,7 @@ body {
 }
 
 #menu a.active {
-    background-color: #666; /* Dunkleres Grau für den aktiven Button */
+    background-color: #ff8c00; /* Dunkleres Grau für den aktiven Button */
 }
 
 .container {
