@@ -31,13 +31,18 @@ h1 {
     cursor: pointer;
     background-color: #444;
 }
-
-#menu a.active {
-    background-color: #666; /* Dunkleres Grau für den aktiven Button */
-}
 #menu a:hover, #menu button:hover {
     background-color: #ff8c00;
 }
+
+#menu a:hover {
+    background-color: #ff8c00; /* Orange bei Hover */
+}
+
+#menu a.active {
+    background-color: #ff8c00; /* Dunkleres Grau für den aktiven Button */
+}
+
 
 .container {
     background-color: #363636;
