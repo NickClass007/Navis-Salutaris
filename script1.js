@@ -12,9 +12,8 @@ function changeURL(buttonType) {
     // Je nachdem, welcher Button geklickt wurde, URL ändern und aktiven Button festlegen
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
-        window.location.href = 'https://github.com/NickClass007/Navis-Salutaris/#'; // Wörterbuch URL
+        // window.location.href = 'index.html'; // Dies passiert durch das Standard-Linkverhalten, daher ist es nicht nötig.
     } else if (buttonType === 'deklination') {
         deklinationLink.classList.add('active');
-        window.location.href = 'https://github.com/NickClass007/Navis-Salutaris/deklination'; // Deklination URL
     }
 }
