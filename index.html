@@ -5,19 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navis Salutaris</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
 
     <div id="menu">
-        <!-- Link zu index.html, stellt sicher, dass Wörterbuch geladen wird -->
-        <a href="index.html" id="dictionary-link" onclick="changeURL('woerterbuch')" >Wörterbuch</a>
-        
-        <!-- Link zu deklination.html, stellt sicher, dass Deklination geladen wird -->
-        <a href="deklination.html" id="deklination-link" onclick="changeURL('deklination')" >Deklination</a>
-
-        <a href="uebersetzter.html" id="uebersetzter-link" onclick="changeURL('uebersetzter')" >Übersetzter</a>
+        <a href="index.html" id="dictionary-link" onclick="changeURL('woerterbuch')">Wörterbuch</a>
+        <a href="deklination.html" id="deklination-link" onclick="changeURL('deklination')">Deklination</a>
+        <a href="uebersetzter.html" id="uebersetzter-link" onclick="changeURL('uebersetzter')">Übersetzer</a>
     </div>
 
     <div class="container" id="dictionary-section">
@@ -37,7 +33,5 @@
             </table>
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
