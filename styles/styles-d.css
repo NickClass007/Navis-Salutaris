@@ -21,13 +21,23 @@ h1 {
     border-radius: 8px;
 }
 
+#dictionary-link {
+    background-color: #1e90ff; /* Blau für den Wörterbuch-Button */
+    color: #fff;
+}
 
 #deklination-link {
-    background-color: #ff8c00;
-    color: #fff
+    background-color: #ff8c00; /* Orange für den Deklination-Button */
+    color: #fff;
 }
+
+#uebersetzter-link {
+    background-color: #32cd32; /* Grün für den Übersetzter-Button */
+    color: #fff;
+}
+
 #menu a:hover, #menu button:hover {
-    background-color: #ff8c00;
+    opacity: 0.8; /* Einheitliches Hover-Design für alle Buttons */
 }
 
 /* Neue Regel für den aktiven Button */
