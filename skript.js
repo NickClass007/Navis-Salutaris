@@ -106,19 +106,24 @@ document.getElementById('download-btn').addEventListener('click', async function
 });
 
 // Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
+// Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
 function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
     const deklinationLink = document.getElementById('deklination-link');
+    const deklinationLink = document.getElementById('uebersetzter-link');
 
     // Entferne die "active"-Klasse von allen Links
     dictionaryLink.classList.remove('active');
     deklinationLink.classList.remove('active');
+    uebersetzterLink.classList.remove('active');
 
     // Je nachdem, welcher Button geklickt wurde, URL ändern und aktiven Button festlegen
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
         // window.location.href = 'index.html'; // Dies passiert durch das Standard-Linkverhalten, daher ist es nicht nötig.
     } else if (buttonType === 'deklination') {
+        deklinationLink.classList.add('active');
+    } else if (buttonType === 'uebersetzter') {
         deklinationLink.classList.add('active');
     }
 }
@@ -132,5 +137,9 @@ function highlightActiveButton() {
         document.getElementById('dictionary-link').classList.add('active');
     } else if (page === "deklination.html") {
         document.getElementById('deklination-link').classList.add('active');
+    } else if (page === "uebersetzter.html") {
+        document.getElementById('uebersetzter-link').classList.add('active');
     }
 }
+
+window.onload = highlightActiveButton;
