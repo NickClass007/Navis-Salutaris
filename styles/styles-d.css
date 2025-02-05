@@ -21,7 +21,7 @@ h1 {
     border-radius: 8px;
 }
 
-#menu a:hover {
+#menu a:hover #menu button {
     background-color: #ff8c00; /* Orange für den Deklination-Button */
     color: #fff;
 }
