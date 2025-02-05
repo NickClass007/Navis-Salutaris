@@ -31,6 +31,11 @@ h1 {
     cursor: pointer;
     background-color: #ff8c00;
 }
+
+#deklination {
+    background-color: #ff8c00;
+    color: #fff
+}
 #menu a:hover, #menu button:hover {
     background-color: #ff8c00;
 }
