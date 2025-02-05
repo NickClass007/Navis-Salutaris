@@ -15,12 +15,15 @@ const urls = [
 async function loadCSV() {
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
+    console.log('CSV geladen:', data);
     const allRows = data.flatMap(csv => csv.split('\n'));
+    console.log('Alle Zeilen:', allRows);
     populateTable(allRows);
 }
 
 function populateTable(rows) {
     const tableBody = document.getElementById('table-body');
+    console.log('Tabelle Körper:', tableBody);
 
     rows.forEach((row, index) => {
         if (row.trim() !== "") {
@@ -36,9 +39,13 @@ function populateTable(rows) {
     });
 }
 
-window.onload = loadCSV;
+window.onload = function() {
+    console.log('Window loaded');
+    loadCSV();
+};
 
 document.getElementById('search-input').addEventListener('keyup', function() {
+    console.log('Sucheingabe erkannt');
     const searchTerm = this.value.toLowerCase();
     const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
@@ -58,20 +65,18 @@ document.getElementById('search-input').addEventListener('keyup', function() {
 
 document.getElementById('dictionary-link').addEventListener('click', function() {
     document.getElementById('dictionary-section').style.display = 'block';
+    console.log('Wörterbuch-Link geklickt');
 });
 
-// Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
 function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
     const deklinationLink = document.getElementById('deklination-link');
     const uebersetzterLink = document.getElementById('uebersetzter-link');
 
-    // Entferne die "active"-Klasse von allen Links
     dictionaryLink.classList.remove('active');
     deklinationLink.classList.remove('active');
     uebersetzterLink.classList.remove('active');
 
-    // Je nachdem, welcher Button geklickt wurde, URL ändern und aktiven Button festlegen
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
     } else if (buttonType === 'deklination') {
@@ -81,7 +86,6 @@ function changeURL(buttonType) {
     }
 }
 
-// Funktion, um den aktiven Button beim Laden der Seite zu markieren
 function highlightActiveButton() {
     const path = window.location.pathname;
     const page = path.split("/").pop();
