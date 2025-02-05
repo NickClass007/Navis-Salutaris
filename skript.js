@@ -13,11 +13,15 @@ const urls = [
 ];
 
 async function loadCSV() {
-    const requests = urls.map(url => fetch(url).then(response => response.text()));
-    const data = await Promise.all(requests);
-    const allRows = data.flatMap(csv => csv.split('\n'));
-    const mergedData = mergeRows(allRows);
-    populateTable(mergedData);
+    try {
+        const requests = urls.map(url => fetch(url).then(response => response.text()));
+        const data = await Promise.all(requests);
+        const allRows = data.flatMap(csv => csv.split('\n'));
+        const mergedData = mergeRows(allRows);
+        populateTable(mergedData);
+    } catch (error) {
+        console.error('Error loading CSV files:', error);
+    }
 }
 
 function mergeRows(rows) {
@@ -102,7 +106,6 @@ function changeURL(buttonType) {
     // Je nachdem, welcher Button geklickt wurde, URL ändern und aktiven Button festlegen
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
-        // window.location.href = 'index.html'; // Dies passiert durch das Standard-Linkverhalten, daher ist es nicht nötig.
     } else if (buttonType === 'deklination') {
         deklinationLink.classList.add('active');
     } else if (buttonType === 'uebersetzter') {
