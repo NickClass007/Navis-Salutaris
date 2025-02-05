@@ -35,15 +35,6 @@ h1 {
     background-color: #ff8c00;
 }
 
-#menu a:hover {
-    background-color: #ff8c00; /* Orange bei Hover */
-}
-
-#menu a.active {
-    background-color: #ff8c00; /* Dunkleres Grau für den aktiven Button */
-}
-
-
 .container {
     background-color: #363636;
     padding: 20px;
