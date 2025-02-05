@@ -59,10 +59,7 @@ function populateTable(rows) {
     });
 }
 
-window.onload = () => {
-    loadCSV();
-    highlightActiveButton();
-};
+window.onload = loadCSV;
 
 document.getElementById('search-input').addEventListener('keyup', function() {
     const searchTerm = this.value.toLowerCase();
@@ -84,7 +81,6 @@ document.getElementById('search-input').addEventListener('keyup', function() {
 
 document.getElementById('dictionary-link').addEventListener('click', function() {
     document.getElementById('dictionary-section').style.display = 'block';
-    highlightActiveButton();
 });
 
 document.getElementById('download-btn').addEventListener('click', async function() {
@@ -105,7 +101,6 @@ document.getElementById('download-btn').addEventListener('click', async function
     });
 });
 
-// Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
 // Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
 function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
