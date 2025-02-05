@@ -25,10 +25,7 @@ h1 {
     background-color: #ff8c00; /* Orange für den Deklination-Button */
     color: #fff;
 }
-#menu a.active, #menu button.active {
-    background-color: #ff8c00; /* Orange Hintergrundfarbe für den aktiven Button */
-    color: #fff; /* Optional: Weißer Text für besseren Kontrast */
-}
+
 .container {
     background-color: #363636;
     padding: 20px;
