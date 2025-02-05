@@ -21,21 +21,14 @@ h1 {
     border-radius: 8px;
 }
 
-#dictionary-link {
-    background-color: #1e90ff; /* Blau für den Wörterbuch-Button */
-    color: #fff;
-}
-
 #deklination-link {
     background-color: #ff8c00; /* Orange für den Deklination-Button */
     color: #fff;
 }
-
-#uebersetzter-link {
-    background-color: #32cd32; /* Grün für den Übersetzter-Button */
-    color: #fff;
+#menu a.active, #menu button.active {
+    background-color: #ff8c00; /* Orange Hintergrundfarbe für den aktiven Button */
+    color: #fff; /* Optional: Weißer Text für besseren Kontrast */
 }
-
 .container {
     background-color: #363636;
     padding: 20px;
