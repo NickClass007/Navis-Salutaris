@@ -25,7 +25,7 @@ async function loadCSV() {
 
 function populateTable(rows) {
     const tableBody = document.getElementById('table-body');
-    console.log('Tabelle Körper:', tableBody);
+    console.log('Tabelle Körper gefunden:', tableBody);  // Hier überprüfst du, ob das Element korrekt gefunden wurde
 
     rows.forEach((row, index) => {
         if (row.trim() !== "") {
@@ -40,6 +40,7 @@ function populateTable(rows) {
         }
     });
 }
+
 
 window.onload = function() {
     console.log('Window loaded');
