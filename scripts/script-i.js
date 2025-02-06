@@ -10,7 +10,8 @@ const urls = [
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW9.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW10.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW11.csv',
-    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW12.csv'
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW12.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW13.csv'
 ];
 
 async function loadCSV() {
