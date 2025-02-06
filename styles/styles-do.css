@@ -48,13 +48,70 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.button {
-  background-color: #04AA6D; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+
+input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    background-color: #d3d3d3;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border: 1px solid #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+    border-radius: 8px;
+}
+
+th {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+.scroll {
+    display: block;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.scroll thead, .scroll tbody {
+    display: block;
+    border-radius: 8px;
+}
+
+.scroll thead tr {
+    display: flex;
+}
+
+.scroll tbody tr {
+    display: flex;
+    border-radius: 8px;
+}
+
+.scroll thead th, .scroll tbody td {
+    flex: 1;
+}
+
+.scroll tbody {
+    overflow-y: auto;
+    max-height: 300px;
+    scrollbar-width: none;
+}
+
+.scroll tbody::-webkit-scrollbar {
+    display: none;
 }
