@@ -17,11 +17,12 @@ const urls = [
 async function loadCSV() {
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
-    console.log('CSV geladen:', data);
+    console.log('CSV-Daten geladen:', data);  // Hier wird überprüft, ob die Daten tatsächlich geladen wurden
     const allRows = data.flatMap(csv => csv.split('\n'));
-    console.log('Alle Zeilen:', allRows);
+    console.log('Alle Zeilen:', allRows);  // Hier siehst du, ob die CSV-Daten korrekt aufgeteilt werden
     populateTable(allRows);
 }
+
 
 function populateTable(rows) {
     const tableBody = document.getElementById('table-body');
