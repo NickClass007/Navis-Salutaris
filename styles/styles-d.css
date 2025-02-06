@@ -21,9 +21,24 @@ h1 {
     border-radius: 8px;
 }
 
-#menu a:hover {
-    background-color: #ff8c00; /* Orange für den Deklination-Button */
+#menu a, #menu button {
     color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    background-color: #444;
+}
+#menu a:hover, #menu button:hover {
+    background-color: #ff8c00;
+}
+
+/* Neue Regel für den aktiven Button */
+#menu a.active, #menu button.active {
+    background-color: #ff8c00; /* Orange Hintergrundfarbe für den aktiven Button */
+    color: #fff; /* Optional: Weißer Text für besseren Kontrast */
 }
 
 .container {
