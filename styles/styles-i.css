@@ -52,9 +52,10 @@ input[type="text"] {
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* Hinzugefügt: Stellen Sie sicher, dass die Tabelle eine feste Spaltenbreite hat */
+    table-layout: fixed;
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 20px; /* Abstand zur Eingabezeile */
 }
 
 th, td {
@@ -74,31 +75,34 @@ th {
 }
 
 .scroll {
+    max-height: 400px; /* Erhöht die maximale Höhe für das Scrollen */
+    overflow-y: auto; /* Vertikale Scrollbarkeit */
     display: block;
-    overflow-x: auto;
-    margin-top: 10px;
-    max-height: 300px; /* Höhe des scrollbaren Bereichs */
 }
 
-.scroll thead, .scroll tbody {
-    display: table;
-    width: 100%;
-}
-
-.scroll thead tr {
-    display: table-row;
-}
-
-.scroll tbody tr {
-    display: table-row;
+.scroll thead {
+    display: table-header-group; /* Behalte die Kopfzeile beim Scrollen fixiert */
 }
 
 .scroll tbody {
     display: block;
-    max-height: 200px; /* Verhindert unnötig viel Scrollen */
-    overflow-y: auto;
+    width: 100%;
 }
 
 .scroll tbody::-webkit-scrollbar {
-    display: none;
+    width: 8px; /* Breite der vertikalen Scrollleiste */
+}
+
+.scroll tbody::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.scroll tbody::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.scroll table {
+    width: 100%;
+    border-collapse: collapse;
 }
