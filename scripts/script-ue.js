@@ -1,26 +1,26 @@
-// Funktion zur Änderung der URL und zur Aktivierung des richtigen Links
 function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
     const deklinationLink = document.getElementById('deklination-link');
-    const deklinationLink = document.getElementById('uebersetzter-link');
+    const uebersetzterLink = document.getElementById('uebersetzter-link');
+    const downloadLink = ducument.getElemetById('downlaod-link');
 
-    // Entferne die "active"-Klasse von allen Links
     dictionaryLink.classList.remove('active');
     deklinationLink.classList.remove('active');
     uebersetzterLink.classList.remove('active');
+    downloadLink.classList.remove('active');
+    
 
-    // Je nachdem, welcher Button geklickt wurde, URL ändern und aktiven Button festlegen
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
-        // window.location.href = 'index.html'; // Dies passiert durch das Standard-Linkverhalten, daher ist es nicht nötig.
     } else if (buttonType === 'deklination') {
         deklinationLink.classList.add('active');
     } else if (buttonType === 'uebersetzter') {
-        deklinationLink.classList.add('active');
+        uebersetzterLink.classList.add('active');
+    } else if (buttonType == 'download') {
+        doawnloadLink.classList.add('active');
     }
 }
 
-// Funktion, um den aktiven Button beim Laden der Seite zu markieren
 function highlightActiveButton() {
     const path = window.location.pathname;
     const page = path.split("/").pop();
@@ -31,7 +31,7 @@ function highlightActiveButton() {
         document.getElementById('deklination-link').classList.add('active');
     } else if (page === "uebersetzter.html") {
         document.getElementById('uebersetzter-link').classList.add('active');
+    } else if {page == "downlaod.html") {
+        document.getElementById('downlaod-link').classList.add('active');
     }
 }
-
-window.onload = highlightActiveButton;
