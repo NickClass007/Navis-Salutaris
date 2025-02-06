@@ -17,22 +17,21 @@ const urls = [
 async function loadCSV() {
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
-    console.log('CSV-Daten geladen:', data);  // Hier wird überprüft, ob die Daten tatsächlich geladen wurden
+    console.log('CSV-Daten geladen:', data);  // Debugging-Ausgabe
     const allRows = data.flatMap(csv => csv.split('\n'));
-    console.log('Alle Zeilen:', allRows);  // Hier siehst du, ob die CSV-Daten korrekt aufgeteilt werden
+    console.log('Alle Zeilen:', allRows);  // Debugging-Ausgabe
     populateTable(allRows);
 }
 
-
 function populateTable(rows) {
     const tableBody = document.getElementById('table-body');
-    console.log('Tabelle Körper gefunden:', tableBody);  // Hier überprüfst du, ob das Element korrekt gefunden wurde
+    console.log('Tabelle Körper gefunden:', tableBody);  // Überprüfen, ob das Element gefunden wurde
 
-    rows.forEach((row, index) => {
+    rows.forEach((row) => {
         if (row.trim() !== "") {
             const cols = row.split(',');
             const bodyRow = document.createElement('tr');
-            cols.forEach(col => {
+            cols.forEach((col) => {
                 const td = document.createElement('td');
                 td.innerText = col;
                 bodyRow.appendChild(td);
@@ -42,22 +41,21 @@ function populateTable(rows) {
     });
 }
 
-
-window.onload = function() {
+window.onload = function () {
     console.log('Window loaded');
     loadCSV();
 };
 
-document.getElementById('search-input').addEventListener('keyup', function() {
+document.getElementById('search-input').addEventListener('keyup', function () {
     console.log('Sucheingabe erkannt');
     const searchTerm = this.value.toLowerCase();
     const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
-    Array.from(rows).forEach(row => {
+    Array.from(rows).forEach((row) => {
         const cells = row.getElementsByTagName('td');
         let rowContainsSearchTerm = false;
 
-        Array.from(cells).forEach(cell => {
+        Array.from(cells).forEach((cell) => {
             if (cell.textContent.toLowerCase().includes(searchTerm)) {
                 rowContainsSearchTerm = true;
             }
@@ -67,7 +65,7 @@ document.getElementById('search-input').addEventListener('keyup', function() {
     });
 });
 
-document.getElementById('dictionary-link').addEventListener('click', function() {
+document.getElementById('dictionary-link').addEventListener('click', function () {
     document.getElementById('dictionary-section').style.display = 'block';
     console.log('Wörterbuch-Link geklickt');
 });
@@ -76,22 +74,21 @@ function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
     const deklinationLink = document.getElementById('deklination-link');
     const uebersetzterLink = document.getElementById('uebersetzter-link');
-    const downloadLink = ducument.getElementById('downlaod-link');
+    const downloadLink = document.getElementById('download-link');  // Rechtschreibfehler hier behoben
 
     dictionaryLink.classList.remove('active');
     deklinationLink.classList.remove('active');
     uebersetzterLink.classList.remove('active');
     downloadLink.classList.remove('active');
     
-
     if (buttonType === 'woerterbuch') {
         dictionaryLink.classList.add('active');
     } else if (buttonType === 'deklination') {
         deklinationLink.classList.add('active');
     } else if (buttonType === 'uebersetzter') {
         uebersetzterLink.classList.add('active');
-    } else if (buttonType == 'download') {
-        doawnloadLink.classList.add('active');
+    } else if (buttonType === 'download') {
+        downloadLink.classList.add('active');
     }
 }
 
@@ -105,7 +102,7 @@ function highlightActiveButton() {
         document.getElementById('deklination-link').classList.add('active');
     } else if (page === "uebersetzter.html") {
         document.getElementById('uebersetzter-link').classList.add('active');
-    } else if {page == "downlaod.html") {
-        document.getElementById('downlaod-link').classList.add('active');
+    } else if (page === "download.html") {
+        document.getElementById('download-link').classList.add('active');
     }
 }
