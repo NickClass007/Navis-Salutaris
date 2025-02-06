@@ -74,7 +74,7 @@ function changeURL(buttonType) {
     const dictionaryLink = document.getElementById('dictionary-link');
     const deklinationLink = document.getElementById('deklination-link');
     const uebersetzterLink = document.getElementById('uebersetzter-link');
-    const downloadLink = ducument.getElemetById('downlaod-link');
+    const downloadLink = ducument.getElementById('downlaod-link');
 
     dictionaryLink.classList.remove('active');
     deklinationLink.classList.remove('active');
