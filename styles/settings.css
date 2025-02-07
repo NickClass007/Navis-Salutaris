@@ -77,8 +77,8 @@ h3 {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 6px;
+  height: 3.4px;
 }
 
 .switch input { 
@@ -102,10 +102,10 @@ h3 {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 2.6px;
+  width: 2.6px;
   left: 4px;
-  bottom: 4px;
+  bottom:4px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -120,14 +120,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(2.6px);
+  -ms-transform: translateX(2.6px);
+  transform: translateX(2.6px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 3.4px;
 }
 
 .slider.round:before {
