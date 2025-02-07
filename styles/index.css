@@ -17,8 +17,9 @@ h2 {
     font-size: 20px;
     text-align: center;
     margin-bottom: 16px;
-    color: #ff8c00; /* Leuchtende Farbe für den Titel */
+    color: #ff8c00;
 }
+
 #menu {
     display: flex;
     justify-content: space-around;
@@ -86,7 +87,7 @@ th {
 
 .scroll thead, .scroll tbody {
     display: block;
-    border-radius: 0px; /* Abgerundete Ecken für die Table Scroll */
+    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
 }
 
 .scroll thead tr {
@@ -95,7 +96,7 @@ th {
 
 .scroll tbody tr {
     display: flex;
-    border-radius: 0px; /* Abgerundete Ecken für die Table Rows */
+    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
 }
 
 .scroll thead th, .scroll tbody td {
