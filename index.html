@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navis Salutaris</title>
     <link rel="stylesheet" href="styles/styles-i.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
     <h1>Navis Salutaris</h1>
 
+    <!-- Menü -->
     <div id="menu">
-        <!-- Buttons statt Links -->
-        <button id="dictionary-button" onclick="changeURL('woerterbuch')">Wörterbuch</button>
+         <button id="dictionary-button" onclick="changeURL('woerterbuch')">Wörterbuch</button>
         <button id="deklination-button" onclick="changeURL('deklination')">Deklination</button>
         <button id="uebersetzter-button" onclick="changeURL('uebersetzter')">Übersetzer</button>
-       <!-- <button id="download-button" onclick="changeURL('download')">Download</button> -->
     </div>
 
+    <!-- Wörterbuch-Daten anzeigen -->
     <div class="container" id="dictionary-section">
         <input type="text" id="search-input" placeholder="Suche nach Wörtern..." />
 
@@ -29,6 +28,7 @@
                         <th>Formen/Genitiv</th>
                         <th>Deutsche Bedeutung</th>
                         <th>Lernwortschatz</th>
+                        <!-- Füge hier deine weiteren Überschriften hinzu -->
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>
@@ -39,3 +39,6 @@
     <script src="scripts/script-i.js"></script>
 </body>
 </html>
+
+       <!-- <button id="download-button" onclick="changeURL('download')">Download</button> -->
+ 
