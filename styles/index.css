@@ -80,7 +80,7 @@ th {
 
 .scroll thead, .scroll tbody {
     display: block;
-    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+    border-radius: 0px; /* Abgerundete Ecken für die Table Scroll */
 }
 
 .scroll thead tr {
@@ -89,7 +89,7 @@ th {
 
 .scroll tbody tr {
     display: flex;
-    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+    border-radius: 0px; /* Abgerundete Ecken für die Table Rows */
 }
 
 .scroll thead th, .scroll tbody td {
