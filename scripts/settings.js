@@ -12,3 +12,4 @@ document.getElementById('settings-link').addEventListener('click', function() {
     document.getElementById('settings-section').style.display = 'block';
     history.pushState(null, '', 'settings.html');
 });
+
