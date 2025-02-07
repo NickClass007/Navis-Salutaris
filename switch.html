@@ -1,74 +1,92 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slider Toggle</title>
-    <style>
-        .slider-container {
-            width: 80%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .slider {
-            display: none;
-        }
-        .slider + label {
-            display: inline-block;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .slides {
-            display: none;
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
-            position: relative;
-        }
-        .slide {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .slider:checked + label + .slides > .slide:first-child {
-            display: block;
-        }
-        .slider:checked + label + .slides > .slide + .slide {
-            display: none;
-        }
-    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 </head>
 <body>
-    <div class="slider-container">
-        <input type="checkbox" id="sliderToggle" class="slider">
-        <label for="sliderToggle">Toggle Slider</label>
-        <div class="slides">
-            <div class="slide" style="background-color: lightcoral;">Slide 1</div>
-            <div class="slide" style="background-color: lightblue;">Slide 2</div>
-            <div class="slide" style="background-color: lightgreen;">Slide 3</div>
-        </div>
-    </div>
-    <script>
-        document.querySelector('#sliderToggle').addEventListener('change', function() {
-            const slides = document.querySelectorAll('.slide');
-            if (this.checked) {
-                slides.forEach((slide, index) => {
-                    setTimeout(() => {
-                        slide.style.display = 'block';
-                        if (index > 0) slides[index - 1].style.display = 'none';
-                    }, 2000 * index);
-                });
-            } else {
-                slides.forEach(slide => slide.style.display = 'none');
-            }
-        });
-    </script>
+
+<h2>Toggle Switch</h2>
+
+<label class="switch">
+  <input type="checkbox">
+  <span class="slider"></span>
+</label>
+
+<label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider"></span>
+</label><br><br>
+
+<label class="switch">
+  <input type="checkbox">
+  <span class="slider round"></span>
+</label>
+
+<label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
+
 </body>
-</html>
+</html> 
