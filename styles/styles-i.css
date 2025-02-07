@@ -1,7 +1,7 @@
  body {
     font-family: Arial, sans-serif;
-    background-color: #2d2d2d;
-    color: #e0e0e0;
+    background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
+    color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
     margin: 0;
     padding: 20px;
 }
@@ -10,7 +10,7 @@ h1 {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
-    color: #ff8c00;
+    color: #ff8c00; /* Leuchtende Farbe für den Titel */
 }
 
 #menu {
@@ -46,27 +46,25 @@ input[type="text"] {
     border: none;
     border-radius: 4px;
     width: 100%;
-    background-color: #d3d3d3;
+    background-color: #d3d3d3; /* Leicht graues Suchfeld */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px; /* Abstand zur Eingabezeile */
+    border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
+    overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
 }
 
 th, td {
-    padding: 16px;
+    padding: 16px; /* Größeres Padding für eine größere Höhe */
     text-align: left;
-    border: 1px solid #555;
+    border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
     overflow: hidden;
     text-overflow: ellipsis;
-    word-wrap: break-word;
-    white-space: normal;
-    border-radius: 8px;
+    word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
+    white-space: normal; /* Erlaubt Zeilenumbruch */
+    border-radius: 8px; /* Abgerundete Ecken für die Zellen */
 }
 
 th {
@@ -75,34 +73,35 @@ th {
 }
 
 .scroll {
-    max-height: 400px; /* Erhöht die maximale Höhe für das Scrollen */
-    overflow-y: auto; /* Vertikale Scrollbarkeit */
     display: block;
+    overflow-x: auto;
+    margin-top: 10px;
 }
 
-.scroll thead {
-    display: table-header-group; /* Behalte die Kopfzeile beim Scrollen fixiert */
+.scroll thead, .scroll tbody {
+    display: block;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+}
+
+.scroll thead tr {
+    display: flex;
+}
+
+.scroll tbody tr {
+    display: flex;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+}
+
+.scroll thead th, .scroll tbody td {
+    flex: 1;
 }
 
 .scroll tbody {
-    display: block;
-    width: 100%;
+    overflow-y: auto;
+    max-height: 300px; /* Größere max-height für die Tabelle */
+    scrollbar-width: none; /* Für Firefox */
 }
 
 .scroll tbody::-webkit-scrollbar {
-    width: 8px; /* Breite der vertikalen Scrollleiste */
-}
-
-.scroll tbody::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.scroll tbody::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.scroll table {
-    width: 100%;
-    border-collapse: collapse;
+    display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
 }
