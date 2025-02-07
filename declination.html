@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deklinations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Deklinations</h1>
+
+    <!-- Menü -->
+    <div id="menu">
+        <a href="index.html" id="dictionary-link">Wörterbuch</a>
+        <a href="#" id="declination-link">Deklinations</a>
+        <a href="uebersetzer.html" id="translator-link">Übersetzer</a>
+    </div>
+
+    <!-- Deklinations-Daten anzeigen -->
+    <div class="container" id="declination-section">
+        <input type="text" id="search-input" placeholder="Suche nach Deklinationsformen..." />
+
+        <div class="table-container scroll">
+            <table class="scroll">
+                <thead>
+                    <tr id="table-head">
+                        <th>Nominativ</th>
+                        <th>Genitiv</th>
+                        <th>Dativ</th>
+                        <th>Akkusativ</th>
+                        <th>Ablativ</th>
+                        <th>Vokativ</th>
+                        <!-- Füge hier deine weiteren Überschriften hinzu -->
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
