@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #2d2d2d;
-    color: #e0e0e0;
+    background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
+    color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
     margin: 0;
     padding: 20px;
 }
@@ -10,7 +10,7 @@ h1 {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
-    color: #ff8c00;
+    color: #ff8c00; /* Leuchtende Farbe für den Titel */
 }
 
 #menu {
@@ -21,23 +21,16 @@ h1 {
     border-radius: 8px;
 }
 
-#menu a, #menu button {
-    color: #fff;
+#menu a {
+    color: #e0e0e0;
     text-decoration: none;
     padding: 10px 20px;
+    border-radius: 5px;
     transition: background-color 0.3s;
-    border: none;
-    cursor: pointer;
-    background-color: #444;
-}
-#menu a:hover, #menu button:hover {
-    background-color: #ff8c00;
 }
 
-/* Neue Regel für den aktiven Button */
-#menu a.active, #menu button.active {
-    background-color: #ff8c00; /* Orange Hintergrundfarbe für den aktiven Button */
-    color: #fff; /* Optional: Weißer Text für besseren Kontrast */
+#menu a:hover {
+    background-color: #ff8c00;
 }
 
 .container {
@@ -53,26 +46,25 @@ input[type="text"] {
     border: none;
     border-radius: 4px;
     width: 100%;
-    background-color: #d3d3d3;
-    box-sizing: border-box;
+    background-color: #d3d3d3; /* Leicht graues Suchfeld */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
+    overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
 }
 
 th, td {
-    padding: 16px;
+    padding: 16px; /* Größeres Padding für eine größere Höhe */
     text-align: left;
-    border: 1px solid #555;
+    border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
     overflow: hidden;
     text-overflow: ellipsis;
-    word-wrap: break-word;
-    white-space: normal;
-    border-radius: 8px;
+    word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
+    white-space: normal; /* Erlaubt Zeilenumbruch */
+    border-radius: 8px; /* Abgerundete Ecken für die Zellen */
 }
 
 th {
@@ -88,7 +80,7 @@ th {
 
 .scroll thead, .scroll tbody {
     display: block;
-    border-radius: 8px;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
 }
 
 .scroll thead tr {
@@ -97,7 +89,7 @@ th {
 
 .scroll tbody tr {
     display: flex;
-    border-radius: 8px;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
 }
 
 .scroll thead th, .scroll tbody td {
@@ -106,10 +98,10 @@ th {
 
 .scroll tbody {
     overflow-y: auto;
-    max-height: 300px;
-    scrollbar-width: none;
+    max-height: 300px; /* Größere max-height für die Tabelle */
+    scrollbar-width: none; /* Für Firefox */
 }
 
 .scroll tbody::-webkit-scrollbar {
-    display: none;
+    display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
 }
