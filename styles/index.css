@@ -1,24 +1,32 @@
+/* Dark Mode */
 body {
     font-family: Arial, sans-serif;
-    background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
-    color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+    background-color: #2d2d2d;
+    color: #e0e0e0;
     margin: 0;
     padding: 20px;
 }
 
+h1, h2, h3 {
+    text-align: center;
+    color: #ff8c00;
+}
+
 h1 {
     font-size: 24px;
-    text-align: center;
     margin-bottom: 20px;
-    color: #ff8c00; /* Leuchtende Farbe für den Titel */
 }
 
 h2 {
-    font-size: 20px;
-    text-align: center;
+    font-size: 18px;
     margin-bottom: 16px;
-    color: #ff8c00; /* Leuchtende Farbe für den Titel */
 }
+
+h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
 #menu {
     display: flex;
     justify-content: space-around;
@@ -28,86 +36,110 @@ h2 {
 }
 
 #menu a {
-    color: #e0e0e0;
+    color: #fff;
     text-decoration: none;
     padding: 10px 20px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    cursor: pointer;
+    background-color: #444;
 }
 
-#menu a:hover {
+#menu a:hover, #menu a.active {
     background-color: #ff8c00;
 }
 
-.container {
-    background-color: #363636;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
 }
 
-input[type="text"] {
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    width: 100%;
-    background-color: #d3d3d3; /* Leicht graues Suchfeld */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
-    overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
 }
 
-th, td {
-    padding: 16px; /* Größeres Padding für eine größere Höhe */
-    text-align: left;
-    border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
-    white-space: normal; /* Erlaubt Zeilenumbruch */
-    border-radius: 8px; /* Abgerundete Ecken für die Zellen */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
 }
 
-th {
-    background-color: #666;
-    color: #e0e0e0;
+input:checked + .slider {
+    background-color: #2196F3;
 }
 
-.scroll {
-    display: block;
-    overflow-x: auto;
-    margin-top: 10px;
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
 }
 
-.scroll thead, .scroll tbody {
-    display: block;
-    border-radius: 0px; /* Abgerundete Ecken für die Table Scroll */
+input:checked + .slider:before {
+    transform: translateX(26px);
 }
 
-.scroll thead tr {
-    display: flex;
+/* Light Mode */
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #333;
 }
 
-.scroll tbody tr {
-    display: flex;
-    border-radius: 0px; /* Abgerundete Ecken für die Table Rows */
+body.light-mode #menu {
+    background-color: #ddd;
 }
 
-.scroll thead th, .scroll tbody td {
-    flex: 1;
+body.light-mode #menu a {
+    background-color: #ddd;
+    color: #333;
 }
 
-.scroll tbody {
-    overflow-y: auto;
-    max-height: 300px; /* Größere max-height für die Tabelle */
-    scrollbar-width: none; /* Für Firefox */
+body.light-mode #menu a:hover, body.light-mode #menu a.active {
+    background-color: #ff8c00;
+    color: #fff;
 }
 
-.scroll tbody::-webkit-scrollbar {
-    display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
+/* Additional styles for light mode */
+body.light-mode .container {
+    background-color: #fff;
+    color: #333;
+}
+
+body.light-mode input[type="text"] {
+    background-color: #fff;
+    color: #333;
+}
+
+body.light-mode table {
+    background-color: #fff;
+    color: #333;
+}
+
+body.light-mode th {
+    background-color: #ddd;
+    color: #333;
+}
+
+body.light-mode td {
+    background-color: #fff;
+    color: #333;
 }
