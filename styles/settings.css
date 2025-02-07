@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff8c00;
+}
+
+#menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#menu a, #menu button {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    background-color: #444;
+}
+#menu a:hover, #menu button:hover {
+    background-color: #ff8c00;
+}
+
+/* Neue Regel für den aktiven Button */
+#menu a.active, #menu button.active {
+    background-color: #ff8c00; /* Orange Hintergrundfarbe für den aktiven Button */
+    color: #fff; /* Optional: Weißer Text für besseren Kontrast */
+}
+
+.container {
+    background-color: #363636;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
