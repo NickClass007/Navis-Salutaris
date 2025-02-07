@@ -66,7 +66,7 @@ document.getElementById('declination-link').addEventListener('click', function()
     history.pushState(null, '', 'declination.html');
 });
 
-document.getElementById('translator-link').addEventListener('click', function() {
-    document.getElementById('dictionary-section').style.display = 'block';
-    history.pushState(null, '', 'uebersetzer.html');
+document.getElementById('settings-link').addEventListener('click', function() {
+    document.getElementById('settings-section').style.display = 'block';
+    history.pushState(null, '', 'settings.html');
 });
