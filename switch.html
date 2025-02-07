@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Toggle</title>
+    <style>
+        .slider-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .slider {
+            display: none;
+        }
+        .slider + label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .slides {
+            display: none;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .slider:checked + label + .slides > .slide:first-child {
+            display: block;
+        }
+        .slider:checked + label + .slides > .slide + .slide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <input type="checkbox" id="sliderToggle" class="slider">
+        <label for="sliderToggle">Toggle Slider</label>
+        <div class="slides">
+            <div class="slide" style="background-color: lightcoral;">Slide 1</div>
+            <div class="slide" style="background-color: lightblue;">Slide 2</div>
+            <div class="slide" style="background-color: lightgreen;">Slide 3</div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('#sliderToggle').addEventListener('change', function() {
+            const slides = document.querySelectorAll('.slide');
+            if (this.checked) {
+                slides.forEach((slide, index) => {
+                    setTimeout(() => {
+                        slide.style.display = 'block';
+                        if (index > 0) slides[index - 1].style.display = 'none';
+                    }, 2000 * index);
+                });
+            } else {
+                slides.forEach(slide => slide.style.display = 'none');
+            }
+        });
+    </script>
+</body>
+</html>
