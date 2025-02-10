@@ -55,7 +55,7 @@ input[type="text"] {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    width: 100%; /* Weite der Suchleiste */
+    width: 100%;
     background-color: #d3d3d3; /* Leicht graues Suchfeld */
 }
 
