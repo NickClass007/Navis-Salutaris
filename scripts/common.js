@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function() {
   if (currentTheme) {
     document.body.classList.add(currentTheme);
     if (currentTheme === 'light-mode') {
-      toggleSwitch.checked = false;
-    } else {
       toggleSwitch.checked = true;
+    } else {
+      toggleSwitch.checked = false;
     }
   }
 
