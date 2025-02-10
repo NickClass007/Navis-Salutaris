@@ -1,6 +1,4 @@
 /* Dark Mode */
-/* Dark Mode */
-/* Dark Mode */
 body {
     font-family: Arial, sans-serif;
     background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
@@ -84,8 +82,8 @@ th, td {
 }
 
 th {
-    background-color: #666; /* Hintergrundfarbe für Tabellenköpfe */
-    color: #e0e0e0; /* Schriftfarbe für Tabellenköpfe */
+    background-color: #666;
+    color: #e0e0e0;
 }
 
 body.light-mode th {
