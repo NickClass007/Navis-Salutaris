@@ -1,10 +1,120 @@
+/* Dark Mode */
 body {
-    background-color: #2d2d2d; /* Standard-Hintergrundfarbe */
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
     color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
     transition: background-color 0.3s; /* Übergangseffekt für Hintergrundfarbe */
 }
 
-.light-mode {
-    background-color: #ffffff; /* Hintergrundfarbe für den Lichtmodus */
-    color: #000000;
+h1, h2, h3 {
+    text-align: center;
+    color: #ff8c00;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+#menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    background-color: #444;
+}
+
+#menu a:hover, #menu a.active {
+    background-color: #ff8c00;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Light Mode */
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+body.light-mode #menu {
+    background-color: #ddd;
+}
+
+body.light-mode #menu a {
+    background-color: #ddd;
+    color: #333;
+}
+
+body.light-mode #menu a:hover, body.light-mode #menu a.active {
+    background-color: #ff8c00;
+    color: #fff;
 }
