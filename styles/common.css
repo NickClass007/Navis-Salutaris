@@ -5,7 +5,7 @@ body {
     color: #e0e0e0;
     margin: 0;
     padding: 20px;
-    transition: background-color 0.3s; /* Übergangseffekt für Hintergrundfarbe */
+    transition: background-color 0.3s;
 }
 
 h1, h2, h3 {
@@ -129,7 +129,7 @@ table {
 th, td {
     padding: 16px;
     text-align: left;
-    border: 1px solid #555;
+    border: 1px solid #555; /* Rahmenfarbe */
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
@@ -138,17 +138,17 @@ th, td {
 }
 
 th {
-    background-color: #666;
-    color: #e0e0e0;
+    background-color: #666; /* Hintergrundfarbe für Tabellenköpfe */
+    color: #e0e0e0; /* Schriftfarbe für Tabellenköpfe */
 }
 
 body.light-mode th {
-    background-color: #ddd;
-    color: #333;
+    background-color: #ddd; /* Hintergrundfarbe für Tabellenköpfe im Lichtmodus */
+    color: #333; /* Schriftfarbe für Tabellenköpfe im Lichtmodus */
 }
 
 body.light-mode td {
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; /* Rahmenfarbe für Zellen im Lichtmodus */
 }
 
 /* Scroll */
