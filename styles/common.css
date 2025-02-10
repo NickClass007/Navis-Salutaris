@@ -1,8 +1,9 @@
 /* Dark Mode */
+/* Dark Mode */
 body {
     font-family: Arial, sans-serif;
-    background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
-    color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+    background-color: #2d2d2d;
+    color: #e0e0e0;
     margin: 0;
     padding: 20px;
     transition: background-color 0.3s;
@@ -44,10 +45,14 @@ h2 {
 }
 
 .container {
-    background-color: #e0e0e0;
+    background-color: #363636; /* Hintergrundfarbe im Dark Mode */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .container {
+    background-color: #e0e0e0; /* Hintergrundfarbe im Light Mode */
 }
 
 input[type="text"] {
@@ -55,7 +60,7 @@ input[type="text"] {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    width: 100%;
+    width: calc(100% - 40px); /* Weite der Suchleiste */
     background-color: #d3d3d3; /* Leicht graues Suchfeld */
 }
 
