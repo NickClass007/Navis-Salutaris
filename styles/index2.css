@@ -49,29 +49,6 @@ input[type="text"] {
     background-color: #d3d3d3; /* Leicht graues Suchfeld */
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
-    overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
-}
-
-th, td {
-    padding: 16px; /* Größeres Padding für eine größere Höhe */
-    text-align: left;
-    border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
-    white-space: normal; /* Erlaubt Zeilenumbruch */
-    border-radius: 8px; /* Abgerundete Ecken für die Zellen */
-}
-
-th {
-    background-color: #666;
-    color: #e0e0e0;
-}
-
 .scroll {
     display: block;
     overflow-x: auto;
@@ -80,7 +57,7 @@ th {
 
 .scroll thead, .scroll tbody {
     display: block;
-    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+    border-radius: 8px;
 }
 
 .scroll thead tr {
@@ -89,7 +66,7 @@ th {
 
 .scroll tbody tr {
     display: flex;
-    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+    border-radius: 8px;
 }
 
 .scroll thead th, .scroll tbody td {
@@ -98,7 +75,7 @@ th {
 
 .scroll tbody {
     overflow-y: auto;
-    max-height: 300px; /* Größere max-height für die Tabelle */
+    max-height: 300px;
     scrollbar-width: none; /* Für Firefox */
 }
 
