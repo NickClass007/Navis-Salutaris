@@ -1,4 +1,3 @@
-/* Dark Mode */
 body {
     font-family: Arial, sans-serif;
     background-color: #2d2d2d;
@@ -49,13 +48,25 @@ h3 {
     background-color: #ff8c00;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+.switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
+label {
+    color: #e0e0e0; /* Textfarbe im Dark Mode */
+    font-size: 18px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-left: auto; /* Switch nach rechts verschieben */
+}
 
 .switch input {
     opacity: 0;
