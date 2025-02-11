@@ -52,7 +52,7 @@ h3 {
 .switch {
   position: relative;
   display: inline-block;
-  width: 6px;
+  width: 60px;
   height: 34px;
 }
 
@@ -68,7 +68,7 @@ h3 {
     cursor: pointer;
     top: 0;
     left: 0;
-    right: 0;
+    right: 100;
     bottom: 0;
     background-color: #ccc;
     transition: 0.4s;
