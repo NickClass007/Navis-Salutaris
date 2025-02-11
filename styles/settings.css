@@ -62,8 +62,10 @@ label {
 
 .switch {
     position: relative;
+    left: 100px;
+    top: 100px;
     display: inline-block;
-    width: 600px;
+    width: 60px;
     height: 34px;
     margin-left: auto; /* Switch nach rechts verschieben */
 }
