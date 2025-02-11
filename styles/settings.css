@@ -68,7 +68,7 @@ h3 {
     cursor: pointer;
     top: 0;
     left: 0;
-    right: 100;
+    right: 0;
     bottom: 0;
     background-color: #ccc;
     transition: 0.4s;
