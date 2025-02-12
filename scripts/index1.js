@@ -40,13 +40,19 @@ function populateTable(rows) {
         if (row.trim() !== "") {
             const cols = row.split(',');
             const bodyRow = document.createElement('tr');
-            cols.forEach(col => {
+            cols.forEach((col, colIndex) => {
                 const td = document.createElement('td');
-                td.innerText = col;
+                if (colIndex === 3) { // Convert the fourth column to a button
+                    const button = document.createElement('button');
+                    button.innerText = col;
+                    button.addEventListener('click', function() {
+                        alert('Diese Lektion ist in ' + books[rowIndex % books.length]);
+                    });
+                    td.appendChild(button);
+                } else {
+                    td.innerText = col;
+                }
                 td.setAttribute('title', books[rowIndex % books.length]); // Add hover text
-                td.addEventListener('click', function() {
-                    alert('Diese Lektion ist in ' + books[rowIndex % books.length]);
-                });
                 bodyRow.appendChild(td);
             });
             tableBody.appendChild(bodyRow);
