@@ -45,9 +45,17 @@ function populateTable(rows) {
                 if (colIndex === 3) { // Convert the fourth column to a button
                     const button = document.createElement('button');
                     button.innerText = col;
+
+                    const bookInfo = document.createElement('div');
+                    bookInfo.className = 'book-info';
+                    bookInfo.innerText = 'Buch ' + books[rowIndex % books.length];
+                    bookInfo.style.display = 'none';
+                    td.appendChild(bookInfo);
+
                     button.addEventListener('click', function() {
-                        alert('Diese Lektion ist in ' + books[rowIndex % books.length]);
+                        bookInfo.style.display = bookInfo.style.display === 'none' ? 'block' : 'none';
                     });
+
                     td.appendChild(button);
                 } else {
                     td.innerText = col;
