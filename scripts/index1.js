@@ -44,6 +44,9 @@ function populateTable(rows) {
                 const td = document.createElement('td');
                 td.innerText = col;
                 td.setAttribute('title', books[rowIndex % books.length]); // Add hover text
+                td.addEventListener('click', function() {
+                    alert('Diese Lektion ist in ' + books[rowIndex % books.length]);
+                });
                 bodyRow.appendChild(td);
             });
             tableBody.appendChild(bodyRow);
