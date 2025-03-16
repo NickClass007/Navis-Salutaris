@@ -10,26 +10,18 @@ const urls = [
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW9.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW10.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW11.csv',
-    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
+    'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf' // Link zur PDF
 ];
 
 const books = [
-    'Buch 1',
-    'Buch 2',
-    'Buch 3',
-    'Buch 4',
-    'Buch 5',
-    'Buch 6',
-    'Buch 7',
-    'Buch 8',
-    'Buch 9',
-    'Buch 10',
-    'Buch 11'
+    'Caesars_Bellum_Gallicum_III',  // Name des ersten Buches (mit PDF-Link)
+    'Sammlung ratio Lesebuch Latein Mittelstufe 1'
 ];
 
 async function loadCSV() {
-    const requests = urls.map(url => fetch(url).then(response => response.text()));
-    const data = await Promise.all(requests);
+    // Die URLs und Buchnamen werden jetzt einfach direkt verwendet, keine CSV-Datei wird mehr geladen
+    const data = await Promise.all(urls.map(url => url ? fetch(url).then(response => response.text()) : Promise.resolve('')));
     const allRows = data.flatMap(csv => csv.split('\n'));
     populateTable(allRows);
 }
@@ -43,25 +35,32 @@ function populateTable(rows) {
             const bodyRow = document.createElement('tr');
             cols.forEach((col, colIndex) => {
                 const td = document.createElement('td');
-                if (colIndex === 3) { // Convert the fourth column to a button
+                if (colIndex === 3) { // Umwandeln der vierten Spalte zu einem Button
                     const button = document.createElement('button');
-                    button.innerText = col;
+                    let pdfLink;
 
-                    const bookInfo = document.createElement('div');
-                    bookInfo.className = 'book-info';
-                    bookInfo.innerText = 'Buch ' + books[rowIndex % books.length];
-                    bookInfo.style.display = 'none';
-                    td.appendChild(bookInfo);
+                    // Wenn das Buch Caesars_Bellum_Gallicum_III ist, dann den entsprechenden PDF-Link verwenden
+                    if (books[rowIndex % books.length] === 'Caesars_Bellum_Gallicum_III') {
+                        pdfLink = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf';
+                        button.innerText = 'Caesars_Bellum_Gallicum_III (PDF)'; // Button zeigt "PDF" an
+                    } else {
+                        // Für andere Bücher einfach den Namen anzeigen, kein PDF-Link
+                        pdfLink = null;
+                        button.innerText = 'Sammlung ratio Lesebuch Latein Mittelstufe 1'; // Zeigt den Namen des Buches an
+                    }
 
-                    button.addEventListener('click', function() {
-                        bookInfo.style.display = bookInfo.style.display === 'none' ? 'block' : 'none';
-                    });
+                    // Wenn der Button geklickt wird und es einen PDF-Link gibt, öffnet sich die PDF in einem neuen Tab
+                    if (pdfLink) {
+                        button.addEventListener('click', function() {
+                            window.open(pdfLink, '_blank');
+                        });
+                    }
 
                     td.appendChild(button);
                 } else {
                     td.innerText = col;
                 }
-                td.setAttribute('title', books[rowIndex % books.length]); // Add hover text
+                td.setAttribute('title', books[rowIndex % books.length]); // Tooltip mit dem Namen des Buches
                 bodyRow.appendChild(td);
             });
             tableBody.appendChild(bodyRow);
