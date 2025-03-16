@@ -48,32 +48,43 @@ function populateTable(rows) {
                 if (colIndex === 3) { // Fourth column logic
                     const text = col.trim(); // Get the text from the fourth column
                     
-                    td.innerText = text; // Display the text from the CSV
-
+                    // Create a button with the text from the CSV
                     const button = document.createElement('button');
-                    const bookInfo = document.createElement('div');
-                    bookInfo.className = 'book-info';
+                    button.innerText = text;
                     
+                    // Create a div for the additional information
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'info-div';
+                    infoDiv.style.display = 'none'; // Initially hide the info
+                    
+                    // Set the appropriate text based on the button's text
                     if (text === "Caesars_Bellum_Gallicum_III") {
-                        button.innerText = "Caesars Bellum Gallicum III"; // Set button text for Caesar case
-                        button.addEventListener('click', function() {
-                            // Ensure the PDF opens in a new tab
-                            const pdfUrl = "https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf"; // Replace with the actual PDF URL
-                            window.open(pdfUrl, "_blank"); // Open the PDF in a new tab
-                        });
-                        bookInfo.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Additional info for Caesar case
+                        infoDiv.innerText = "Caesars Bellum Gallicum III PDF";
                     } else {
-                        button.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default button text
-                        bookInfo.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default book info
+                        infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                     }
 
+                    // Toggle the visibility of the info div when the button is clicked
                     button.addEventListener('click', function() {
-                        // Toggle visibility of the book info
-                        bookInfo.style.display = bookInfo.style.display === 'none' ? 'block' : 'none';
+                        if (infoDiv.style.display === 'none') {
+                            infoDiv.style.display = 'block'; // Show the info
+                        } else {
+                            infoDiv.style.display = 'none'; // Hide the info
+                        }
                     });
 
+                    // Add a click event to open the PDF when the info div is clicked
+                    infoDiv.addEventListener('click', function() {
+                        if (text === "Caesars_Bellum_Gallicum_III") {
+                            window.open("https:raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank") // Replace with the actual PDF URL", "_blank"); // Replace with actual PDF URL
+                        } else {
+                            alert("Sammlung ratio Lesebuch Latein Mittelstufe 1");
+                        }
+                    });
+
+                    // Append the button and info div to the table cell
                     td.appendChild(button);
-                    td.appendChild(bookInfo); // Add book info below the button
+                    td.appendChild(infoDiv);
                 } else {
                     td.innerText = col; // For other columns, display the text normally
                 }
@@ -121,3 +132,5 @@ document.getElementById('settings-link').addEventListener('click', function() {
     document.getElementById('settings-section').style.display = 'block';
     history.pushState(null, '', 'settings.html');
 });
+
+                         
