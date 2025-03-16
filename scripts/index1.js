@@ -51,7 +51,7 @@ function populateTable(rows) {
                     if (col.includes("Caesars_Bellum_Gallicum_III")) {
                         button.innerText = "Caesars Bellum Gallicum III"; // Show this text
                         button.addEventListener('click', function() {
-                            window.open('https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf', "_blank");
+                            window.open('https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf');
                         });
                     } else {
                         button.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default text
