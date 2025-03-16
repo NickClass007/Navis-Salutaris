@@ -44,24 +44,41 @@ function populateTable(rows) {
             
             cols.forEach((col, colIndex) => {
                 const td = document.createElement('td');
-                if (colIndex === 3) { // Fourth column behavior
-                    const button = document.createElement('button');
+                
+                if (colIndex === 3) { // Fourth column logic
+                    const text = col.trim(); // Get the text from the fourth column
                     
-                    // Check if the entry is "Caesars_Bellum_Gallicum_III"
-                    if (col.includes("Caesars_Bellum_Gallicum_III")) {
-                        button.innerText = "Caesars Bellum Gallicum III"; // Show this text
+                    td.innerText = text; // Display the text from the CSV
+
+                    const button = document.createElement('button');
+                    const bookInfo = document.createElement('div');
+                    bookInfo.className = 'book-info';
+                    
+                    if (text === "Caesars_Bellum_Gallicum_III") {
+                        button.innerText = "Caesars Bellum Gallicum III"; // Set button text for Caesar case
                         button.addEventListener('click', function() {
-                            window.open('https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf');
+                            // Ensure the PDF opens in a new tab
+                            const pdfUrl = "https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf"; // Replace with the actual PDF URL
+                            window.open(pdfUrl, "_blank"); // Open the PDF in a new tab
                         });
+                        bookInfo.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Additional info for Caesar case
                     } else {
-                        button.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default text
+                        button.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default button text
+                        bookInfo.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1"; // Default book info
                     }
 
+                    button.addEventListener('click', function() {
+                        // Toggle visibility of the book info
+                        bookInfo.style.display = bookInfo.style.display === 'none' ? 'block' : 'none';
+                    });
+
                     td.appendChild(button);
+                    td.appendChild(bookInfo); // Add book info below the button
                 } else {
-                    td.innerText = col;
+                    td.innerText = col; // For other columns, display the text normally
                 }
-                td.setAttribute('title', books[rowIndex % books.length]); // Add hover text
+
+                td.setAttribute('title', books[rowIndex % books.length]); // Add hover text with book info
                 bodyRow.appendChild(td);
             });
 
