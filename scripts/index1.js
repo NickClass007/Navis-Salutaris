@@ -51,16 +51,25 @@ function populateTable(rows) {
                     // Create a button with the text from the CSV
                     const button = document.createElement('button');
                     button.innerText = text;
+                    button.style.backgroundColor = 'orange'; // Set the button color to orange
+                    button.className = 'main-button';
                     
-                    // Create a div for the additional information
+                    // Create a div for the additional information (will be toggled on click)
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'info-div';
                     infoDiv.style.display = 'none'; // Initially hide the info
                     
-                    // Set the appropriate text based on the button's text
-                    if (text === "Caesars_Bellum_Gallicum_III") {
-                        infoDiv.innerText = "Caesars Bellum Gallicum III PDF";
+                    if (text.includes("Caesars")) {
+                        // For Caesar, display a gray button with a PDF link when clicked
+                        const pdfButton = document.createElement('button');
+                        pdfButton.innerText = "Open PDF";
+                        pdfButton.style.backgroundColor = 'gray';
+                        pdfButton.addEventListener('click', function() {
+                            window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL for Caesar
+                        });
+                        infoDiv.appendChild(pdfButton);
                     } else {
+                        // For other items, just display the "Sammlung" text
                         infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                     }
 
@@ -70,15 +79,6 @@ function populateTable(rows) {
                             infoDiv.style.display = 'block'; // Show the info
                         } else {
                             infoDiv.style.display = 'none'; // Hide the info
-                        }
-                    });
-
-                    // Add a click event to open the PDF when the info div is clicked
-                    infoDiv.addEventListener('click', function() {
-                        if (text === "Caesars_Bellum_Gallicum_III") {
-                            window.open("https:raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank") // Replace with the actual PDF URL", "_blank"); // Replace with actual PDF URL
-                        } else {
-                            alert("Sammlung ratio Lesebuch Latein Mittelstufe 1");
                         }
                     });
 
@@ -132,5 +132,3 @@ document.getElementById('settings-link').addEventListener('click', function() {
     document.getElementById('settings-section').style.display = 'block';
     history.pushState(null, '', 'settings.html');
 });
-
-                         
