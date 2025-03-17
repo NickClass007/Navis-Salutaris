@@ -33,6 +33,14 @@
             align-items: center;
             margin-top: 20px;
         }
+        #vocab-list {
+            max-height: 300px; /* Begrenzung der Höhe für Scrollfunktion */
+            overflow-y: auto; /* Scrollen ermöglichen */
+            width: 80%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
         #vocab-selection label {
             display: block;
             margin: 5px 0;
@@ -64,6 +72,7 @@
     <div id="vocab-selection">
         <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
         <div id="vocab-list"></div>
+        <p id="selected-count">Ausgewählte Vokabeln: 0</p>
         <div id="vocab-buttons">
             <button id="select-all">Alle auswählen</button>
             <button id="deselect-all">Alle abwählen</button>
@@ -97,6 +106,11 @@
         function updateProgress() {
             document.getElementById("progress-bar").style.width = `${(progress / totalWords) * 100}%`;
             document.getElementById("progress-text").textContent = `${progress}/${totalWords}`;
+        }
+
+        function updateSelectedCount() {
+            const selectedCount = document.querySelectorAll("#vocab-list input:checked").length;
+            document.getElementById("selected-count").textContent = `Ausgewählte Vokabeln: ${selectedCount}`;
         }
 
         function getRandomWord() {
@@ -167,28 +181,24 @@
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.value = index;
+                checkbox.addEventListener("change", updateSelectedCount);
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
                 vocabListDiv.appendChild(label);
             });
+            updateSelectedCount();
             document.getElementById("vocab-selection").style.display = "block";
         }
 
         document.getElementById("select-all").addEventListener("click", () => {
             document.querySelectorAll("#vocab-list input[type='checkbox']").forEach(cb => cb.checked = true);
+            updateSelectedCount();
         });
 
         document.getElementById("deselect-all").addEventListener("click", () => {
             document.querySelectorAll("#vocab-list input[type='checkbox']").forEach(cb => cb.checked = false);
+            updateSelectedCount();
         });
 
         document.getElementById("csv-select").addEventListener("change", (event) => {
-            csvUrl = event.target.value;
-            words = [];
-            loadCSV();
-        });
-
-        loadCSV();
-    </script>
-</body>
-</html>
+            csvUrl = event.target.value
