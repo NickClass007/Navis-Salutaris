@@ -51,6 +51,13 @@
         canvas {
             display: none;
         }
+        #result-buttons {
+            display: none;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -68,10 +75,14 @@
         <button id="known">Gewusst</button>
     </div>
     <canvas id="result-chart" width="300" height="300"></canvas>
+    <div id="result-buttons">
+        <button id="retry">Nochmal</button>
+        <button id="undefined-button">Button ohne Funktion</button>
+    </div>
 
     <script>
         // URL der CSV-Datei auf GitHub (ersetze diesen Link durch deinen eigenen)
-        const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv';
+        const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/Woerter/LW1.csv';
 
         let words = [];
         let currentWord = {};
@@ -79,6 +90,7 @@
         let correctCount = 0;
         let remainingWords = [];
         let incorrectWords = [];
+        let flaggedWords = new Set(); // Wörter, die auf "Nicht gewusst" gesetzt wurden
         let totalWords = 0;
 
         // Fortschrittsbalken aktualisieren
@@ -142,6 +154,14 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
+
+            // Buttons anzeigen
+            document.getElementById('result-buttons').style.display = 'flex';
+            document.getElementById('word-container').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
         }
 
         // Antwort anzeigen
@@ -154,13 +174,32 @@
         // "Nicht gewusst" klicken
         document.getElementById("not-known").addEventListener("click", () => {
             incorrectWords.push(currentWord); // Wort erneut hinzufügen
+            flaggedWords.add(currentWord); // Markiere es als nicht gewusst
             getRandomWord();
         });
 
         // "Gewusst" klicken
         document.getElementById("known").addEventListener("click", () => {
-            correctCount++;
+            if (!flaggedWords.has(currentWord)) {
+                correctCount++;
+            }
             progress++;
+            updateProgress();
+            getRandomWord();
+        });
+
+        // "Nochmal" klicken
+        document.getElementById("retry").addEventListener("click", () => {
+            progress = 0;
+            correctCount = 0;
+            remainingWords = [...words];
+            incorrectWords = [];
+            flaggedWords.clear(); // Zurücksetzen
+            document.getElementById('result-chart').style.display = 'none';
+            document.getElementById('result-buttons').style.display = 'none';
+            document.getElementById('word-container').style.display = 'flex';
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('progress-text').style.display = 'block';
             updateProgress();
             getRandomWord();
         });
@@ -185,4 +224,3 @@
     </script>
 </body>
 </html>
-        
