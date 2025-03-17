@@ -15,6 +15,24 @@
             margin: 0;
             position: relative;
         }
+        #file-selection {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #vocab-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #vocab-selection label {
+            margin: 5px;
+        }
         #progress-container {
             width: 80%;
             background-color: #e0e0e0;
@@ -59,24 +77,6 @@
             justify-content: center;
             width: 80%;
         }
-        #file-selection {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        #vocab-selection {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-        #vocab-selection label {
-            margin: 5px;
-        }
     </style>
 </head>
 <body>
@@ -88,11 +88,12 @@
             <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv">Caesars Bellum Gallicum II</option>
         </select>
     </div>
-    
-    <!-- Vokabel-Auswahl -->
+
     <div id="vocab-selection" style="display:none;">
         <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
         <div id="vocab-list"></div>
+        <button id="select-all">Alle auswählen</button>
+        <button id="deselect-all">Alle abwählen</button>
         <button id="start-training">Training starten</button>
     </div>
 
@@ -126,7 +127,6 @@
         let totalWords = 0;
         let csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';  // Standard-CSV-URL
 
-        // Funktion, um den Fortschrittsbalken zu aktualisieren
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
@@ -135,7 +135,6 @@
             progressText.textContent = `${progress}/${totalWords}`;
         }
 
-        // Funktion zum Zufallsgenerieren eines neuen Wortes
         function getRandomWord() {
             if (remainingWords.length === 0 && incorrectWords.length === 0) {
                 showResults();
@@ -154,7 +153,6 @@
             document.getElementById("show-answer").style.display = "block";
         }
 
-        // Funktion zum Anzeigen der Ergebnisse
         function showResults() {
             const canvas = document.getElementById('result-chart');
             canvas.style.display = 'block';
@@ -191,7 +189,6 @@
             document.getElementById('show-answer').style.display = 'none';
             document.getElementById('buttons').style.display = 'none';
 
-            // Zeige den "Nochmal"-Button an
             document.getElementById('retry').style.display = 'block';
             document.getElementById('menu').style.display = 'block';
         }
@@ -237,7 +234,6 @@
             location.reload(); // Zurück ins Menü
         });
 
-        // CSV-Datei laden und Wörter verarbeiten
         function loadCSV() {
             fetch(csvUrl)
                 .then(response => response.text())
@@ -256,7 +252,6 @@
                 .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
         }
 
-        // Anzeige der Auswahlmöglichkeiten für Vokabeln
         function displayVocabSelection() {
             const vocabListDiv = document.getElementById('vocab-list');
             vocabListDiv.innerHTML = '';
@@ -274,7 +269,20 @@
             document.getElementById('vocab-selection').style.display = 'block';
         }
 
-        // Wenn der Benutzer das Training startet, werden nur die ausgewählten Vokabeln verwendet
+        document.getElementById('select-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        });
+
+        document.getElementById('deselect-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
         document.getElementById('start-training').addEventListener('click', () => {
             remainingWords = [];
             const checkboxes = document.querySelectorAll('#vocab-list input:checked');
@@ -292,7 +300,6 @@
             getRandomWord();
         });
 
-        // Event-Listener für die Auswahl des CSVs
         document.getElementById('csv-select').addEventListener('change', (event) => {
             csvUrl = event.target.value;
             words = [];
