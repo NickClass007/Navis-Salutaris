@@ -54,9 +54,7 @@
         #result-buttons {
             display: none;
             margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
+            display: none; /* ausgeblendet */
         }
     </style>
 </head>
@@ -76,11 +74,9 @@
     </div>
     <canvas id="result-chart" width="300" height="300"></canvas>
     <div id="result-buttons">
-        <button id="retry">Nochmal</button>
-        <button id="undefined-button">Button ohne Funktion</button>
+        <!-- Buttons entfernt -->
     </div>
     <script>
-        // URL der CSV-Datei auf GitHub (ersetze diesen Link durch deinen eigenen)
         const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv';
 
         let words = [];
@@ -89,10 +85,9 @@
         let correctCount = 0;
         let remainingWords = [];
         let incorrectWords = [];
-        let flaggedWords = new Set(); // Wörter, die auf "Nicht gewusst" gesetzt wurden
+        let flaggedWords = new Set();
         let totalWords = 0;
 
-        // Fortschrittsbalken aktualisieren
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
@@ -101,7 +96,6 @@
             progressText.textContent = `${progress}/${totalWords}`;
         }
 
-        // Zufälliges Wort auswählen
         function getRandomWord() {
             if (remainingWords.length === 0 && incorrectWords.length === 0) {
                 showResults();
@@ -112,7 +106,7 @@
                 incorrectWords = [];
             }
             const randomIndex = Math.floor(Math.random() * remainingWords.length);
-            currentWord = remainingWords.splice(randomIndex, 1)[0]; // Wort aus der Liste entfernen
+            currentWord = remainingWords.splice(randomIndex, 1)[0];
             document.getElementById("latin-word").textContent = currentWord.latin;
             document.getElementById("german-word").style.display = "none";
             document.getElementById("german-word").textContent = currentWord.german;
@@ -120,26 +114,22 @@
             document.getElementById("show-answer").style.display = "block";
         }
 
-        // Ergebnisse anzeigen (Kreisdiagramm)
         function showResults() {
             const canvas = document.getElementById('result-chart');
             canvas.style.display = 'block';
             const ctx = canvas.getContext('2d');
             const percentage = Math.floor((correctCount / totalWords) * 100);
 
-            // Kreisdiagramm zeichnen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const radius = canvas.width / 2;
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
 
-            // Hintergrund (nicht gewusst)
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
             ctx.fillStyle = '#e0e0e0';
             ctx.fill();
 
-            // Vordergrund (gewusst)
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
             ctx.arc(centerX, centerY, radius, 0, (2 * Math.PI * correctCount) / totalWords);
@@ -147,37 +137,25 @@
             ctx.fillStyle = '#76c7c0';
             ctx.fill();
 
-            // Text
             ctx.fillStyle = '#000';
             ctx.font = '20px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
-
-            // Buttons anzeigen
-            document.getElementById('result-buttons').style.display = 'flex';
-            document.getElementById('word-container').style.display = 'none';
-            document.getElementById('progress-container').style.display = 'none';
-            document.getElementById('progress-text').style.display = 'none';
-            document.getElementById('show-answer").style.display = 'none';
-            document.getElementById('buttons').style.display = 'none';
         }
 
-        // Antwort anzeigen
         document.getElementById("show-answer").addEventListener("click", () => {
             document.getElementById("german-word").style.display = "block";
             document.getElementById("buttons").style.display = "flex";
             document.getElementById("show-answer").style.display = "none";
         });
 
-        // "Nicht gewusst" klicken
         document.getElementById("not-known").addEventListener("click", () => {
-            incorrectWords.push(currentWord); // Wort erneut hinzufügen
-            flaggedWords.add(currentWord); // Markiere es als nicht gewusst
+            incorrectWords.push(currentWord);
+            flaggedWords.add(currentWord);
             getRandomWord();
         });
 
-        // "Gewusst" klicken
         document.getElementById("known").addEventListener("click", () => {
             if (!flaggedWords.has(currentWord)) {
                 correctCount++;
@@ -187,38 +165,20 @@
             getRandomWord();
         });
 
-        // "Nochmal" klicken
-        document.getElementById("retry").addEventListener("click", () => {
-            progress = 0;
-            correctCount = 0;
-            remainingWords = [...words];
-            incorrectWords = [];
-            flaggedWords.clear(); // Zurücksetzen
-
-            document.getElementById('result-chart').style.display = 'none';
-            document.getElementById('result-buttons').style.display = 'none';
-            document.getElementById('word-container').style.display = 'flex';
-            document.getElementById('progress-container').style.display = 'block';
-            document.getElementById('progress-text').style.display = 'block';
-            updateProgress();
-            getRandomWord();
-        });
-
-        // CSV-Datei laden
         fetch(csvUrl)
             .then(response => response.text())
             .then(data => {
-                const rows = data.split('\n'); // Zeilen der CSV
+                const rows = data.split('\n');
                 rows.forEach((row, index) => {
-                    const columns = row.split(','); // Spalten der CSV
-                    if (index > 0 && columns.length >= 3) { // Kopfzeile überspringen
+                    const columns = row.split(',');
+                    if (index > 0 && columns.length >= 3) {
                         words.push({ latin: columns[0], german: columns[2] });
                     }
                 });
                 remainingWords = [...words];
                 totalWords = words.length;
-                updateProgress(); // Fortschrittsbalken initialisieren
-                getRandomWord(); // Erstes Wort anzeigen
+                updateProgress();
+                getRandomWord();
             })
             .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
     </script>
