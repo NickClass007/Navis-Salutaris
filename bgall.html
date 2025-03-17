@@ -77,19 +77,6 @@
         #vocab-selection label {
             margin: 5px;
         }
-        #vocab-selection div {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        #vocab-selection label {
-            margin: 5px;
-            width: 45%;
-            text-align: left;
-        }
-        #select-all {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -106,9 +93,6 @@
     <div id="vocab-selection" style="display:none;">
         <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
         <div id="vocab-list"></div>
-        <div id="select-all">
-            <button id="select-all-btn">Alle auswählen</button>
-        </div>
         <button id="start-training">Training starten</button>
     </div>
 
@@ -127,7 +111,8 @@
     </div>
     <canvas id="result-chart" width="300" height="300"></canvas>
     <div id="result-buttons">
-        <button id="menu-btn">Menü</button>
+        <button id="retry" style="display: none;">Nochmal</button>
+        <button id="menu" style="display: none;">Zum Menü</button>
     </div>
 
     <script>
@@ -205,9 +190,12 @@
             document.getElementById('progress-text').style.display = 'none';
             document.getElementById('show-answer').style.display = 'none';
             document.getElementById('buttons').style.display = 'none';
+
+            // Zeige den "Nochmal"-Button an
+            document.getElementById('retry').style.display = 'block';
+            document.getElementById('menu').style.display = 'block';
         }
 
-        // Funktionen für die Antwort
         document.getElementById("show-answer").addEventListener("click", () => {
             document.getElementById("german-word").style.display = "block";
             document.getElementById("buttons").style.display = "flex";
@@ -229,10 +217,6 @@
             getRandomWord();
         });
 
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            window.location.reload();  // Seite neu laden, um zurück ins Menü zu gelangen
-        });
-
         document.getElementById("retry").addEventListener("click", () => {
             progress = 0;
             correctCount = 0;
@@ -247,6 +231,10 @@
             document.getElementById('progress-text').style.display = 'block';
             updateProgress();
             getRandomWord();
+        });
+
+        document.getElementById("menu").addEventListener("click", () => {
+            location.reload(); // Zurück ins Menü
         });
 
         // CSV-Datei laden und Wörter verarbeiten
@@ -302,14 +290,6 @@
             document.getElementById('vocab-selection').style.display = 'none';
             updateProgress();
             getRandomWord();
-        });
-
-        // Alle Vokabeln auswählen oder abwählen
-        document.getElementById('select-all-btn').addEventListener('click', () => {
-            const checkboxes = document.querySelectorAll('#vocab-list input');
-            const allSelected = Array.from(checkboxes).every(checkbox => checkbox.checked);
-            checkboxes.forEach(checkbox => checkbox.checked = !allSelected);
-            document.getElementById('select-all-btn').textContent = allSelected ? 'Alle auswählen' : 'Alle abwählen';
         });
 
         // Event-Listener für die Auswahl des CSVs
