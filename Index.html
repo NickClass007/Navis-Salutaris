@@ -6,73 +6,87 @@
     <title>Vokabeltrainer</title>
     <style>
             /* Fortschrittsleiste */
-    #progress-container {
-        position: fixed;
-        top: 0; /* Fest oben */
-        left: 0;
-        width: 100%;
-        background-color: #e0e0e0;
-        z-index: 100;
-        height: 40px; /* Größere Höhe für lesbare Beschriftung */
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+ /* Fortschrittsleiste */
+#progress-container {
+    position: absolute; /* Kann mithilfe von Koordinaten positioniert werden */
+    top: 10px; /* Abstand von oben */
+    left: 10px; /* Abstand von links */
+    width: 80%; /* Breite der Leiste */
+    background-color: #e0e0e0; /* Hintergrundfarbe */
+    border-radius: 20px;
+    height: 20px;
+    z-index: 100; /* Überlagert andere Inhalte */
+}
 
-        #progress-bar {
-            height: 20px; /* Fortschrittsbalken */
-            width: 0%; /* Fortschritt */
-            background-color: #76c7c0; /* Blau */
-            margin-left: 10px; /* Abstand vom Start */
-            border-radius: 10px; /* Abgerundete Kanten */
-        }
+#progress-bar {
+    height: 100%; /* Passt sich an die Höhe des Containers an */
+    width: 50%; /* Fortschritt */
+    background-color: #76c7c0; /* Fortschrittsbalken in Blau */
+}
 
-        #progress-text {
-            font-size: 14px;
-            color: #000;
-            margin-right: 10px; /* Abstand zum rechten Rand */
-        }
+/* Fortschrittsanzeige */
+#progress-text {
+    position: absolute; /* Absolute Positionierung */
+    top: 10px; /* 10px von oben */
+    right: 20px; /* 20px vom rechten Rand */
+    font-size: 14px;
+    color: black;
+}
 
-    /* Buttons unten */
-    #buttons {
-        display: flex;
-        width: 100%; /* Gesamte Breite */
-        position: fixed;
-        bottom: 0; /* Am unteren Rand des Bildschirms */
-    }
+/* Wortcontainer */
+#word-container {
+    position: absolute; /* Kann mit Koordinaten bewegt werden */
+    top: 100px; /* 100px von oben */
+    left: 50%; /* Zentrierung */
+    transform: translateX(-50%); /* Exakte Zentrierung */
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
 
-        #not-known {
-            background-color: #f5a9a9; /* Pastellrot für 'Nicht gewusst' */
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 1.2em;
-            width: 50%; /* Linke Hälfte */
-            cursor: pointer;
-        }
+/* Antwort anzeigen Button */
+#show-answer {
+    position: absolute; /* Fixiert an Koordinaten */
+    top: 300px; /* Abstand von oben */
+    left: 10%; /* 10% von links */
+    width: 80%; /* Füllt 80% der Breite */
+    background-color: #76c7c0; /* Blau */
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
 
-        #known {
-            background-color: #a9f5bc; /* Pastellgrün für 'Gewusst' */
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 1.2em;
-            width: 50%; /* Rechte Hälfte */
-            cursor: pointer;
-        }
+/* Buttons unten */
+#buttons {
+    position: absolute; /* Positionierung durch Koordinaten */
+    bottom: 20px; /* Abstand vom unteren Rand */
+    left: 10%; /* 10% vom linken Rand */
+    width: 80%; /* Breite der Buttons */
+    display: flex;
+    justify-content: space-between;
+}
 
-    /* Antwort anzeigen Button */
-    #show-answer {
-        background-color: #76c7c0; /* Blau */
-        color: white;
-        border: none;
-        padding: 20px;
-        font-size: 1.5em;
-        width: 100%; /* Über die gesamte Breite */
-        cursor: pointer;
-        position: fixed;
-        bottom: 60px; /* Über den unteren Buttons */
-    }
+#not-known {
+    background-color: #f5a9a9; /* Pastellrot */
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    width: 48%; /* Linker Button nimmt fast die Hälfte ein */
+    cursor: pointer;
+}
+
+#known {
+    background-color: #a9f5bc; /* Pastellgrün */
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    width: 48%; /* Rechter Button nimmt fast die Hälfte ein */
+    cursor: pointer;
+ }
 
 
     </style>
