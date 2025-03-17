@@ -24,11 +24,31 @@
             border-radius: 5px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+            overflow: auto;
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
         #vocab-selection {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
         }
         #vocab-selection label {
             margin: 5px;
@@ -89,16 +109,6 @@
         </select>
     </div>
 
-    <div id="vocab-selection" style="display:none;">
-        <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
-        <div id="vocab-list"></div>
-        <div>
-            <button id="select-all">Alle auswählen</button>
-            <button id="deselect-all">Alle abwählen</button>
-        </div>
-        <button id="start-training">Training starten</button>
-    </div>
-
     <div id="progress-container">
         <div id="progress-bar"></div>
     </div>
@@ -116,6 +126,19 @@
     <div id="result-buttons">
         <button id="retry" style="display: none;">Nochmal</button>
         <button id="menu" style="display: none;">Zum Menü</button>
+    </div>
+
+    <!-- Modal für das Auswahlmenü -->
+    <div id="vocab-modal" class="modal">
+        <div class="modal-content">
+            <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
+            <div id="vocab-list"></div>
+            <div>
+                <button id="select-all">Alle auswählen</button>
+                <button id="deselect-all">Alle abwählen</button>
+            </div>
+            <button id="start-training">Training starten</button>
+        </div>
     </div>
 
     <script>
@@ -249,12 +272,12 @@
                     });
                     totalWords = words.length;
                     updateProgress();
-                    displayVocabSelection();
+                    openVocabSelectionModal();
                 })
                 .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
         }
 
-        function displayVocabSelection() {
+        function openVocabSelectionModal() {
             const vocabListDiv = document.getElementById('vocab-list');
             vocabListDiv.innerHTML = '';
 
@@ -268,7 +291,7 @@
                 vocabListDiv.appendChild(label);
             });
 
-            document.getElementById('vocab-selection').style.display = 'block';
+            document.getElementById('vocab-modal').style.display = 'block';
         }
 
         document.getElementById('select-all').addEventListener('click', () => {
@@ -297,7 +320,7 @@
                 return;
             }
 
-            document.getElementById('vocab-selection').style.display = 'none';
+            document.getElementById('vocab-modal').style.display = 'none';
             updateProgress();
             getRandomWord();
         });
