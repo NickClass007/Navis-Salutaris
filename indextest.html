@@ -55,7 +55,7 @@
             display: none;
             margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             width: 80%;
         }
     </style>
@@ -77,7 +77,6 @@
     <canvas id="result-chart" width="300" height="300"></canvas>
     <div id="result-buttons">
         <button id="retry">Nochmal</button>
-        <button id="menu">Menü</button>
     </div>
     <script>
         const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv';
@@ -189,10 +188,6 @@
             document.getElementById('progress-text').style.display = 'block';
             updateProgress();
             getRandomWord();
-        });
-
-        document.getElementById("menu").addEventListener("click", () => {
-            alert('Zurück ins Menü (Funktion anpassbar)');
         });
 
         fetch(csvUrl)
