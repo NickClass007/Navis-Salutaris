@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV-Dateien Auswahl und Anzeige</title>
+</head>
+<body>
+    <h1>Wähle eine CSV-Datei aus</h1>
+
+    <!-- Auswahl der CSV-Dateien -->
+    <select id="csvSelect" onchange="loadCSV()">
+        <option value="">CSV-Datei auswählen</option>
+        <option value="file1.csv">CSV Datei 1</option>
+        <option value="file2.csv">CSV Datei 2</option>
+        <option value="file3.csv">CSV Datei 3</option>
+    </select>
+
+    <div id="csvContent">
+        <!-- Hier werden die Spalten der CSV-Datei angezeigt -->
+    </div>
+
+    <script>
+        // Funktion zum Laden und Verarbeiten der CSV-Datei
+        function loadCSV() {
+            const select = document.getElementById('csvSelect');
+            const selectedFile = select.value;
+
+            // Hier definieren wir die Dateien, die geladen werden können
+            const csvFiles = {
+                'file1.csv': 'data1.csv',  // Beispiel CSV-Datei 1
+                'file2.csv': 'data2.csv',  // Beispiel CSV-Datei 2
+                'file3.csv': 'data3.csv'   // Beispiel CSV-Datei 3
+            };
+
+            // Wenn keine Datei ausgewählt wurde, nichts anzeigen
+            if (!selectedFile) {
+                document.getElementById('csvContent').innerHTML = '';
+                return;
+            }
+
+            // Beispieldaten (CSV im String-Format)
+            const csvData = {
+                'data1.csv': `Name,Alter,Stadt
+John,30,Berlin
+Mona,25,Hamburg
+Lena,28,München`,
+
+                'data2.csv': `Produkt,Preis,Kategorie
+Laptop,1000,Elektronik
+Smartphone,800,Elektronik
+Tisch,150,Möbel`,
+
+                'data3.csv': `Film,Jahr,Genre
+Inception,2010,Sci-Fi
+Titanic,1997,Drama
+Avatar,2009,Action`
+            };
+
+            // CSV-Daten der ausgewählten Datei extrahieren
+            const csvText = csvData[csvFiles[selectedFile]];
+
+            // CSV-Text in Zeilen aufteilen
+            const rows = csvText.split('\n');
+            let result = '<h2>Ausgewählte Spalten:</h2><ul>';
+
+            // Für jede Zeile, die Spalte 1 und 3 extrahieren und anzeigen
+            for (let i = 1; i < rows.length; i++) {  // i=1 um die Kopfzeile zu überspringen
+                const columns = rows[i].split(',');
+                if (columns.length >= 3) {
+                    result += `<li>${columns[0]} - ${columns[2]}</li>`;
+                }
+            }
+
+            result += '</ul>';
+
+            // Das Ergebnis in das HTML-Dokument einfügen
+            document.getElementById('csvContent').innerHTML = result;
+        }
+    </script>
+</body>
+</html>
