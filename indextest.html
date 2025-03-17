@@ -58,7 +58,7 @@
 
     #show-answer {
       position: absolute;
-      bottom: 0;
+      bottom: 30px;
       left: 0;
       width: 100%;
       background-color: #76c7c0;
@@ -76,12 +76,13 @@
 
     #not-known {
       position: absolute;
-      bottom: 20px;
+      bottom: 30px;
       left: 20px;
+      widht: 30%;
       background-color: #76c7c0;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 15px 0;
       font-size: 1em;
       cursor: pointer;
     }
@@ -90,10 +91,11 @@
       position: absolute;
       bottom: 20px;
       right: 20px;
+      width: 30%;
       background-color: #76c7c0;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 15px 0;
       font-size: 1em;
       cursor: pointer;
     }
@@ -219,7 +221,7 @@
 
     document.getElementById("show-answer").addEventListener("click", () => {
       document.getElementById("german-word").style.display = "block";
-      document.getElementById("buttons").style.display = "block";
+      document.getElementById("buttons").style.display = "flex";
       document.getElementById("show-answer").style.display = "none";
     });
 
@@ -264,5 +266,7 @@
         updateProgress();
         getRandomWord();
       })
-      .catch(error => console.error('Fehler beim Laden der Datei:', error));
-</script>
+      .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
+  </script>
+</body>
+</
