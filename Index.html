@@ -51,13 +51,13 @@
         canvas {
             display: none;
         }
-        #result-buttons {
-            display: none;
+       #result-buttons {
+            display: none; /* Standardmäßig ausgeblendet */
             margin-top: 20px;
-            display: flex;
             justify-content: space-between;
             width: 80%;
         }
+
     </style>
 </head>
 <body>
@@ -156,9 +156,10 @@
             ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
 
             // Buttons anzeigen
-            document.getElementById('result-buttons').style.display = 'flex';
-            document.getElementById('word-container').style.display = 'none';
-            document.getElementById('progress-container').style.display = 'none';
+            
+            document.getElementById('result-buttons').style.display = 'flex'; // Buttons einblenden
+            document.getElementById('word-container').style.display = 'none'; // Wortbereich ausblenden
+            document.getElementById('progress-container').style.display = 'none'; // Fortschritt ausblenden
             document.getElementById('progress-text').style.display = 'none';
             document.getElementById('show-answer').style.display = 'none';
             document.getElementById('buttons').style.display = 'none';
