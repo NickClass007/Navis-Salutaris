@@ -5,91 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vokabeltrainer</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        /* Fortschrittsleiste oben */
+            /* Fortschrittsleiste */
     #progress-container {
         position: fixed;
-        top: 0; /* Fest oben auf der Seite */
-        left: 0; /* Kein Abstand von links */
-        width: 100%; /* Über die ganze Breite */
-        background-color: #e0e0e0; /* Hintergrundfarbe */
-        z-index: 100; /* Überlagert andere Elemente */
-    }
-
-    #progress-bar {
-        height: 20px; /* Höhe des Balkens */
-        width: 0%; /* Fortschritt */
-        background-color: #76c7c0; /* Blaue Farbe */
-    }
-
-    #progress-text {
-        text-align: center; /* Zentrierter Text */
-        font-size: 14px; /* Schriftgröße */
-        margin-top: 5px; /* Abstand nach oben */
-        color: #000; /* Textfarbe Schwarz */
-    }
-
-/* Bereich für den Hauptinhalt */
-    #word-container {
-        flex-grow: 1; /* Nimmt den freien Platz ein */
-        display: flex; /* Zentriert den Text */
+        top: 0; /* Fest oben */
+        left: 0;
+        width: 100%;
+        background-color: #e0e0e0;
+        z-index: 100;
+        height: 40px; /* Größere Höhe für lesbare Beschriftung */
+        display: flex;
         align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 1.5em; /* Schriftgröße */
-        font-weight: bold; /* Fettschrift */
+        justify-content: space-between;
     }
 
-/* Button 'Antwort ansehen' */
-    #show-answer {
-        background-color: #76c7c0; /* Blaue Farbe */
-        color: white; /* Textfarbe Weiß */
-        border: none; /* Kein Rahmen */
-        padding: 15px; /* Innenabstand */
-        font-size: 1.2em; /* Schriftgröße */
-        width: 100%; /* Über die gesamte Breite */
-        cursor: pointer; /* Zeigt Hand-Cursor an */
-    }
+        #progress-bar {
+            height: 20px; /* Fortschrittsbalken */
+            width: 0%; /* Fortschritt */
+            background-color: #76c7c0; /* Blau */
+            margin-left: 10px; /* Abstand vom Start */
+            border-radius: 10px; /* Abgerundete Kanten */
+        }
 
-/* Buttons unten */
+        #progress-text {
+            font-size: 14px;
+            color: #000;
+            margin-right: 10px; /* Abstand zum rechten Rand */
+        }
+
+    /* Buttons unten */
     #buttons {
-        display: flex; /* Elemente nebeneinander platzieren */
-        width: 100%; /* Gesamte Breite einnehmen */
+        display: flex;
+        width: 100%; /* Gesamte Breite */
+        position: fixed;
+        bottom: 0; /* Am unteren Rand des Bildschirms */
     }
 
-    #not-known {
-        background-color: #76c7c0; /* Blaue Farbe */
-        color: white; /* Textfarbe Weiß */
-        border: none; /* Kein Rahmen */
-        padding: 15px; /* Innenabstand */
-        font-size: 1.2em; /* Schriftgröße */
-        width: 50%; /* Linke Hälfte einnehmen */
-        cursor: pointer; /* Zeigt Hand-Cursor an */
-    }
+        #not-known {
+            background-color: #f5a9a9; /* Pastellrot für 'Nicht gewusst' */
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            width: 50%; /* Linke Hälfte */
+            cursor: pointer;
+        }
 
-    #known {
-        background-color: #76c7c0; /* Blaue Farbe */
-        color: white; /* Textfarbe Weiß */
-        border: none; /* Kein Rahmen */
-        padding: 15px; /* Innenabstand */
-        font-size: 1.2em; /* Schriftgröße */
-        width: 50%; /* Rechte Hälfte einnehmen */
-        cursor: pointer; /* Zeigt Hand-Cursor an */
-    }
+        #known {
+            background-color: #a9f5bc; /* Pastellgrün für 'Gewusst' */
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            width: 50%; /* Rechte Hälfte */
+            cursor: pointer;
+        }
 
-/* Bereich für Ergebnis-Buttons */
-    #result-buttons {
-        display: none; /* Standardmäßig versteckt */
-        justify-content: space-between; /* Platz zwischen Buttons */
-        padding: 10px; /* Innenabstand */
+    /* Antwort anzeigen Button */
+    #show-answer {
+        background-color: #76c7c0; /* Blau */
+        color: white;
+        border: none;
+        padding: 20px;
+        font-size: 1.5em;
+        width: 100%; /* Über die gesamte Breite */
+        cursor: pointer;
+        position: fixed;
+        bottom: 60px; /* Über den unteren Buttons */
     }
 
 
