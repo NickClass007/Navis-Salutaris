@@ -3,125 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer</title>
+    <title>Vokabeltrainer mit Tachometer</title>
     <style>
-            /* Fortschrittsleiste */
- /* Fortschrittsleiste */
-#progress-container {
-    position: absolute; /* Kann mithilfe von Koordinaten positioniert werden */
-    top: 10px; /* Abstand von oben */
-    left: 10px; /* Abstand von links */
-    width: 80%; /* Breite der Leiste */
-    background-color: #e0e0e0; /* Hintergrundfarbe */
-    border-radius: 20px;
-    height: 20px;
-    z-index: 100; /* Überlagert andere Inhalte */
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
-#progress-bar {
-    height: 100%; /* Passt sich an die Höhe des Containers an */
-    width: 50%; /* Fortschritt */
-    background-color: #76c7c0; /* Fortschrittsbalken in Blau */
-}
+        #progress-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 80%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+        }
 
-/* Fortschrittsanzeige */
-#progress-text {
-    position: absolute; /* Absolute Positionierung */
-    top: 10px; /* 10px von oben */
-    right: 20px; /* 20px vom rechten Rand */
-    font-size: 14px;
-    color: black;
-}
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #76c7c0;
+        }
 
-/* Wortcontainer */
-#word-container {
-    position: absolute; /* Kann mit Koordinaten bewegt werden */
-    top: 100px; /* 100px von oben */
-    left: 50%; /* Zentrierung */
-    transform: translateX(-50%); /* Exakte Zentrierung */
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-}
+        #progress-text {
+            margin-top: 10px;
+        }
 
-/* Antwort anzeigen Button */
-#show-answer {
-    position: absolute; /* Fixiert an Koordinaten */
-    bottom: 30px; /* Abstand von oben */
-    left: 10%; /* 10% von links */
-    width: 80%; /* Füllt 80% der Breite */
-    background-color: #76c7c0; /* Blau */
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 1.2em;
-    cursor: pointer;
-}
+        #word-container {
+            margin-top: 50px;
+            display: none;
+        }
 
-/* Buttons unten */
-#buttons {
-    position: absolute; /* Positionierung durch Koordinaten */
-    bottom: 30px; /* Abstand vom unteren Rand */
-    left: 10%; /* 10% vom linken Rand */
-    width: 80%; /* Breite der Buttons */
-    display: flex;
-    justify-content: space-between;
-}
+        #tachometer-container {
+            margin: 50px auto;
+            width: 400px;
+            height: 200px;
+        }
 
-#not-known {
-    background-color: #f5a9a9; /* Pastellrot */
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 1em;
-    width: 48%; /* Linker Button nimmt fast die Hälfte ein */
-    cursor: pointer;
-}
+        #result-buttons {
+            display: none;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-#known {
-    background-color: #a9f5bc; /* Pastellgrün */
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 1em;
-    width: 48%; /* Rechter Button nimmt fast die Hälfte ein */
-    cursor: pointer;
- }
+        #retry, #undefined-button {
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
+        #show-answer, #known, #not-known {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
 
+        #buttons {
+            display: none;
+        }
+
+        #result-chart {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <h1>Vokabeltrainer</h1>
+
     <div id="progress-container">
         <div id="progress-bar"></div>
     </div>
-    <div id="progress-text">0/0</div>
+    <p id="progress-text">0/0</p>
+
     <div id="word-container">
-        <div class="word" id="latin-word"></div>
-        <div class="word" id="german-word" style="display: none;"></div>
+        <div id="latin-word"></div>
+        <div id="german-word" style="display: none;"></div>
     </div>
-    <button id="show-answer">Antwort ansehen</button>
-    <div id="buttons" style="display: none;">
+
+    <button id="show-answer">Antwort anzeigen</button>
+    <div id="buttons">
         <button id="not-known">Nicht gewusst</button>
         <button id="known">Gewusst</button>
     </div>
-    <canvas id="result-chart" width="300" height="300"></canvas>
+
+    <div id="tachometer-container">
+        <canvas id="result-chart" width="400" height="200"></canvas>
+    </div>
     <div id="result-buttons">
         <button id="retry">Nochmal</button>
-        <button id="undefined-button">Button ohne Funktion</button>
+        <button id="undefined-button">Ohne Funktion</button>
     </div>
 
     <script>
-        // URL der CSV-Datei auf GitHub (ersetze diesen Link durch deinen eigenen)
         const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv';
-
         let words = [];
         let currentWord = {};
         let progress = 0;
         let correctCount = 0;
-        let remainingWords = [];
-        let incorrectWords = [];
-        let flaggedWords = new Set(); // Wörter, die auf "Nicht gewusst" gesetzt wurden
         let totalWords = 0;
 
         // Fortschrittsbalken aktualisieren
@@ -133,126 +120,108 @@
             progressText.textContent = `${progress}/${totalWords}`;
         }
 
-        // Zufälliges Wort auswählen
-        function getRandomWord() {
-            if (remainingWords.length === 0 && incorrectWords.length === 0) {
-                showResults();
-                return;
-            }
-            if (remainingWords.length === 0) {
-                remainingWords = [...incorrectWords];
-                incorrectWords = [];
-            }
-            const randomIndex = Math.floor(Math.random() * remainingWords.length);
-            currentWord = remainingWords.splice(randomIndex, 1)[0]; // Wort aus der Liste entfernen
-            document.getElementById("latin-word").textContent = currentWord.latin;
-            document.getElementById("german-word").style.display = "none";
-            document.getElementById("german-word").textContent = currentWord.german;
-            document.getElementById("buttons").style.display = "none";
-            document.getElementById("show-answer").style.display = "block";
-        }
-
-        // Ergebnisse anzeigen (Kreisdiagramm)
-        function showResults() {
-            const canvas = document.getElementById('result-chart');
-            canvas.style.display = 'block';
-            const ctx = canvas.getContext('2d');
-            const percentage = Math.floor((correctCount / totalWords) * 100);
-            
-            // Kreisdiagramm zeichnen
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const radius = canvas.width / 2;
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            // Hintergrund (nicht gewusst)
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = '#e0e0e0';
-            ctx.fill();
-
-            // Vordergrund (gewusst)
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, 0, (2 * Math.PI * correctCount) / totalWords);
-            ctx.lineTo(centerX, centerY);
-            ctx.fillStyle = '#76c7c0';
-            ctx.fill();
-
-            // Text
-            ctx.fillStyle = '#000';
-            ctx.font = '20px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
-
-            // Buttons anzeigen
-            
-            document.getElementById('result-buttons').style.display = 'flex'; // Buttons einblenden
-            document.getElementById('word-container').style.display = 'none'; // Wortbereich ausblenden
-            document.getElementById('progress-container').style.display = 'none'; // Fortschritt ausblenden
-            document.getElementById('progress-text').style.display = 'none';
-            document.getElementById('show-answer').style.display = 'none';
-            document.getElementById('buttons').style.display = 'none';
-        }
-
-        // Antwort anzeigen
-        document.getElementById("show-answer").addEventListener("click", () => {
-            document.getElementById("german-word").style.display = "block";
-            document.getElementById("buttons").style.display = "flex";
-            document.getElementById("show-answer").style.display = "none";
-        });
-
-        // "Nicht gewusst" klicken
-        document.getElementById("not-known").addEventListener("click", () => {
-            incorrectWords.push(currentWord); // Wort erneut hinzufügen
-            flaggedWords.add(currentWord); // Markiere es als nicht gewusst
-            getRandomWord();
-        });
-
-        // "Gewusst" klicken
-        document.getElementById("known").addEventListener("click", () => {
-            if (!flaggedWords.has(currentWord)) {
-                correctCount++;
-            }
-            progress++;
-            updateProgress();
-            getRandomWord();
-        });
-
-        // "Nochmal" klicken
-        document.getElementById("retry").addEventListener("click", () => {
-            progress = 0;
-            correctCount = 0;
-            remainingWords = [...words];
-            incorrectWords = [];
-            flaggedWords.clear(); // Zurücksetzen
-            document.getElementById('result-chart').style.display = 'none';
-            document.getElementById('result-buttons').style.display = 'none';
-            document.getElementById('word-container').style.display = 'flex';
-            document.getElementById('progress-container').style.display = 'block';
-            document.getElementById('progress-text').style.display = 'block';
-            updateProgress();
-            getRandomWord();
-        });
-
-        // CSV-Datei laden
+        // Wörter laden
         fetch(csvUrl)
             .then(response => response.text())
             .then(data => {
-                const rows = data.split('\n'); // Zeilen der CSV
+                const rows = data.split('\n');
                 rows.forEach((row, index) => {
-                    const columns = row.split(','); // Spalten der CSV
-                    if (index > 0 && columns.length >= 3) { // Kopfzeile überspringen
+                    const columns = row.split(',');
+                    if (index > 0 && columns.length >= 3) {
                         words.push({ latin: columns[0], german: columns[2] });
                     }
                 });
-                remainingWords = [...words];
                 totalWords = words.length;
-                updateProgress(); // Fortschrittsbalken initialisieren
-                getRandomWord(); // Erstes Wort anzeigen
-            })
-            .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
+                updateProgress();
+                showNextWord();
+            });
+
+        // Nächstes Wort anzeigen
+        function showNextWord() {
+            if (words.length === 0) {
+                showResults();
+                return;
+            }
+            currentWord = words.pop();
+            document.getElementById('latin-word').textContent = currentWord.latin;
+            document.getElementById('german-word').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'inline-block';
+        }
+
+        document.getElementById('show-answer').addEventListener('click', () => {
+            document.getElementById('german-word').style.display = 'inline-block';
+            document.getElementById('buttons').style.display = 'block';
+            document.getElementById('show-answer').style.display = 'none';
+        });
+
+        document.getElementById('not-known').addEventListener('click', () => {
+            progress++;
+            updateProgress();
+            showNextWord();
+        });
+
+        document.getElementById('known').addEventListener('click', () => {
+            correctCount++;
+            progress++;
+            updateProgress();
+            showNextWord();
+        });
+
+        function drawTachometer(percentage) {
+            const canvas = document.getElementById("result-chart");
+            const ctx = canvas.getContext("2d");
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height;
+            const radius = canvas.width / 2;
+            const startAngle = Math.PI;
+            const endAngle = startAngle + (Math.PI * percentage) / 100;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Rot
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, startAngle + Math.PI / 2);
+            ctx.strokeStyle = "#f00";
+            ctx.lineWidth = 20;
+            ctx.stroke();
+
+            // Grün
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle + Math.PI / 2, startAngle + Math.PI);
+            ctx.strokeStyle = "#0f0";
+            ctx.stroke();
+
+            // Fortschritt (Gelb)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.strokeStyle = "#FFD700";
+            ctx.stroke();
+
+            // Prozentanzeige
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#000";
+            ctx.fillText(`${percentage}%`, centerX, centerY - 30);
+        }
+
+        function showResults() {
+            const percentage = Math.floor((correctCount / totalWords) * 100);
+            document.getElementById('word-container').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('result-chart').style.display = 'block';
+            document.getElementById('result-buttons').style.display = 'flex';
+            drawTachometer(percentage);
+        }
+
+        document.getElementById('retry').addEventListener('click', () => {
+            location.reload();
+        });
+
+        document.getElementById('undefined-button').addEventListener('click', () => {
+            alert('Dieser Button hat keine Funktion.');
+        });
     </script>
 </body>
 </html>
