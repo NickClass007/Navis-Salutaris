@@ -58,22 +58,31 @@
 
     #buttons {
       position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
       justify-content: space-between;
-      width: 80%;
+      width: auto;
     }
 
-    button {
+    #not-known {
+      position: absolute;
+      top: 300px;
+      left: 30px;
+      background-color: #76c7c0;
+      color: white;
+      border: none;
       padding: 10px 20px;
-      font-size: 1em;
       cursor: pointer;
     }
 
-    canvas {
-      display: none;
+    #known {
+      position: absolute;
+      top: 300px;
+      right: 30px;
+      background-color: #76c7c0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
     }
 
     #result-buttons {
@@ -85,6 +94,19 @@
       display: flex;
       justify-content: space-between;
       width: 80%;
+    }
+
+    #retry,
+    #undefined-button {
+      background-color: #76c7c0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    canvas {
+      display: none;
     }
   </style>
 </head>
@@ -98,16 +120,17 @@
     <div class="word" id="german-word" style="display: none;"></div>
   </div>
   <button id="show-answer">Antwort ansehen</button>
-  <div id="buttons" style="display: none;">
+  <div id="buttons">
     <button id="not-known">Nicht gewusst</button>
     <button id="known">Gewusst</button>
   </div>
   <canvas id="result-chart" width="300" height="300"></canvas>
   <div id="result-buttons">
     <button id="retry">Nochmal</button>
+    <button id="undefined-button">Ohne Funktion</button>
   </div>
   <script>
-    const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv'; // URL ersetzen
+    const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv';
 
     let words = [];
     let currentWord = {};
@@ -139,7 +162,7 @@
       document.getElementById("latin-word").textContent = currentWord.latin;
       document.getElementById("german-word").style.display = "none";
       document.getElementById("german-word").textContent = currentWord.german;
-      document.getElementById("buttons").style.display = "none";
+      document.getElementById("buttons").style.display = "flex";
       document.getElementById("show-answer").style.display = "block";
     }
 
@@ -165,6 +188,7 @@
       ctx.lineTo(centerX, centerY);
       ctx.fillStyle = '#76c7c0';
       ctx.fill();
+      
 
       ctx.fillStyle = '#000';
       ctx.font = '20px Arial';
