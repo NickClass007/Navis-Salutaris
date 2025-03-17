@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer mit Tachometer</title>
+    <title>Vokabeltrainer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,13 +13,13 @@
         }
 
         #progress-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+            margin-top: 10px;
             width: 80%;
             height: 20px;
             background-color: #e0e0e0;
             border-radius: 20px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #progress-bar {
@@ -28,13 +28,8 @@
             background-color: #76c7c0;
         }
 
-        #progress-text {
-            margin-top: 10px;
-        }
-
         #word-container {
             margin-top: 50px;
-            display: none;
         }
 
         #tachometer-container {
@@ -68,7 +63,8 @@
         }
 
         #buttons {
-            display: none;
+            display: flex;
+            justify-content: center;
         }
 
         #result-chart {
@@ -77,18 +73,13 @@
     </style>
 </head>
 <body>
-    <h1>Vokabeltrainer</h1>
-
     <div id="progress-container">
         <div id="progress-bar"></div>
     </div>
-    <p id="progress-text">0/0</p>
-
     <div id="word-container">
         <div id="latin-word"></div>
         <div id="german-word" style="display: none;"></div>
     </div>
-
     <button id="show-answer">Antwort anzeigen</button>
     <div id="buttons">
         <button id="not-known">Nicht gewusst</button>
@@ -114,10 +105,8 @@
         // Fortschrittsbalken aktualisieren
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
             const progressPercentage = Math.floor((progress / totalWords) * 100);
             progressBar.style.width = `${progressPercentage}%`;
-            progressText.textContent = `${progress}/${totalWords}`;
         }
 
         // Wörter laden
@@ -145,12 +134,13 @@
             currentWord = words.pop();
             document.getElementById('latin-word').textContent = currentWord.latin;
             document.getElementById('german-word').style.display = 'none';
-            document.getElementById('buttons').style.display = 'none';
+            document.getElementById('buttons').style.display = 'flex';
             document.getElementById('show-answer').style.display = 'inline-block';
         }
 
         document.getElementById('show-answer').addEventListener('click', () => {
-            document.getElementById('german-word').style.display = 'inline-block';
+            document.getElementById('german-word').textContent = currentWord.german;
+            document.getElementById('german-word').style.display = 'block';
             document.getElementById('buttons').style.display = 'block';
             document.getElementById('show-answer').style.display = 'none';
         });
@@ -179,37 +169,42 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Rot
+            // Rot (0–30%)
             ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, startAngle, startAngle + Math.PI / 2);
+            ctx.arc(centerX, centerY, radius, startAngle, startAngle + Math.PI * 0.3);
             ctx.strokeStyle = "#f00";
             ctx.lineWidth = 20;
             ctx.stroke();
 
-            // Grün
+            // Gelb (30–80%)
             ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, startAngle + Math.PI / 2, startAngle + Math.PI);
+            ctx.arc(centerX, centerY, radius, startAngle + Math.PI * 0.3, startAngle + Math.PI * 0.8);
+            ctx.strokeStyle = "#FFD700";
+            ctx.stroke();
+
+            // Grün (80–100%)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle + Math.PI * 0.8, startAngle + Math.PI);
             ctx.strokeStyle = "#0f0";
             ctx.stroke();
 
-            // Fortschritt (Gelb)
+            // Fortschritt
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-            ctx.strokeStyle = "#FFD700";
+            ctx.strokeStyle = "#76c7c0";
             ctx.stroke();
 
             // Prozentanzeige
             ctx.font = "20px Arial";
             ctx.textAlign = "center";
             ctx.fillStyle = "#000";
-            ctx.fillText(`${percentage}%`, centerX, centerY - 30);
+            ctx.fillText(`${percentage}%`, centerX, centerY - 50);
         }
 
         function showResults() {
             const percentage = Math.floor((correctCount / totalWords) * 100);
             document.getElementById('word-container').style.display = 'none';
             document.getElementById('progress-container').style.display = 'none';
-            document.getElementById('progress-text').style.display = 'none';
             document.getElementById('result-chart').style.display = 'block';
             document.getElementById('result-buttons').style.display = 'flex';
             drawTachometer(percentage);
