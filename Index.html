@@ -78,6 +78,7 @@
         let progress = 0;
         let correctCount = 0;
         let remainingWords = [];
+        let incorrectWords = [];
         let totalWords = 0;
 
         // Fortschrittsbalken aktualisieren
@@ -91,12 +92,16 @@
 
         // Zufälliges Wort auswählen
         function getRandomWord() {
-            if (remainingWords.length === 0) {
+            if (remainingWords.length === 0 && incorrectWords.length === 0) {
                 showResults();
                 return;
             }
+            if (remainingWords.length === 0) {
+                remainingWords = [...incorrectWords];
+                incorrectWords = [];
+            }
             const randomIndex = Math.floor(Math.random() * remainingWords.length);
-            currentWord = remainingWords[randomIndex];
+            currentWord = remainingWords.splice(randomIndex, 1)[0]; // Wort aus der Liste entfernen
             document.getElementById("latin-word").textContent = currentWord.latin;
             document.getElementById("german-word").style.display = "none";
             document.getElementById("german-word").textContent = currentWord.german;
@@ -146,14 +151,13 @@
             document.getElementById("show-answer").style.display = "none";
         });
 
-        // Neue Runde starten
+        // "Nicht gewusst" klicken
         document.getElementById("not-known").addEventListener("click", () => {
-            remainingWords.push(currentWord); // Wort erneut hinzufügen
-            progress++;
-            updateProgress();
+            incorrectWords.push(currentWord); // Wort erneut hinzufügen
             getRandomWord();
         });
 
+        // "Gewusst" klicken
         document.getElementById("known").addEventListener("click", () => {
             correctCount++;
             progress++;
@@ -181,5 +185,4 @@
     </script>
 </body>
 </html>
-
-
+        
