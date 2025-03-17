@@ -14,50 +14,84 @@
             height: 100vh;
             margin: 0;
         }
-        #progress-container {
-            width: 80%;
-            background-color: #e0e0e0;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        #progress-bar {
-            height: 20px;
-            width: 0%;
-            background-color: #76c7c0;
-            margin-top: 10px;
-        }
-        #word-container {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-        }
-        .word {
-            width: 45%;
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        #buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        canvas {
-            display: none;
-        }
-       #result-buttons {
-            display: none; /* Standardmäßig ausgeblendet */
-            margin-top: 20px;
-            justify-content: space-between;
-            width: 80%;
-        }
+        /* Fortschrittsleiste oben */
+    #progress-container {
+        position: fixed;
+        top: 0; /* Fest oben auf der Seite */
+        left: 0; /* Kein Abstand von links */
+        width: 100%; /* Über die ganze Breite */
+        background-color: #e0e0e0; /* Hintergrundfarbe */
+        z-index: 100; /* Überlagert andere Elemente */
+    }
+
+    #progress-bar {
+        height: 20px; /* Höhe des Balkens */
+        width: 0%; /* Fortschritt */
+        background-color: #76c7c0; /* Blaue Farbe */
+    }
+
+    #progress-text {
+        text-align: center; /* Zentrierter Text */
+        font-size: 14px; /* Schriftgröße */
+        margin-top: 5px; /* Abstand nach oben */
+        color: #000; /* Textfarbe Schwarz */
+    }
+
+/* Bereich für den Hauptinhalt */
+    #word-container {
+        flex-grow: 1; /* Nimmt den freien Platz ein */
+        display: flex; /* Zentriert den Text */
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 1.5em; /* Schriftgröße */
+        font-weight: bold; /* Fettschrift */
+    }
+
+/* Button 'Antwort ansehen' */
+    #show-answer {
+        background-color: #76c7c0; /* Blaue Farbe */
+        color: white; /* Textfarbe Weiß */
+        border: none; /* Kein Rahmen */
+        padding: 15px; /* Innenabstand */
+        font-size: 1.2em; /* Schriftgröße */
+        width: 100%; /* Über die gesamte Breite */
+        cursor: pointer; /* Zeigt Hand-Cursor an */
+    }
+
+/* Buttons unten */
+    #buttons {
+        display: flex; /* Elemente nebeneinander platzieren */
+        width: 100%; /* Gesamte Breite einnehmen */
+    }
+
+    #not-known {
+        background-color: #76c7c0; /* Blaue Farbe */
+        color: white; /* Textfarbe Weiß */
+        border: none; /* Kein Rahmen */
+        padding: 15px; /* Innenabstand */
+        font-size: 1.2em; /* Schriftgröße */
+        width: 50%; /* Linke Hälfte einnehmen */
+        cursor: pointer; /* Zeigt Hand-Cursor an */
+    }
+
+    #known {
+        background-color: #76c7c0; /* Blaue Farbe */
+        color: white; /* Textfarbe Weiß */
+        border: none; /* Kein Rahmen */
+        padding: 15px; /* Innenabstand */
+        font-size: 1.2em; /* Schriftgröße */
+        width: 50%; /* Rechte Hälfte einnehmen */
+        cursor: pointer; /* Zeigt Hand-Cursor an */
+    }
+
+/* Bereich für Ergebnis-Buttons */
+    #result-buttons {
+        display: none; /* Standardmäßig versteckt */
+        justify-content: space-between; /* Platz zwischen Buttons */
+        padding: 10px; /* Innenabstand */
+    }
+
 
     </style>
 </head>
