@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV-Anzeige</title>
+</head>
+<body>
+    <h1>Lateinische und Deutsche Bedeutungen</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Lateinische Bedeutung</th>
+                <th>Deutsche Bedeutung</th>
+            </tr>
+        </thead>
+        <tbody id="csv-table">
+        </tbody>
+    </table>
+
+    <script>
+        // URL der CSV-Datei auf GitHub (ersetze diesen Link durch deinen eigenen)
+        const csvUrl = 'https://raw.githubusercontent.com//REPO/main/datei.csv';
+
+        // CSV-Datei laden und Daten verarbeiten
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n'); // Zeilen der CSV
+                rows.forEach((row, index) => {
+                    const columns = row.split(','); // Spalten der CSV
+                    if (index > 0 && columns.length >= 3) { // Erste Zeile überspringen (Kopfzeile) und überprüfen, ob mindestens 3 Spalten existieren
+                        const tableRow = `<tr>
+                            <td>${columns[0]}</td>
+                            <td>${columns[2]}</td>
+                        </tr>`;
+                        document.getElementById('csv-table').innerHTML += tableRow;
+                    }
+                });
+            })
+            .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
+    </script>
+</body>
+</html>
