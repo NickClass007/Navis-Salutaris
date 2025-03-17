@@ -325,14 +325,15 @@
             });
         });
 
-        // Event-Listener für die Auswahl des CSVs
-        document.getElementById('csv-select').addEventListener('change', (event) => {
-            csvUrl = event.target.value;
-            words = [];
-            selectedWords = [];
-            incorrectWords = [];
-            loadCSV();
-        });
+       // Event-Listener für die Auswahl des CSVs
+    document.getElementById('csv-select').addEventListener('change', (event) => {
+     //   csvUrl = event.target.value;
+       // words = [];  // Leere Liste, bevor neue CSV geladen wird
+        //selectedWords = [];  // Leere ausgewählte Vokabeln
+        //incorrectWords = [];  // Leere falsche Vokabeln
+        loadCSV();  // Lade die neue CSV-Datei
+    });
+
 
         loadCSV();  // Beim Laden der Seite wird standardmäßig das erste CSV geladen
     </script>
