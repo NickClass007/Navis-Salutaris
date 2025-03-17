@@ -37,7 +37,7 @@
             font-size: 1.5em;
             font-weight: bold;
         }
-        #result-buttons {
+        #buttons {
             margin-top: 20px;
             display: flex;
             justify-content: space-between;
@@ -48,6 +48,16 @@
             font-size: 1em;
             cursor: pointer;
         }
+        canvas {
+            display: none;
+        }
+        #result-buttons {
+            display: none;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +67,12 @@
     <div id="progress-text">0/0</div>
     <div id="word-container">
         <div class="word" id="latin-word"></div>
-        <div class="word" id="german-word"></div>
+        <div class="word" id="german-word" style="display: none;"></div>
+    </div>
+    <button id="show-answer">Antwort ansehen</button>
+    <div id="buttons" style="display: none;">
+        <button id="not-known">Nicht gewusst</button>
+        <button id="known">Gewusst</button>
     </div>
     <canvas id="result-chart" width="300" height="300"></canvas>
     <div id="result-buttons">
@@ -73,6 +88,7 @@
         let correctCount = 0;
         let remainingWords = [];
         let incorrectWords = [];
+        let flaggedWords = new Set();
         let totalWords = 0;
 
         function updateProgress() {
@@ -81,6 +97,24 @@
             const progressPercentage = Math.floor((progress / totalWords) * 100);
             progressBar.style.width = `${progressPercentage}%`;
             progressText.textContent = `${progress}/${totalWords}`;
+        }
+
+        function getRandomWord() {
+            if (remainingWords.length === 0 && incorrectWords.length === 0) {
+                showResults();
+                return;
+            }
+            if (remainingWords.length === 0) {
+                remainingWords = [...incorrectWords];
+                incorrectWords = [];
+            }
+            const randomIndex = Math.floor(Math.random() * remainingWords.length);
+            currentWord = remainingWords.splice(randomIndex, 1)[0];
+            document.getElementById("latin-word").textContent = currentWord.latin;
+            document.getElementById("german-word").style.display = "none";
+            document.getElementById("german-word").textContent = currentWord.german;
+            document.getElementById("buttons").style.display = "none";
+            document.getElementById("show-answer").style.display = "block";
         }
 
         function showResults() {
@@ -116,13 +150,37 @@
             document.getElementById('word-container').style.display = 'none';
             document.getElementById('progress-container').style.display = 'none';
             document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
         }
+
+        document.getElementById("show-answer").addEventListener("click", () => {
+            document.getElementById("german-word").style.display = "block";
+            document.getElementById("buttons").style.display = "flex";
+            document.getElementById("show-answer").style.display = "none";
+        });
+
+        document.getElementById("not-known").addEventListener("click", () => {
+            incorrectWords.push(currentWord);
+            flaggedWords.add(currentWord);
+            getRandomWord();
+        });
+
+        document.getElementById("known").addEventListener("click", () => {
+            if (!flaggedWords.has(currentWord)) {
+                correctCount++;
+            }
+            progress++;
+            updateProgress();
+            getRandomWord();
+        });
 
         document.getElementById("retry").addEventListener("click", () => {
             progress = 0;
             correctCount = 0;
             remainingWords = [...words];
             incorrectWords = [];
+            flaggedWords.clear();
 
             document.getElementById('result-chart').style.display = 'none';
             document.getElementById('result-buttons').style.display = 'none';
@@ -130,6 +188,7 @@
             document.getElementById('progress-container').style.display = 'block';
             document.getElementById('progress-text').style.display = 'block';
             updateProgress();
+            getRandomWord();
         });
 
         document.getElementById("menu").addEventListener("click", () => {
@@ -149,6 +208,7 @@
                 remainingWords = [...words];
                 totalWords = words.length;
                 updateProgress();
+                getRandomWord();
             })
             .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
     </script>
