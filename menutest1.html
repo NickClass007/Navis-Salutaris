@@ -2,11 +2,114 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale: 1.0">
     <title>Vokabeltrainer</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Dein CSS bleibt unverändert */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #file-selection {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        #vocab-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        #vocab-selection label {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+        }
+        #vocab-selection input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            background-color: #76c7c0;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+        button:hover {
+            background-color: #68b0a5;
+        }
+        #start-training {
+            background-color: #4caf50;
+        }
+        #start-training:hover {
+            background-color: #45a049;
+        }
+        #vocab-list {
+            width: 100%;
+        }
+        #question-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        #question-container .word {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        #question-container button {
+            margin-top: 10px;
+        }
+        /* Fortschrittsbalken */
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background-color: #76c7c0;
+        }
+        #progress-text {
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+        /* Ergebnisbereich */
+        #result-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #result-container canvas {
+            width: 300px;
+            height: 300px;
+        }
+        #result-container button {
+            margin-top: 20px;
+            background-color: #ff7043;
+        }
     </style>
 </head>
 <body>
@@ -14,160 +117,220 @@
     <div id="file-selection">
         <h2>CSV-Datei auswählen</h2>
         <label for="csv-select">Wählen Sie eine CSV-Datei:</label>
-        <select id="csv-select" onchange="loadCSV()">
-            <option value="">CSV-Datei auswählen</option>
-            <option value="Caesars_Bellum_Gallicum_I.csv">Caesars Bellum Gallicum I</option>
-            <option value="Caesars_Bellum_Gallicum_II.csv">Caesars Bellum Gallicum II</option>
-            <option value="Caesars_Bellum_Gallicum_III.csv">Caesars Bellum Gallicum III</option>
+        <select id="csv-select">
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv'>Caesars Bellum Gallicum I</option>
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'>Caesars Bellum Gallicum III</option>
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv'>Caesars Bellum Gallicum II</option>
         </select>
     </div>
-    
-    <!-- Anzeige der CSV-Inhalte -->
-    <div id="csvContent" style="margin-top: 20px; max-width: 600px; width: 100%; text-align: center;"></div>
-
-    <!-- Vokabeln Auswahl -->
-    <div id="vocab-selection" style="display: none;">
+    <!-- Vokabelauswahl -->
+    <div id="vocab-selection">
         <h2>Vokabeln auswählen</h2>
         <div id="vocab-list"></div>
-        <button id="start-training" onclick="startTraining()">Training starten</button>
-    </div>
-
-    <!-- Trainingsbereich -->
-    <div id="question-container">
-        <div id="question-text">
-            <div class="word"></div>
-            <button onclick="nextQuestion()">Nächste Frage</button>
+        <div style="margin-top: 20px;">
+            <button id="select-all">Alle auswählen</button>
+            <button id="deselect-all">Alle abwählen</button>
         </div>
+        <button id="start-training">Training starten</button>
+    </div>
+    <!-- Abfragefenster -->
+    <div id="question-container">
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
-        <div id="progress-text"></div>
+        <div id="progress-text">0/0</div>
+        <div id="latin-word" class="word"></div>
+        <div id="german-word" class="word" style="display: none;"></div>
+        <button id="show-answer">Antwort anzeigen</button>
+        <div id="buttons" style="display: none;">
+            <button id="known">Gewusst</button>
+            <button id="not-known">Nicht gewusst</button>
+        </div>
     </div>
-
     <!-- Ergebnisbereich -->
     <div id="result-container">
-        <h2>Ergebnisse</h2>
-        <canvas id="resultChart"></canvas>
-        <button onclick="restartTraining()">Neues Training starten</button>
+        <h2>Ergebnis</h2>
+        <canvas id="result-chart"></canvas>
+        <div>
+            <button id="menu-button">Menü</button>
+            <button id="repeat-button">Nochmal</button>
+        </div>
     </div>
 
     <script>
-        // CSV-Auswahl und Anzeige
-        async function loadCSV() {
-            const select = document.getElementById('csv-select');
-            const selectedFile = select.value;
+        let words = [];
+        let selectedWords = [];
+        let incorrectWords = [];
+        let currentWord = {};
+        let progress = 0;
+        let correctCount = 0;
+        let totalWords = 0;
+        let csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv';  // Standard-CSV-URL
 
-            const csvFiles = {
-                'Caesars_Bellum_Gallicum_I.csv': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
-                'Caesars_Bellum_Gallicum_II.csv': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv',
-                'Caesars_Bellum_Gallicum_III.csv': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
-            };
-
-            if (!selectedFile) {
-                document.getElementById('csvContent').innerHTML = '';
-                return;
-            }
-
-            try {
-                const response = await fetch(csvFiles[selectedFile]);
-                const csvText = await response.text();
-                const rows = csvText.split('\n');
-                let vocabListHtml = '';
-
-                // Vokabeln in Checkboxes umwandeln
-                for (let i = 1; i < rows.length; i++) {
-                    const columns = rows[i].split(',');
-                    if (columns.length >= 3) {
-                        vocabListHtml += `<label><input type="checkbox" class="vocab-checkbox" value="${columns[0]}" /> ${columns[0]} - ${columns[2]}</label><br>`;
-                    }
-                }
-
-                // Zeige die Vokabeln im Auswahlbereich
-                document.getElementById('vocab-list').innerHTML = vocabListHtml;
-                document.getElementById('vocab-selection').style.display = 'block';
-            } catch (error) {
-                console.error("Fehler beim Laden der CSV-Datei:", error);
-                document.getElementById('csvContent').innerHTML = '<p>Es gab einen Fehler beim Laden der Datei.</p>';
-            }
+        // CSV-Datei laden und Vokabeln verarbeiten
+        function loadCSV() {
+            fetch(csvUrl)
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    rows.forEach((row, index) => {
+                        const columns = row.split(',');
+                        if (index > 0 && columns.length >= 3) {  // Sicherstellen, dass genügend Spalten vorhanden sind
+                            words.push({ latin: columns[0], german: columns[2] });
+                        }
+                    });
+                    displayVocabSelection();  // Vokabelauswahl anzeigen
+                })
+                .catch(error => {
+                    console.error('Fehler beim Laden der CSV-Datei:', error);
+                    alert('Fehler beim Laden der CSV-Datei.');
+                });
         }
 
-        let vocabularies = [];
-        let currentQuestionIndex = 0;
-        let correctAnswers = 0;
+        // Vokabelauswahl anzeigen
+        function displayVocabSelection() {
+            const vocabListDiv = document.getElementById('vocab-list');
+            vocabListDiv.innerHTML = '';  // Vorherige Auswahl zurücksetzen
+
+            // Sicherstellen, dass wir alle Vokabeln anzeigen
+            words.forEach((word, index) => {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = index;  // Index wird als Wert gespeichert, um die Vokabel später auszuwählen
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
+                vocabListDiv.appendChild(label);
+            });
+        }
 
         // Start des Trainings
-        function startTraining() {
-            vocabularies = [];
-            currentQuestionIndex = 0;
-            correctAnswers = 0;
-
-            // Vokabeln aus den ausgewählten Checkboxes laden
-            document.querySelectorAll('.vocab-checkbox:checked').forEach(checkbox => {
-                vocabularies.push(checkbox.value);
+        document.getElementById('start-training').addEventListener('click', () => {
+            selectedWords = [];
+            const checkboxes = document.querySelectorAll('#vocab-list input:checked');
+            checkboxes.forEach(checkbox => {
+                selectedWords.push(words[checkbox.value]);
             });
-
-            if (vocabularies.length === 0) {
-                alert('Bitte wählen Sie mindestens eine Vokabel aus.');
+            if (selectedWords.length === 0) {
+                alert('Bitte wählen Sie mindestens eine Vokabel aus!');
                 return;
             }
 
+            // Blende Vokabel-Auswahl und CSV-Auswahl aus und starte das Training
             document.getElementById('vocab-selection').style.display = 'none';
+            document.getElementById('file-selection').style.display = 'none';
             document.getElementById('question-container').style.display = 'flex';
-            showQuestion();
-        }
+            totalWords = selectedWords.length;
+            progress = 0;
+            correctCount = 0;
+            updateProgress();
+            getRandomWord();
+        });
 
-        // Frage anzeigen
-        function showQuestion() {
-            if (currentQuestionIndex < vocabularies.length) {
-                const question = vocabularies[currentQuestionIndex];
-                document.querySelector('#question-container .word').textContent = question;
-                currentQuestionIndex++;
-                updateProgress();
-            } else {
-                showResults();
+        // Zeige das nächste Wort an
+        function getRandomWord() {
+            if (selectedWords.length === 0) {
+                finishTraining();
+                return;
             }
+
+            currentWord = selectedWords.pop();
+            document.getElementById('latin-word').textContent = currentWord.latin;
+            document.getElementById('german-word').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'block';
+            document.getElementById('buttons').style.display = 'none';
         }
 
-        // Nächste Frage
-        function nextQuestion() {
-            showQuestion();
-        }
+        // Antwort anzeigen
+        document.getElementById('show-answer').addEventListener('click', () => {
+            document.getElementById('german-word').style.display = 'block';
+            document.getElementById('buttons').style.display = 'flex';
+            document.getElementById('show-answer').style.display = 'none';
+        });
+
+        // Gewusst
+        document.getElementById('known').addEventListener('click', () => {
+            correctCount++;
+            progress++;
+            updateProgress();
+            getRandomWord();
+        });
+
+        // Nicht gewusst
+        document.getElementById('not-known').addEventListener('click', () => {
+            // Wort bleibt in der Liste, um es später zu wiederholen
+            incorrectWords.push(currentWord);
+            getRandomWord();
+        });
 
         // Fortschritt anzeigen
         function updateProgress() {
-            const progress = (currentQuestionIndex / vocabularies.length) * 100;
-            document.getElementById('progress-bar').style.width = progress + '%';
-            document.getElementById('progress-text').textContent = `${currentQuestionIndex} von ${vocabularies.length} Fragen beantwortet`;
+            const progressPercentage = Math.floor((progress / totalWords) * 100);
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${correctCount}/${totalWords} gewusst`;
         }
 
-        // Ergebnisse anzeigen
-        function showResults() {
+        // Training beenden und Ergebnis anzeigen
+        function finishTraining() {
             document.getElementById('question-container').style.display = 'none';
             document.getElementById('result-container').style.display = 'flex';
-            createChart();
-        }
-
-        // Chart für Ergebnisse erstellen
-        function createChart() {
-            const ctx = document.getElementById('resultChart').getContext('2d');
+            // Kreisdiagramm für das Ergebnis
+            const ctx = document.getElementById('result-chart').getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Richtige Antworten', 'Falsche Antworten'],
+                    labels: ['Richtig', 'Falsch'],
                     datasets: [{
-                        label: 'Ergebnisse',
-                        data: [correctAnswers, vocabularies.length - correctAnswers],
-                        backgroundColor: ['#4caf50', '#ff7043']
+                        data: [correctCount, incorrectWords.length],
+                        backgroundColor: ['#4caf50', '#ff7043'],
                     }]
                 }
             });
+            // Ergebnis anzeigen
+            document.getElementById('progress-text').textContent = `Du hast ${correctCount} von ${totalWords} richtig beantwortet.`;
         }
 
-        // Training neu starten
-        function restartTraining() {
+        // Menü-Button: Zurück zum Menü
+        document.getElementById('menu-button').addEventListener('click', () => {
+            location.reload();
+        });
+
+        // Wiederholen-Button: Nochmal mit den gleichen Vokabeln
+        document.getElementById('repeat-button').addEventListener('click', () => {
+            selectedWords = incorrectWords;
+            incorrectWords = [];
+            progress = 0;
+            correctCount = 0;
+            updateProgress();
+            getRandomWord();
             document.getElementById('result-container').style.display = 'none';
-            document.getElementById('vocab-selection').style.display = 'flex';
-        }
+            document.getElementById('question-container').style.display = 'flex';
+        });
+
+        // Alle Vokabeln auswählen
+        document.getElementById('select-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        });
+
+        // Alle Vokabeln abwählen
+        document.getElementById('deselect-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
+        // Event-Listener für die Auswahl des CSVs
+        document.getElementById('csv-select').addEventListener('change', (event) => {
+            loadCSV();  // Lade die neue CSV-Datei
+        });
+
+        loadCSV();  // Beim Laden der Seite wird standardmäßig das erste CSV geladen
     </script>
 </body>
 </html>
