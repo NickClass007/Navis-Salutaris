@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lateinische Wörter Übung</title>
+    <title>Vokabeltrainer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +13,18 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+        }
+        #progress-container {
+            width: 80%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background-color: #76c7c0;
         }
         #word-container {
             display: flex;
@@ -36,9 +48,16 @@
             font-size: 1em;
             cursor: pointer;
         }
+        canvas {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="progress-text">0/0</div>
     <div id="word-container">
         <div class="word" id="latin-word"></div>
         <div class="word" id="german-word" style="display: none;"></div>
@@ -48,40 +67,76 @@
         <button id="not-known">Nicht gewusst</button>
         <button id="known">Gewusst</button>
     </div>
+    <canvas id="result-chart" width="300" height="300"></canvas>
 
     <script>
         // URL der CSV-Datei auf GitHub (ersetze diesen Link durch deinen eigenen)
         const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';
 
         let words = [];
-
-        // CSV-Datei laden und verarbeiten
-        fetch(csvUrl)
-            .then(response => response.text())
-            .then(data => {
-                const rows = data.split('\n'); // Zeilen der CSV
-                rows.forEach((row, index) => {
-                    const columns = row.split(','); // Spalten der CSV
-                    if (index > 0 && columns.length >= 3) { // Kopfzeile überspringen und prüfen, ob mindestens 3 Spalten existieren
-                        words.push({ latin: columns[0], german: columns[2] });
-                    }
-                });
-                getRandomWord(); // Erstes Wort anzeigen
-            })
-            .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
-
         let currentWord = {};
+        let progress = 0;
+        let correctCount = 0;
+        let remainingWords = [];
+        let totalWords = 0;
+
+        // Fortschrittsbalken aktualisieren
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const progressPercentage = Math.floor((progress / totalWords) * 100);
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${progress}/${totalWords}`;
+        }
 
         // Zufälliges Wort auswählen
         function getRandomWord() {
-            if (words.length === 0) return; // Falls keine Wörter geladen wurden
-            const randomIndex = Math.floor(Math.random() * words.length);
-            currentWord = words[randomIndex];
+            if (remainingWords.length === 0) {
+                showResults();
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * remainingWords.length);
+            currentWord = remainingWords[randomIndex];
             document.getElementById("latin-word").textContent = currentWord.latin;
             document.getElementById("german-word").style.display = "none";
             document.getElementById("german-word").textContent = currentWord.german;
             document.getElementById("buttons").style.display = "none";
             document.getElementById("show-answer").style.display = "block";
+        }
+
+        // Ergebnisse anzeigen (Kreisdiagramm)
+        function showResults() {
+            const canvas = document.getElementById('result-chart');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            const percentage = Math.floor((correctCount / totalWords) * 100);
+            
+            // Kreisdiagramm zeichnen
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const radius = canvas.width / 2;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            // Hintergrund (nicht gewusst)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fill();
+
+            // Vordergrund (gewusst)
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, 0, (2 * Math.PI * correctCount) / totalWords);
+            ctx.lineTo(centerX, centerY);
+            ctx.fillStyle = '#76c7c0';
+            ctx.fill();
+
+            // Text
+            ctx.fillStyle = '#000';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
         }
 
         // Antwort anzeigen
@@ -92,9 +147,39 @@
         });
 
         // Neue Runde starten
-        document.getElementById("not-known").addEventListener("click", getRandomWord);
-        document.getElementById("known").addEventListener("click", getRandomWord);
+        document.getElementById("not-known").addEventListener("click", () => {
+            remainingWords.push(currentWord); // Wort erneut hinzufügen
+            progress++;
+            updateProgress();
+            getRandomWord();
+        });
+
+        document.getElementById("known").addEventListener("click", () => {
+            correctCount++;
+            progress++;
+            updateProgress();
+            getRandomWord();
+        });
+
+        // CSV-Datei laden
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n'); // Zeilen der CSV
+                rows.forEach((row, index) => {
+                    const columns = row.split(','); // Spalten der CSV
+                    if (index > 0 && columns.length >= 3) { // Kopfzeile überspringen
+                        words.push({ latin: columns[0], german: columns[2] });
+                    }
+                });
+                remainingWords = [...words];
+                totalWords = words.length;
+                updateProgress(); // Fortschrittsbalken initialisieren
+                getRandomWord(); // Erstes Wort anzeigen
+            })
+            .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
     </script>
 </body>
 </html>
+
 
