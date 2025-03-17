@@ -44,14 +44,17 @@
             border-radius: 5px;
             width: 80%;
             max-width: 600px;
+            overflow-y: auto;
+            height: 70%;
         }
         #vocab-selection {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
         #vocab-selection label {
             margin: 5px;
+            display: block;
         }
         #progress-container {
             width: 80%;
@@ -100,15 +103,6 @@
     </style>
 </head>
 <body>
-    <div id="file-selection">
-        <label for="csv-select">CSV auswählen:</label>
-        <select id="csv-select">
-            <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv">Caesars Bellum Gallicum III</option>
-            <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv">Caesars Bellum Gallicum I</option>
-            <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv">Caesars Bellum Gallicum II</option>
-        </select>
-    </div>
-
     <div id="progress-container">
         <div id="progress-bar"></div>
     </div>
@@ -131,7 +125,18 @@
     <!-- Modal für das Auswahlmenü -->
     <div id="vocab-modal" class="modal">
         <div class="modal-content">
-            <h3>Wählen Sie die Vokabeln aus, die Sie üben möchten:</h3>
+            <h3>Wählen Sie die Vokabeln und CSV-Datei aus:</h3>
+            <!-- CSV-Auswahl -->
+            <div>
+                <label for="csv-select">CSV auswählen:</label>
+                <select id="csv-select">
+                    <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv">Caesars Bellum Gallicum III</option>
+                    <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv">Caesars Bellum Gallicum I</option>
+                    <option value="https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv">Caesars Bellum Gallicum II</option>
+                </select>
+            </div>
+            <br>
+            <h4>Vokabeln auswählen:</h4>
             <div id="vocab-list"></div>
             <div>
                 <button id="select-all">Alle auswählen</button>
@@ -338,3 +343,4 @@
     </script>
 </body>
 </html>
+
