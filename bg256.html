@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale: 1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vokabeltrainer</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -277,8 +277,12 @@
             document.getElementById('german-word').textContent = currentWord.german;  // Deutsches Wort anzeigen
             document.getElementById('german-word').style.display = 'block';  // Zeige es an
 
+            // "Antwort anzeigen"-Button ausblenden
+            document.getElementById('show-answer').style.display = 'none';
+
             // Zeige die Buttons erst nach dem Klick auf "Antwort anzeigen"
             const buttons = document.getElementById('buttons');
+
             const knownButton = document.createElement('button');
             knownButton.textContent = "Gewusst";
             buttons.appendChild(knownButton);
