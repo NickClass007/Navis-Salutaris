@@ -13,12 +13,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             min-height: 100vh;
-            background-color: #f7f7f7;
         }
-        /* Menü oben */
         #file-selection {
+            margin-top: 20px;
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -26,7 +25,6 @@
             width: 80%;
             max-width: 600px;
             text-align: center;
-            margin-top: 20px;
         }
         #vocab-selection {
             display: flex;
@@ -112,94 +110,76 @@
             margin-top: 20px;
             background-color: #ff7043;
         }
-        /* Container für den gesamten Bereich */
-        #container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
     </style>
 </head>
 <body>
-    <div id="container">
-        <!-- Vokabelauswahl Menü -->
-        <div id="file-selection">
-            <h2>Wählen Sie eine CSV-Datei</h2>
-            <select id="csv-select">
-                <option value="LW1">LW1</option>
-                <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
-                <option value="LW2">LW2</option>
-            </select>
-            <button id="load-file">Vokabeln Laden</button>
+    <!-- CSV-Auswahl -->
+    <div id="file-selection">
+        <h2>CSV-Datei auswählen</h2>
+        <label for="csv-select">Wählen Sie eine CSV-Datei:</label>
+        <select id="csv-select">
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv'>Caesars Bellum Gallicum I</option>
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'>Caesars Bellum Gallicum III</option>
+            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'>Caesars Bellum Gallicum II</option>
+        </select>
+    </div>
+    <!-- Vokabelauswahl -->
+    <div id="vocab-selection">
+        <h2>Vokabeln auswählen</h2>
+        <div id="vocab-list"></div>
+        <div style="margin-top: 20px;">
+            <button id="select-all">Alle auswählen</button>
+            <button id="deselect-all">Alle abwählen</button>
         </div>
-
-        <!-- Vokabelauswahl -->
-        <div id="vocab-selection" style="display:none;">
-            <h2>Vokabeln auswählen</h2>
-            <div id="vocab-list"></div>
-            <div style="margin-top: 20px;">
-                <button id="select-all">Alle auswählen</button>
-                <button id="deselect-all">Alle abwählen</button>
-            </div>
-            <button id="start-training">Training starten</button>
+        <button id="start-training">Training starten</button>
+    </div>
+    <!-- Abfragefenster -->
+    <div id="question-container">
+        <div id="progress-container">
+            <div id="progress-bar"></div>
         </div>
-
-        <!-- Abfragefenster -->
-        <div id="question-container">
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <div id="progress-text">0/0</div>
-            <div id="latin-word" class="word"></div>
-            <div id="german-word" class="word" style="display:none;"></div> <!-- Deutsches Wort ist zuerst versteckt -->
-            <div id="buttons" style="display: flex;">
-                <button id="known">Gewusst</button>
-                <button id="not-known">Nicht gewusst</button>
-                <button id="show-answer" style="background-color: #fbc02d;">Antwort anzeigen</button>
-            </div>
+        <div id="progress-text">0/0</div>
+        <div id="latin-word" class="word"></div>
+        <div id="german-word" class="word" style="display: none;"></div>
+        <button id="show-answer">Antwort anzeigen</button>
+        <div id="buttons" style="display: none;">
+            <button id="known">Gewusst</button>
+            <button id="not-known">Nicht gewusst</button>
         </div>
-
-        <!-- Ergebnisbereich -->
-        <div id="result-container">
-            <h2>Ergebnis</h2>
-            <canvas id="result-chart"></canvas>
-            <div>
-                <button id="menu-button">Menü</button>
-                <button id="repeat-button">Nochmal</button>
-            </div>
+    </div>
+    <!-- Ergebnisbereich -->
+    <div id="result-container">
+        <h2>Ergebnis</h2>
+        <canvas id="result-chart"></canvas>
+        <div>
+            <button id="menu-button">Menü</button>
+            <button id="repeat-button">Nochmal</button>
         </div>
     </div>
 
     <script>
-        let words = [];  // Alle Vokabeln für alle CSV-Dateien
-        let selectedWords = [];  // Vokabeln, die für das Training ausgewählt wurden
-        let incorrectWords = []; // Falsch beantwortete Vokabeln
-        let currentWord = {};  // Das aktuell angezeigte Wort
+        let words = [];
+        let selectedWords = [];
+        let incorrectWords = [];
+        let currentWord = {};
         let progress = 0;
         let correctCount = 0;
         let totalWords = 0;
+        let csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv';  // Standard-CSV-URL
 
-        // Liste der CSV-URLs
-        const csvUrls = {
-            'LW1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
-            'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
-            'LW2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'
-        };
-
-        // CSV-Datei laden, je nachdem, welche Option ausgewählt wurde
-        document.getElementById('load-file').addEventListener('click', () => {
-            const selectedCSV = document.getElementById('csv-select').value;
-            const url = csvUrls[selectedCSV];
-            loadCSV(url);
-        });
-
-        // CSV-Datei laden
-        function loadCSV(url) {
-            fetch(url)
+        // CSV-Datei laden und Vokabeln verarbeiten
+        function loadCSV() {
+            fetch(csvUrl)
                 .then(response => response.text())
                 .then(data => {
-                    processCSVData(data);
+                    const rows = data.split('\n');
+                    rows.forEach((row, index) => {
+                        const columns = row.split(',');
+                        if (index > 0 && columns.length >= 3) {  // Sicherstellen, dass genügend Spalten vorhanden sind
+                            words.push({ latin: columns[0], german: columns[2] });
+                        }
+                    });
+                    displayVocabSelection();  // Vokabelauswahl anzeigen
                 })
                 .catch(error => {
                     console.error('Fehler beim Laden der CSV-Datei:', error);
@@ -207,36 +187,21 @@
                 });
         }
 
-        // CSV-Daten verarbeiten
-        function processCSVData(data) {
-            words = [];
-            const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (row.trim() === '') return; // Leerzeilen überspringen
-                const columns = row.split(',');
-                if (columns.length >= 3) {
-                    words.push({ latin: columns[0], german: columns[2] });
-                }
-            });
-            displayVocabSelection();  // Vokabelauswahl anzeigen
-        }
-
         // Vokabelauswahl anzeigen
         function displayVocabSelection() {
             const vocabListDiv = document.getElementById('vocab-list');
             vocabListDiv.innerHTML = '';  // Vorherige Auswahl zurücksetzen
 
+            // Sicherstellen, dass wir alle Vokabeln anzeigen
             words.forEach((word, index) => {
                 const label = document.createElement('label');
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.value = index;
+                checkbox.value = index;  // Index wird als Wert gespeichert, um die Vokabel später auszuwählen
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
                 vocabListDiv.appendChild(label);
             });
-
-            document.getElementById('vocab-selection').style.display = 'flex';  // Vokabelauswahl anzeigen
         }
 
         // Start des Trainings
@@ -251,9 +216,9 @@
                 return;
             }
 
-            // Blende Vokabel-Auswahl aus und starte das Training
-            document.getElementById('file-selection').style.display = 'none';
+            // Blende Vokabel-Auswahl und CSV-Auswahl aus und starte das Training
             document.getElementById('vocab-selection').style.display = 'none';
+            document.getElementById('file-selection').style.display = 'none';
             document.getElementById('question-container').style.display = 'flex';
             totalWords = selectedWords.length;
             progress = 0;
@@ -271,13 +236,16 @@
 
             currentWord = selectedWords.pop();
             document.getElementById('latin-word').textContent = currentWord.latin;
-            document.getElementById('german-word').style.display = 'none';  // Deutsches Wort verbergen
+            document.getElementById('german-word').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'block';
+            document.getElementById('buttons').style.display = 'none';
         }
 
         // Antwort anzeigen
         document.getElementById('show-answer').addEventListener('click', () => {
-            document.getElementById('german-word').textContent = currentWord.german;  // Deutsches Wort anzeigen
-            document.getElementById('german-word').style.display = 'block';  // Zeige es an
+            document.getElementById('german-word').style.display = 'block';
+            document.getElementById('buttons').style.display = 'flex';
+            document.getElementById('show-answer').style.display = 'none';
         });
 
         // Gewusst
@@ -290,8 +258,8 @@
 
         // Nicht gewusst
         document.getElementById('not-known').addEventListener('click', () => {
+            // Wort bleibt in der Liste, um es später zu wiederholen
             incorrectWords.push(currentWord);
-            updateProgress();
             getRandomWord();
         });
 
@@ -308,6 +276,7 @@
         function finishTraining() {
             document.getElementById('question-container').style.display = 'none';
             document.getElementById('result-container').style.display = 'flex';
+            // Kreisdiagramm für das Ergebnis
             const ctx = document.getElementById('result-chart').getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'pie',
@@ -319,6 +288,7 @@
                     }]
                 }
             });
+            // Ergebnis anzeigen
             document.getElementById('progress-text').textContent = `Du hast ${correctCount} von ${totalWords} richtig beantwortet.`;
         }
 
@@ -342,14 +312,29 @@
         // Alle Vokabeln auswählen
         document.getElementById('select-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
-            checkboxes.forEach(checkbox => checkbox.checked = true);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
         });
 
         // Alle Vokabeln abwählen
         document.getElementById('deselect-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
-            checkboxes.forEach(checkbox => checkbox.checked = false);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
         });
+
+        // Event-Listener für die Auswahl des CSVs
+        document.getElementById('csv-select').addEventListener('change', (event) => {
+            csvUrl = event.target.value;
+            words = [];  // Leere Liste, bevor neue CSV geladen wird
+            selectedWords = [];  // Leere ausgewählte Vokabeln
+            incorrectWords = [];  // Leere falsche Vokabeln
+            loadCSV();  // Lade die neue CSV-Datei
+        });
+
+        loadCSV();  // Beim Laden der Seite wird standardmäßig das erste CSV geladen
     </script>
 </body>
 </html>
