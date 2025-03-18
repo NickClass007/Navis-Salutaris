@@ -122,6 +122,7 @@
             <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
             <option value="LW2">LW2</option>
         </select>
+        <button> id="load-file">Vokabeln laden</button>
     </div>
     <!-- Vokabelauswahl -->
     <div id="vocab-selection">
@@ -331,15 +332,15 @@
 
        // Event-Listener für die Auswahl des CSVs
     document.getElementById('csv-select').addEventListener('change', (event) => {
-     //   csvUrl = event.target.value;
-       // words = [];  // Leere Liste, bevor neue CSV geladen wird
-        //selectedWords = [];  // Leere ausgewählte Vokabeln
-        //incorrectWords = [];  // Leere falsche Vokabeln
+        csvUrl = event.target.value;
+        words = [];  // Leere Liste, bevor neue CSV geladen wird
+        selectedWords = [];  // Leere ausgewählte Vokabeln
+        incorrectWords = [];  // Leere falsche Vokabeln
         loadCSV();  // Lade die neue CSV-Datei
     });
 
 
-        loadCSV();  // Beim Laden der Seite wird standardmäßig das erste CSV geladen
+          /
     </script>
 </body>
 </html>
