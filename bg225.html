@@ -152,9 +152,8 @@
             </div>
             <div id="progress-text">0/0</div>
             <div id="latin-word" class="word"></div>
-            <div id="german-word" class="word" style="display: none;"></div>
-            <button id="show-answer" style="display:none;">Antwort anzeigen</button>
-            <div id="buttons" style="display: none;">
+            <div id="german-word" class="word"></div>
+            <div id="buttons" style="display: flex;">
                 <button id="known">Gewusst</button>
                 <button id="not-known">Nicht gewusst</button>
             </div>
@@ -271,23 +270,13 @@
 
             currentWord = selectedWords.pop();
             document.getElementById('latin-word').textContent = currentWord.latin;
-            document.getElementById('german-word').style.display = 'none'; // Verstecke das deutsche Wort
-            document.getElementById('show-answer').style.display = 'block'; // Zeige den Button "Antwort anzeigen"
-            document.getElementById('buttons').style.display = 'none'; // Verstecke die Antwort-Buttons
+            document.getElementById('german-word').textContent = currentWord.german; // Zeige das deutsche Wort direkt an
         }
-
-        // Antwort anzeigen
-        document.getElementById('show-answer').addEventListener('click', () => {
-            document.getElementById('german-word').style.display = 'block'; // Zeige das deutsche Wort an
-            document.getElementById('buttons').style.display = 'flex'; // Zeige die Antwort-Buttons
-            document.getElementById('show-answer').style.display = 'none'; // Verstecke den Button "Antwort anzeigen"
-        });
 
         // Gewusst
         document.getElementById('known').addEventListener('click', () => {
             correctCount++;
             progress++;
-            document.getElementById('german-word').style.display = 'block'; // Zeige das deutsche Wort an
             updateProgress();
             getRandomWord();
         });
@@ -295,7 +284,7 @@
         // Nicht gewusst
         document.getElementById('not-known').addEventListener('click', () => {
             incorrectWords.push(currentWord);
-            document.getElementById('german-word').style.display = 'block'; // Zeige das deutsche Wort an
+            updateProgress();
             getRandomWord();
         });
 
