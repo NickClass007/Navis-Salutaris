@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vokabeltrainer</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,54 +63,6 @@
         #start-training:hover {
             background-color: #45a049;
         }
-        #vocab-list {
-            width: 100%;
-        }
-        #question-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            width: 80%;
-            max-width: 600px;
-            margin-top: 20px;
-        }
-        #question-container .word {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        #question-container button {
-            margin-top: 10px;
-        }
-        /* Fortschrittsbalken */
-        #progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-        #progress-bar {
-            height: 20px;
-            width: 0%;
-            background-color: #76c7c0;
-        }
-        #progress-text {
-            font-size: 1.2em;
-            margin-top: 5px;
-        }
-        /* Ergebnisbereich */
-        #result-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-        #result-container canvas {
-            width: 300px;
-            height: 300px;
-        }
-        #result-container button {
-            margin-top: 20px;
-            background-color: #ff7043;
-        }
         /* Container für den gesamten Bereich */
         #container {
             width: 100%;
@@ -144,39 +95,11 @@
             </div>
             <button id="start-training">Training starten</button>
         </div>
-
-        <!-- Abfragefenster -->
-        <div id="question-container">
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <div id="progress-text">0/0</div>
-            <div id="latin-word" class="word"></div>
-            <div id="german-word" class="word" style="display:none;"></div> <!-- Deutsches Wort ist zuerst versteckt -->
-            <div id="buttons" style="display: flex;">
-                <button id="show-answer" style="background-color: #fbc02d;">Antwort anzeigen</button>
-            </div>
-        </div>
-
-        <!-- Ergebnisbereich -->
-        <div id="result-container">
-            <h2>Ergebnis</h2>
-            <canvas id="result-chart"></canvas>
-            <div>
-                <button id="menu-button">Menü</button>
-                <button id="repeat-button">Nochmal</button>
-            </div>
-        </div>
     </div>
 
     <script>
         let words = [];  // Alle Vokabeln für alle CSV-Dateien
         let selectedWords = [];  // Vokabeln, die für das Training ausgewählt wurden
-        let incorrectWords = []; // Falsch beantwortete Vokabeln
-        let currentWord = {};  // Das aktuell angezeigte Wort
-        let progress = 0;
-        let correctCount = 0;
-        let totalWords = 0;
 
         // Liste der CSV-URLs
         const csvUrls = {
@@ -253,123 +176,6 @@
             document.getElementById('file-selection').style.display = 'none';
             document.getElementById('vocab-selection').style.display = 'none';
             document.getElementById('question-container').style.display = 'flex';
-            totalWords = selectedWords.length;
-            progress = 0;
-            correctCount = 0;
-            updateProgress();
-            getRandomWord();
-        });
-
-        // Zeige das nächste Wort an
-        function getRandomWord() {
-            if (selectedWords.length === 0) {
-                finishTraining();
-                return;
-            }
-
-            currentWord = selectedWords.pop();
-            document.getElementById('latin-word').textContent = currentWord.latin;
-            document.getElementById('german-word').style.display = 'none';  // Deutsches Wort verbergen
-        }
-
-        // Antwort anzeigen
-        document.getElementById('show-answer').addEventListener('click', () => {
-            document.getElementById('german-word').textContent = currentWord.german;  // Deutsches Wort anzeigen
-            document.getElementById('german-word').style.display = 'block';  // Zeige es an
-
-            // "Antwort anzeigen"-Button ausblenden
-            document.getElementById('show-answer').style.display = 'none';
-
-            // Zeige die Buttons erst nach dem Klick auf "Antwort anzeigen"
-            const buttons = document.getElementById('buttons');
-
-            const knownButton = document.createElement('button');
-            knownButton.textContent = "Gewusst";
-            buttons.appendChild(knownButton);
-
-            const notKnownButton = document.createElement('button');
-            notKnownButton.textContent = "Nicht gewusst";
-            buttons.appendChild(notKnownButton);
-
-            // Event Listener für "Gewusst"
-            knownButton.addEventListener('click', () => {
-                correctCount++;
-                progress++;
-                updateProgress();
-                getRandomWord();
-            });
-
-            // Event Listener für "Nicht gewusst"
-            notKnownButton.addEventListener('click', () => {
-                incorrectWords.push(currentWord);
-                updateProgress();
-                getRandomWord();
-            });
-        });
-
-        // Fortschritt anzeigen
-        function updateProgress() {
-            const progressPercentage = Math.floor((progress / totalWords) * 100);
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            progressBar.style.width = `${progressPercentage}%`;
-            progressText.textContent = `${correctCount}/${totalWords} gewusst`;
-        }
-
-        // Training beenden und Ergebnis anzeigen
-        function finishTraining() {
-            document.getElementById('question-container').style.display = 'none';
-
-            if (progress === totalWords) {
-                document.getElementById('result-container').style.display = 'flex';
-                showResultChart();
-            }
-        }
-
-        // Ergebnis anzeigen
-        function showResultChart() {
-            const ctx = document.getElementById('result-chart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Richtig', 'Falsch'],
-                    datasets: [{
-                        data: [correctCount, incorrectWords.length],
-                        backgroundColor: ['#4caf50', '#ff7043']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw} (${Math.round((tooltipItem.raw / totalWords) * 100)}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Zurück ins Menü
-        document.getElementById('menu-button').addEventListener('click', () => {
-            document.getElementById('result-container').style.display = 'none';
-            document.getElementById('file-selection').style.display = 'block';
-        });
-
-        // Wiederholung
-        document.getElementById('repeat-button').addEventListener('click', () => {
-            document.getElementById('result-container').style.display = 'none';
-            document.getElementById('vocab-selection').style.display = 'flex';
-            selectedWords = [];
-            incorrectWords = [];
-            progress = 0;
-            correctCount = 0;
         });
     </script>
 </body>
