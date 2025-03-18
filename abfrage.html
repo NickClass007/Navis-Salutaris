@@ -111,7 +111,7 @@
                     });
 
                     // Store the words in localStorage
-                    localStorage.setItem('vocabularies', JSON.stringify(words));
+                    localStorage.setItem('vocabularies', JSON.stringify(selectedWords));
                     remainingWords = [...words];
                     totalWords = words.length;
                     updateProgress();
