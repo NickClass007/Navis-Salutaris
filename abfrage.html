@@ -88,6 +88,38 @@
         let flaggedWords = new Set();
         let totalWords = 0;
 
+        // Check if words are available in localStorage
+        if (localStorage.getItem('vocabularies')) {
+            words = JSON.parse(localStorage.getItem('vocabularies'));
+            remainingWords = [...words];
+            totalWords = words.length;
+            updateProgress();
+            getRandomWord();
+        } else {
+            // If not available in localStorage, fetch from CSV and store in localStorage
+            const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';
+
+            fetch(csvUrl)
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    rows.forEach((row, index) => {
+                        const columns = row.split(',');
+                        if (index > 0 && columns.length >= 3) {
+                            words.push({ latin: columns[0], german: columns[2] });
+                        }
+                    });
+
+                    // Store the words in localStorage
+                    localStorage.setItem('vocabularies', JSON.stringify(words));
+                    remainingWords = [...words];
+                    totalWords = words.length;
+                    updateProgress();
+                    getRandomWord();
+                })
+                .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
+        }
+
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
@@ -190,18 +222,6 @@
             updateProgress();
             getRandomWord();
         });
-
-        // Laden der Vokabeln aus dem localStorage
-        const loadedVocab = localStorage.getItem('selectedVocab');
-        if (loadedVocab) {
-            words = JSON.parse(loadedVocab);
-            remainingWords = [...words];
-            totalWords = words.length;
-            updateProgress();
-            getRandomWord();
-        } else {
-            alert('Keine Vokabeln im localStorage gefunden.');
-        }
     </script>
 </body>
 </html>
