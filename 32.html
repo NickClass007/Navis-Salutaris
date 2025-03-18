@@ -131,7 +131,7 @@
                 <button id="select-all">Alle auswählen</button>
                 <button id="deselect-all">Alle abwählen</button>
             </div>
-            <button id="start-training">Training starten</button>
+            <button id="start-training">Test starten</button>
         </div>
     </div>
 
@@ -215,7 +215,7 @@
             document.getElementById('vocab-selection').style.display = 'flex';  // Vokabelauswahl anzeigen
         }
 
-        // Start des Trainings
+        // Start des Tests
         document.getElementById('start-training').addEventListener('click', () => {
             selectedWords = [];
             const checkboxes = document.querySelectorAll('#vocab-list input:checked');
@@ -227,11 +227,11 @@
                 return;
             }
 
-            // Seite löschen und Training starten
+            // Seite löschen und Test starten
             document.getElementById('file-selection').style.display = 'none';
             document.getElementById('vocab-selection').style.display = 'none';
 
-            startTraining();  // Training mit ausgewählten Vokabeln starten
+            startTest();  // Test mit ausgewählten Vokabeln starten
         });
 
         // Alle Vokabeln auswählen
@@ -251,7 +251,7 @@
         let correctCount = 0;
         let remainingWords = [];
 
-        function startTraining() {
+        function startTest() {
             remainingWords = [...selectedWords];
             totalWords = selectedWords.length;
             progress = 0;
