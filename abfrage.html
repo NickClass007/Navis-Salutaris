@@ -55,121 +55,41 @@
 </head>
 <body>
     <div id="container">
-        <!-- Vokabelauswahl Menü (falls CSV nicht geladen wird) -->
-        <div id="file-selection" style="display:none;">
-            <h2>Wählen Sie eine CSV-Datei</h2>
-            <select id="csv-select">
-                <option value="LW1">LW1</option>
-                <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
-                <option value="LW2">LW2</option>
-            </select>
-            <button id="load-file">Vokabeln Laden</button>
-        </div>
-
-        <!-- Vokabelauswahl (geladen aus LocalStorage) -->
-        <div id="vocab-selection" style="display:none;">
-            <h2>Vokabeln ausgewählt</h2>
+        <div id="vocab-selection">
+            <h2>Vokabeln zum Abfragen</h2>
             <div id="vocab-list"></div>
             <button id="start-training">Training starten</button>
         </div>
 
-        <!-- Zurück zum Menü Button -->
         <div id="back-to-menu" style="display:none;">
             <button id="go-back">Zurück zum Menü</button>
         </div>
     </div>
 
     <script>
-        let words = [];  // Alle Vokabeln
-        let selectedWords = [];  // Vokabeln, die für das Training ausgewählt wurden
+        let selectedWords = [];
 
-        // Versuche, die Vokabeln aus dem Local Storage zu laden
-        const loadedVocab = localStorage.getItem('selectedVocab');
+        const loadedVocab = localStorage.getItem('selectedWords');
         if (loadedVocab) {
-            // Wenn Vokabeln vorhanden sind, diese verwenden
-            words = JSON.parse(loadedVocab);
-            displayVocabSelection();  // Vokabelauswahl anzeigen
+            selectedWords = JSON.parse(loadedVocab);
+            displayVocab();
         } else {
-            // Wenn keine Vokabeln im Local Storage sind, CSV-Datei laden (Standardoption)
-            document.getElementById('file-selection').style.display = 'block';
+            document.getElementById('back-to-menu').style.display = 'block';
         }
 
-        // CSV-Datei laden
-        document.getElementById('load-file').addEventListener('click', () => {
-            const selectedCSV = document.getElementById('csv-select').value;
-            const url = csvUrls[selectedCSV];
-            loadCSV(url);
-        });
-
-        // CSV-Datei laden und in Vokabeln umwandeln
-        function loadCSV(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    processCSVData(data);
-                })
-                .catch(error => {
-                    console.error('Fehler beim Laden der CSV-Datei:', error);
-                    alert('Fehler beim Laden der CSV-Datei.');
-                });
-        }
-
-        // CSV-Daten verarbeiten
-        function processCSVData(data) {
-            words = [];
-            const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (row.trim() === '') return;
-                const columns = row.split(',');
-                if (columns.length >= 3) {
-                    words.push({ latin: columns[0], german: columns[2] });
-                }
-            });
-            // Die Vokabeln im Local Storage speichern
-            localStorage.setItem('selectedVocab', JSON.stringify(words));
-            displayVocabSelection();  // Vokabelauswahl anzeigen
-        }
-
-        // Vokabelauswahl anzeigen
-        function displayVocabSelection() {
+        function displayVocab() {
             const vocabListDiv = document.getElementById('vocab-list');
-            vocabListDiv.innerHTML = '';  // Vorherige Auswahl zurücksetzen
+            vocabListDiv.innerHTML = '';
 
-            words.forEach((word) => {
-                const label = document.createElement('label');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = word.latin;  // Wortwert wird gespeichert
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
-                vocabListDiv.appendChild(label);
+            selectedWords.forEach(word => {
+                const p = document.createElement('p');
+                p.textContent = `${word.latin} - ${word.german}`;
+                vocabListDiv.appendChild(p);
             });
-
-            document.getElementById('vocab-selection').style.display = 'block';  // Vokabelauswahl anzeigen
-            document.getElementById('back-to-menu').style.display = 'block';  // Zurück-Button anzeigen
         }
 
-        // Start des Trainings
-        document.getElementById('start-training').addEventListener('click', () => {
-            selectedWords = [];
-            const checkboxes = document.querySelectorAll('#vocab-list input:checked');
-            checkboxes.forEach(checkbox => {
-                const selectedWord = words.find(word => word.latin === checkbox.value);
-                selectedWords.push(selectedWord);
-            });
-            if (selectedWords.length === 0) {
-                alert('Bitte wählen Sie mindestens eine Vokabel aus!');
-                return;
-            }
-
-            // Bestätigung anzeigen
-            alert('Training startet mit den ausgewählten Vokabeln.');
-        });
-
-        // Zurück zum Menü (Local Storage löschen)
         document.getElementById('go-back').addEventListener('click', () => {
-            localStorage.removeItem('selectedVocab');  // Löscht den Local Storage
-            window.location.href = 'menu.html';  // Weiterleiten zum Menü
+            window.location.href = 'menu.html';
         });
     </script>
 </body>
