@@ -7,90 +7,201 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            background-color: #f7f7f7;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
-        #file-selection, #vocab-selection, #back-to-menu {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        #progress-container {
             width: 80%;
-            max-width: 600px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background-color: #76c7c0;
+        }
+        #word-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .word {
+            width: 45%;
             text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #buttons {
             margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
         }
         button {
             padding: 10px 20px;
-            font-size: 1.2em;
+            font-size: 1em;
             cursor: pointer;
+        }
+        canvas {
+            display: none;
+        }
+        #result-buttons {
+            display: none;
             margin-top: 20px;
-            background-color: #76c7c0;
-            border: none;
-            border-radius: 5px;
-            color: white;
-        }
-        button:hover {
-            background-color: #68b0a5;
-        }
-        #start-training {
-            background-color: #4caf50;
-        }
-        #start-training:hover {
-            background-color: #45a049;
-        }
-        #back-to-menu {
-            background-color: #ff9800;
-        }
-        #back-to-menu:hover {
-            background-color: #e68900;
+            display: flex;
+            justify-content: center;
+            width: 80%;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="vocab-selection">
-            <h2>Vokabeln zum Abfragen</h2>
-            <div id="vocab-list"></div>
-            <button id="start-training">Training starten</button>
-        </div>
-
-        <div id="back-to-menu" style="display:none;">
-            <button id="go-back">Zurück zum Menü</button>
-        </div>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
     </div>
-
+    <div id="progress-text">0/0</div>
+    <div id="word-container">
+        <div class="word" id="latin-word"></div>
+        <div class="word" id="german-word" style="display: none;"></div>
+    </div>
+    <button id="show-answer">Antwort ansehen</button>
+    <div id="buttons" style="display: none;">
+        <button id="not-known">Nicht gewusst</button>
+        <button id="known">Gewusst</button>
+    </div>
+    <canvas id="result-chart" width="300" height="300"></canvas>
+    <div id="result-buttons">
+        <button id="retry" style="display: none;">Nochmal</button>
+    </div>
     <script>
-        let selectedWords = [];
+        let words = [];
+        let currentWord = {};
+        let progress = 0;
+        let correctCount = 0;
+        let remainingWords = [];
+        let incorrectWords = [];
+        let flaggedWords = new Set();
+        let totalWords = 0;
 
-        const loadedVocab = localStorage.getItem('selectedWords');
-        if (loadedVocab) {
-            selectedWords = JSON.parse(loadedVocab);
-            displayVocab();
-        } else {
-            document.getElementById('back-to-menu').style.display = 'block';
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const progressPercentage = Math.floor((progress / totalWords) * 100);
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${progress}/${totalWords}`;
         }
 
-        function displayVocab() {
-            const vocabListDiv = document.getElementById('vocab-list');
-            vocabListDiv.innerHTML = '';
-
-            selectedWords.forEach(word => {
-                const p = document.createElement('p');
-                p.textContent = `${word.latin} - ${word.german}`;
-                vocabListDiv.appendChild(p);
-            });
+        function getRandomWord() {
+            if (remainingWords.length === 0 && incorrectWords.length === 0) {
+                showResults();
+                return;
+            }
+            if (remainingWords.length === 0) {
+                remainingWords = [...incorrectWords];
+                incorrectWords = [];
+            }
+            const randomIndex = Math.floor(Math.random() * remainingWords.length);
+            currentWord = remainingWords.splice(randomIndex, 1)[0];
+            document.getElementById("latin-word").textContent = currentWord.latin;
+            document.getElementById("german-word").style.display = "none";
+            document.getElementById("german-word").textContent = currentWord.german;
+            document.getElementById("buttons").style.display = "none";
+            document.getElementById("show-answer").style.display = "block";
         }
 
-        document.getElementById('go-back').addEventListener('click', () => {
-            window.location.href = 'menu.html';
+        function showResults() {
+            const canvas = document.getElementById('result-chart');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            const percentage = Math.floor((correctCount / totalWords) * 100);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const radius = canvas.width / 2;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, 0, (2 * Math.PI * correctCount) / totalWords);
+            ctx.lineTo(centerX, centerY);
+            ctx.fillStyle = '#76c7c0';
+            ctx.fill();
+
+            ctx.fillStyle = '#000';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
+
+            document.getElementById('result-buttons').style.display = 'flex';
+            document.getElementById('word-container').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('show-answer').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
+
+            // Zeige den "Nochmal"-Button an
+            document.getElementById('retry').style.display = 'block';
+        }
+
+        document.getElementById("show-answer").addEventListener("click", () => {
+            document.getElementById("german-word").style.display = "block";
+            document.getElementById("buttons").style.display = "flex";
+            document.getElementById("show-answer").style.display = "none";
         });
+
+        document.getElementById("not-known").addEventListener("click", () => {
+            incorrectWords.push(currentWord);
+            flaggedWords.add(currentWord);
+            getRandomWord();
+        });
+
+        document.getElementById("known").addEventListener("click", () => {
+            if (!flaggedWords.has(currentWord)) {
+                correctCount++;
+            }
+            progress++;
+            updateProgress();
+            getRandomWord();
+        });
+
+        document.getElementById("retry").addEventListener("click", () => {
+            progress = 0;
+            correctCount = 0;
+            remainingWords = [...words];
+            incorrectWords = [];
+            flaggedWords.clear();
+
+            document.getElementById('result-chart').style.display = 'none';
+            document.getElementById('result-buttons').style.display = 'none';
+            document.getElementById('word-container').style.display = 'flex';
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('progress-text').style.display = 'block';
+            updateProgress();
+            getRandomWord();
+        });
+
+        // Laden der Vokabeln aus dem localStorage
+        const loadedVocab = localStorage.getItem('selectedVocab');
+        if (loadedVocab) {
+            words = JSON.parse(loadedVocab);
+            remainingWords = [...words];
+            totalWords = words.length;
+            updateProgress();
+            getRandomWord();
+        } else {
+            alert('Keine Vokabeln im localStorage gefunden.');
+        }
     </script>
 </body>
 </html>
