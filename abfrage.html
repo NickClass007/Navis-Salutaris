@@ -52,11 +52,17 @@
             display: none;
         }
         #result-buttons {
-            display: none;
-            margin-top: 20px;
             display: flex;
             justify-content: center;
             width: 80%;
+            margin-top: 20px;
+        }
+        #retry, #go-to-menu {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 10px;
         }
     </style>
 </head>
@@ -75,9 +81,9 @@
         <button id="known">Gewusst</button>
     </div>
     <canvas id="result-chart" width="300" height="300"></canvas>
-    <div id="result-buttons">
-        <button id="retry" style="display: none;">Nochmal</button>
-        <button id="go-to-menu" style="display: none;">Zum Menü zurück</button>
+    <div id="result-buttons" style="display: none;">
+        <button id="retry">Nochmal</button>
+        <button id="go-to-menu">Zum Menü zurück</button>
     </div>
     <script>
         let words = [];
@@ -89,7 +95,6 @@
         let flaggedWords = new Set();
         let totalWords = 0;
 
-        // Check if words are available in localStorage
         if (localStorage.getItem('selectedWords')) {
             words = JSON.parse(localStorage.getItem('selectedWords'));
             remainingWords = [...words];
@@ -97,7 +102,6 @@
             updateProgress();
             getRandomWord();
         } else {
-            // If not available in localStorage, fetch from CSV and store in localStorage
             const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';
 
             fetch(csvUrl)
@@ -111,7 +115,6 @@
                         }
                     });
 
-                    // Store the words in localStorage
                     localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
                     remainingWords = [...words];
                     totalWords = words.length;
@@ -183,18 +186,14 @@
             document.getElementById('show-answer').style.display = 'none';
             document.getElementById('buttons').style.display = 'none';
 
-            // Zeige den "Nochmal"-Button an
-            document.getElementById('retry').style.display = 'block';
-            // Zeige den "Zum Menü zurück"-Button an
-            document.getElementById('go-to-menu').style.display = 'block';
+            document.getElementById('retry').style.display = 'inline-block';
+            document.getElementById('go-to-menu').style.display = 'inline-block';
         }
 
-        // Zurück zum Menü
         function goToMenu() {
-            window.location.href = "index.html"; // Hier ersetzt du "index.html" mit der URL oder dem Dateipfad des Menüs
+            window.location.href = "index.html"; // Ersetze dies mit der richtigen URL für dein Menü
         }
 
-        // EventListener für den Zurück-Button
         document.getElementById("go-to-menu").addEventListener("click", goToMenu);
 
         document.getElementById("show-answer").addEventListener("click", () => {
