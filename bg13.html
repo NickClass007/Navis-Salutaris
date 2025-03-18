@@ -118,9 +118,9 @@
         <h2>CSV-Datei auswählen</h2>
         <label for="csv-select">Wählen Sie eine CSV-Datei:</label>
         <select id="csv-select">
-            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv'>Caesars Bellum Gallicum I</option>
-            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'>Caesars Bellum Gallicum III</option>
-            <option value='https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'>Caesars Bellum Gallicum II</option>
+            <option value="LW1">LW1</option>
+            <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
+            <option value="LW2">LW2</option>
         </select>
     </div>
     <!-- Vokabelauswahl -->
@@ -165,7 +165,11 @@
         let progress = 0;
         let correctCount = 0;
         let totalWords = 0;
-        let csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv';  // Standard-CSV-URL
+        const csvUrls = {
+            'LW1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
+            'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
+            'LW2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'
+        };
 
         // CSV-Datei laden und Vokabeln verarbeiten
         function loadCSV() {
