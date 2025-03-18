@@ -16,7 +16,6 @@
             min-height: 100vh;
             background-color: #f7f7f7;
         }
-        /* Menü oben */
         #file-selection {
             background-color: white;
             padding: 20px;
@@ -63,18 +62,10 @@
         #start-training:hover {
             background-color: #45a049;
         }
-        /* Container für den gesamten Bereich */
-        #container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
     </style>
 </head>
 <body>
     <div id="container">
-        <!-- Vokabelauswahl Menü -->
         <div id="file-selection">
             <h2>Wählen Sie eine CSV-Datei</h2>
             <select id="csv-select">
@@ -85,7 +76,6 @@
             <button id="load-file">Vokabeln Laden</button>
         </div>
 
-        <!-- Vokabelauswahl -->
         <div id="vocab-selection" style="display:none;">
             <h2>Vokabeln auswählen</h2>
             <div id="vocab-list"></div>
@@ -98,24 +88,21 @@
     </div>
 
     <script>
-        let words = [];  // Alle Vokabeln für alle CSV-Dateien
-        let selectedWords = [];  // Vokabeln, die für das Training ausgewählt wurden
+        let words = [];
+        let selectedWords = [];
 
-        // Liste der CSV-URLs
         const csvUrls = {
             'LW1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
             'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
             'LW2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'
         };
 
-        // CSV-Datei laden, je nachdem, welche Option ausgewählt wurde
         document.getElementById('load-file').addEventListener('click', () => {
             const selectedCSV = document.getElementById('csv-select').value;
             const url = csvUrls[selectedCSV];
             loadCSV(url);
         });
 
-        // CSV-Datei laden
         function loadCSV(url) {
             fetch(url)
                 .then(response => response.text())
@@ -128,24 +115,22 @@
                 });
         }
 
-        // CSV-Daten verarbeiten
         function processCSVData(data) {
             words = [];
             const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (row.trim() === '') return; // Leerzeilen überspringen
+            rows.forEach((row) => {
+                if (row.trim() === '') return;
                 const columns = row.split(',');
                 if (columns.length >= 3) {
                     words.push({ latin: columns[0], german: columns[2] });
                 }
             });
-            displayVocabSelection();  // Vokabelauswahl anzeigen
+            displayVocabSelection();
         }
 
-        // Vokabelauswahl anzeigen
         function displayVocabSelection() {
             const vocabListDiv = document.getElementById('vocab-list');
-            vocabListDiv.innerHTML = '';  // Vorherige Auswahl zurücksetzen
+            vocabListDiv.innerHTML = '';
 
             words.forEach((word, index) => {
                 const label = document.createElement('label');
@@ -157,10 +142,9 @@
                 vocabListDiv.appendChild(label);
             });
 
-            document.getElementById('vocab-selection').style.display = 'flex';  // Vokabelauswahl anzeigen
+            document.getElementById('vocab-selection').style.display = 'flex';
         }
 
-        // Start des Trainings
         document.getElementById('start-training').addEventListener('click', () => {
             selectedWords = [];
             const checkboxes = document.querySelectorAll('#vocab-list input:checked');
@@ -172,20 +156,15 @@
                 return;
             }
 
-            // Vokabeln im localStorage speichern
             localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
-
-            // Weiter zur Abfrage-Seite
-            window.location.href = 'abfrage.html';  // Umleitung zur Abfrage-Seite
+            window.location.href = 'abfrage.html';
         });
 
-        // Alle Vokabeln auswählen
         document.getElementById('select-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
             checkboxes.forEach(checkbox => checkbox.checked = true);
         });
 
-        // Alle Vokabeln abwählen
         document.getElementById('deselect-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
             checkboxes.forEach(checkbox => checkbox.checked = false);
