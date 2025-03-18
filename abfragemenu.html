@@ -69,9 +69,9 @@
         <div id="file-selection">
             <h2>Wählen Sie eine CSV-Datei</h2>
             <select id="csv-select">
-                <option value="LW1">LW1</option>
+                <option value="Caesars_Bellum_Gallicum_I">Caesars Bellum Gallicum I</option>
+                <option value="Caesars_Bellum_Gallicum_II">Caesars Bellum Gallicum II</option>
                 <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
-                <option value="LW2">LW2</option>
             </select>
             <button id="load-file">Vokabeln Laden</button>
         </div>
@@ -92,9 +92,9 @@
         let selectedWords = [];
 
         const csvUrls = {
-            'LW1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
-            'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
-            'LW2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'
+            'Caesars_Bellum_Gallicum_I': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
+            'Caesars_Bellum_Gallicum_II': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv',
+            'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
         };
 
         document.getElementById('load-file').addEventListener('click', () => {
