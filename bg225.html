@@ -152,10 +152,11 @@
             </div>
             <div id="progress-text">0/0</div>
             <div id="latin-word" class="word"></div>
-            <div id="german-word" class="word"></div>
+            <div id="german-word" class="word" style="display:none;"></div> <!-- Deutsches Wort ist zuerst versteckt -->
             <div id="buttons" style="display: flex;">
                 <button id="known">Gewusst</button>
                 <button id="not-known">Nicht gewusst</button>
+                <button id="show-answer" style="background-color: #fbc02d;">Antwort anzeigen</button>
             </div>
         </div>
 
@@ -270,8 +271,14 @@
 
             currentWord = selectedWords.pop();
             document.getElementById('latin-word').textContent = currentWord.latin;
-            document.getElementById('german-word').textContent = currentWord.german; // Zeige das deutsche Wort direkt an
+            document.getElementById('german-word').style.display = 'none';  // Deutsches Wort verbergen
         }
+
+        // Antwort anzeigen
+        document.getElementById('show-answer').addEventListener('click', () => {
+            document.getElementById('german-word').textContent = currentWord.german;  // Deutsches Wort anzeigen
+            document.getElementById('german-word').style.display = 'block';  // Zeige es an
+        });
 
         // Gewusst
         document.getElementById('known').addEventListener('click', () => {
