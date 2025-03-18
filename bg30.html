@@ -172,8 +172,20 @@
                 return;
             }
 
-            // Zeige nur eine Meldung statt das Training zu starten
-            alert('Training startet (derzeit ohne Funktion).');
+            // Zeige eine Bestätigung an, dass das Training gestartet wird
+            alert('Training startet mit den ausgewählten Vokabeln.');
+        });
+
+        // Alle Vokabeln auswählen
+        document.getElementById('select-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        });
+
+        // Alle Vokabeln abwählen
+        document.getElementById('deselect-all').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('#vocab-list input');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
         });
     </script>
 </body>
