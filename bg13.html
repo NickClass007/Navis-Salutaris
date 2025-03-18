@@ -166,11 +166,19 @@
         let progress = 0;
         let correctCount = 0;
         let totalWords = 0;
+    
         const csvUrls = {
             'LW1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv',
             'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv',
             'LW2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv'
         };
+
+        document.getElementById('load-file').addEventListener('click', () => {
+            const selectedCSV = document.getElementById('csv-select').value;
+            const url = csvUrls[selectedCSV];
+            loadCSV();
+        });
+
 
         // CSV-Datei laden und Vokabeln verarbeiten
         function loadCSV() {
