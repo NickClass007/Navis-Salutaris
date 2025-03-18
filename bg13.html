@@ -176,13 +176,12 @@
         document.getElementById('load-file').addEventListener('click', () => {
             const selectedCSV = document.getElementById('csv-select').value;
             const url = csvUrls[selectedCSV];
-            loadCSV();
+            loadCSV(url);  // Übergibt die URL als Argument an die Funktion
         });
 
-
-        // CSV-Datei laden und Vokabeln verarbeiten
-        function loadCSV() {
-            fetch(csvUrl)
+// CSV-Datei laden und Vokabeln verarbeiten
+        function loadCSV(url) {
+            fetch(url)  // Verwende jetzt die übergebene URL
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n');
@@ -199,6 +198,7 @@
                     alert('Fehler beim Laden der CSV-Datei.');
                 });
         }
+
 
         // Vokabelauswahl anzeigen
         function displayVocabSelection() {
