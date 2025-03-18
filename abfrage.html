@@ -89,8 +89,8 @@
         let totalWords = 0;
 
         // Check if words are available in localStorage
-        if (localStorage.getItem('vocabularies')) {
-            words = JSON.parse(localStorage.getItem('vocabularies'));
+        if (localStorage.getItem('selectedWords')) {
+            words = JSON.parse(localStorage.getItem('selectedWords'));
             remainingWords = [...words];
             totalWords = words.length;
             updateProgress();
@@ -111,7 +111,7 @@
                     });
 
                     // Store the words in localStorage
-                    localStorage.setItem('vocabularies', JSON.stringify(selectedWords));
+                    localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
                     remainingWords = [...words];
                     totalWords = words.length;
                     updateProgress();
