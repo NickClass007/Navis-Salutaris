@@ -88,6 +88,19 @@
         let flaggedWords = new Set();
         let totalWords = 0;
 
+        // Funktion zum Anzeigen der Wörter aus localStorage
+        function showWordsFromLocalStorage() {
+            const storedWords = localStorage.getItem('selectedWords');
+            if (storedWords) {
+                const wordsArray = JSON.parse(storedWords);
+                alert("Wörter aus localStorage: " + wordsArray.map(word => word.latin).join(', '));
+            }
+        }
+
+        // Zeige die Wörter aus localStorage, wenn gewünscht
+        // Kommentiere die nächste Zeile aus, um diese Funktion zu deaktivieren
+        showWordsFromLocalStorage();
+
         // Check if words are available in localStorage
         if (localStorage.getItem('selectedWords')) {
             words = JSON.parse(localStorage.getItem('selectedWords'));
@@ -111,7 +124,7 @@
                     });
 
                     // Store the words in localStorage
-                    localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
+                    localStorage.setItem('selectedWords', JSON.stringify(words));
                     remainingWords = [...words];
                     totalWords = words.length;
                     updateProgress();
