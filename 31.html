@@ -155,7 +155,12 @@
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
             progressBar.style.width = `${progressPercentage}%`;
-            progressText.textContent = `${correctCount}/${totalWords} gewusst`;
+            progressText.textContent = `${progress}/${totalWords}`;
+
+            // Diagramm nur anzeigen, wenn alle Fragen beantwortet wurden
+            if (progress === totalWords) {
+                finishTraining();
+            }
         }
 
         // Training beenden und Ergebnis anzeigen
