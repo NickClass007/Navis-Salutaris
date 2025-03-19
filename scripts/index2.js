@@ -13,30 +13,26 @@ const urls = [
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv',
     'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
-    
 ];
 
 async function loadCSV() {
+    console.log("Lade CSV-Daten...");
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
 
-    // Überprüfen, ob die Daten korrekt geladen wurden
-    console.log(data); // Zeigt alle CSV-Daten in der Konsole
+    console.log("CSV-Daten geladen:", data);
 
     const allRows = data.flatMap(csv => csv.split('\n'));
 
-    // Überprüfen, ob die Zeilen korrekt zusammengeführt werden
-    console.log(allRows); // Zeigt alle Zeilen, die nach dem Splitten entstehen
+    console.log("Alle Zeilen nach dem Splitten:", allRows); // Zeigt alle Zeilen an
 
     const groupedRows = groupAndMergeRows(allRows);
 
-    // Überprüfen, ob das Gruppieren der Zeilen funktioniert hat
-    console.log(groupedRows); // Zeigt die zusammengeführten und gruppierten Zeilen
+    console.log("Gruppierte Zeilen:", groupedRows); // Zeigt die gruppierten Zeilen an
 
     populateTable(groupedRows);
 }
 
-// Funktion zum Gruppieren und Zusammenführen der Zeilen
 // Funktion zum Gruppieren und Zusammenführen der Zeilen
 function groupAndMergeRows(rows) {
     const grouped = {};
@@ -52,14 +48,12 @@ function groupAndMergeRows(rows) {
 
                 // Wenn der Wert in der ersten Spalte bereits existiert, füge die anderen Spalten hinzu
                 if (grouped[firstColumnValue]) {
-                    // Verwende Set, um Duplikate in den anderen Spalten zu vermeiden
                     grouped[firstColumnValue].secondColumn.add(secondColumnValue);
                     grouped[firstColumnValue].thirdColumn.add(thirdColumnValue);
                     grouped[firstColumnValue].fourthColumn.add(fourthColumnValue);
                 } else {
-                    // Andernfalls füge eine neue Gruppe hinzu
                     grouped[firstColumnValue] = {
-                        secondColumn: new Set([secondColumnValue]), // Set initialisieren
+                        secondColumn: new Set([secondColumnValue]),
                         thirdColumn: new Set([thirdColumnValue]),
                         fourthColumn: new Set([fourthColumnValue])
                     };
@@ -68,13 +62,12 @@ function groupAndMergeRows(rows) {
         }
     });
 
-    // Konvertiere die Sets zurück in Arrays und kombiniere die Werte
     const result = Object.keys(grouped).map(key => {
         return [
             key,
-            Array.from(grouped[key].secondColumn).join(', '),  // Kombiniere alle Werte der zweiten Spalte
-            Array.from(grouped[key].thirdColumn).join(', '),  // Kombiniere alle Werte der dritten Spalte
-            Array.from(grouped[key].fourthColumn).join(', ')  // Kombiniere alle Werte der vierten Spalte
+            Array.from(grouped[key].secondColumn).join(', '),
+            Array.from(grouped[key].thirdColumn).join(', '),
+            Array.from(grouped[key].fourthColumn).join(', ')
         ];
     });
 
@@ -86,73 +79,67 @@ function populateTable(rows) {
 
     rows.forEach((row, rowIndex) => {
         const bodyRow = document.createElement('tr');
-        
+
         row.forEach((col, colIndex) => {
             const td = document.createElement('td');
             
             if (colIndex === 3) { // Fourth column logic
-                const text = col.trim(); // Get the text from the CSV in the 4th column
+                console.log("Erstelle Button für:", col); // Überprüfe den Wert der vierten Spalte
                 
-                // Create a button with the text from the CSV
+                const text = col.trim(); // Holen Sie sich den Text aus der CSV in der vierten Spalte
                 const button = document.createElement('button');
                 button.innerText = text;
-                button.style.backgroundColor = 'orange'; // Set the button color to orange
+                button.style.backgroundColor = 'orange'; // Setze die Button-Farbe auf orange
                 button.className = 'main-button';
-                
-                // Create a div for the additional information (will be toggled on click)
+
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'info-div';
-                infoDiv.style.display = 'none'; // Initially hide the info
-                 
+                infoDiv.style.display = 'none'; // Anfangs ausblenden
+
+                // Wenn der Text bestimmte Muster enthält, PDF-Download-Buttons hinzufügen
                 if (/\bCaesars_Bellum_Gallicum_III\b/.test(text)) {
-                    // Für Caesars_Bellum_Gallicum_III, füge den Download-Button hinzu
                     const pdfButton = document.createElement('button');
                     pdfButton.innerText = "Download Caesars Bellum Gallicum III.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL für Caesar III
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank");
                     });
                     infoDiv.appendChild(pdfButton);
                 } else if (/\bCaesars_Bellum_Gallicum_II\b/.test(text)) {
-                        // Für Caesars_Bellum_Gallicum_II, füge den Download-Button hinzu
                     const pdfButton = document.createElement('button');
                     pdfButton.innerText = "Download Caesars Bellum Gallicum II.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank"); // PDF URL für Caesar II
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank");
                     });
                     infoDiv.appendChild(pdfButton);
                 } else if (/\bCaesars_Bellum_Gallicum_I\b/.test(text)) {
-                    // Für Caesars_Bellum_Gallicum_I, füge den Download-Button hinzu
                     const pdfButton = document.createElement('button');
                     pdfButton.innerText = "Download Caesars Bellum Gallicum I.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank"); // PDF URL für Caesar I
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank");
                     });
                     infoDiv.appendChild(pdfButton);
                 } else {
-    // Wenn der Text nicht mit "Caesars_Bellum_Gallicum_X" übereinstimmt, füge den Standardtext hinzu
                     infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                 }
 
-                // Toggle the visibility of the info div when the button is clicked
                 button.addEventListener('click', function() {
                     if (infoDiv.style.display === 'none') {
-                        infoDiv.style.display = 'block'; // Show the info
+                        infoDiv.style.display = 'block';
                     } else {
-                        infoDiv.style.display = 'none'; // Hide the info
+                        infoDiv.style.display = 'none';
                     }
                 });
 
-                // Append the button and info div to the table cell
                 td.appendChild(button);
                 td.appendChild(infoDiv);
             } else {
-                td.innerText = col; // For other columns, display the text normally
+                td.innerText = col;
             }
 
-            td.setAttribute('title', books[rowIndex % books.length]); // Add hover text with book info
+            td.setAttribute('title', books[rowIndex % books.length]); // Hover-Text mit Buchinfo
             bodyRow.appendChild(td);
         });
 
