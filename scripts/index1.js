@@ -100,19 +100,34 @@ function populateTable(rows) {
                 infoDiv.className = 'info-div';
                 infoDiv.style.display = 'none'; // Initially hide the info
                 
-                if (text.includes("Caesars")) {
-                    // For Caesar, display a gray button with a PDF link when clicked
+             if (/\bCaesars_Bellum_Gallicum_III\b/.test(text)) {
                     const pdfButton = document.createElement('button');
-                    pdfButton.innerText = "Open PDF";
+                    pdfButton.innerText = "Download Caesars Bellum Gallicum III.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL for Caesar
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank");
+                    });
+                    infoDiv.appendChild(pdfButton);
+                } else if (/\bCaesars_Bellum_Gallicum_II\b/.test(text)) {
+                    const pdfButton = document.createElement('button');
+                    pdfButton.innerText = "Download Caesars Bellum Gallicum II.pdf";
+                    pdfButton.style.backgroundColor = 'gray';
+                    pdfButton.addEventListener('click', function() {
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank");
+                    });
+                    infoDiv.appendChild(pdfButton);
+                } else if (/\bCaesars_Bellum_Gallicum_I\b/.test(text)) {
+                    const pdfButton = document.createElement('button');
+                    pdfButton.innerText = "Download Caesars Bellum Gallicum I.pdf";
+                    pdfButton.style.backgroundColor = 'gray';
+                    pdfButton.addEventListener('click', function() {
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank");
                     });
                     infoDiv.appendChild(pdfButton);
                 } else {
-                    // For other items, just display the "Sammlung" text
                     infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                 }
+
 
                 // Toggle the visibility of the info div when the button is clicked
                 button.addEventListener('click', function() {
