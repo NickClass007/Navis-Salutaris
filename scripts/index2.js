@@ -108,13 +108,12 @@ function populateTable(rows) {
                         window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL for Caesar
                     });
                     infoDiv.appendChild(pdfButton);
-                } if (text.includes("Caesars_Bellum_Gallicum_II")) {
-                    
+                } if (text === "Caesars_Bellum_Gallicum_II") {
                     const pdfButton = document.createElement('button'); 
                     pdfButton.innerText = "Download Caesars Bellum Gallicum II.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank"); // PDF URL for Caesar
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank"); // PDF URL for Caesar II
                     });
                     infoDiv.appendChild(pdfButton);
 
