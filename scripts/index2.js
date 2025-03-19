@@ -16,20 +16,6 @@ const urls = [
     
 ];
 
-const books = [
-    'Buch 1',
-    'Buch 2',
-    'Buch 3',
-    'Buch 4',
-    'Buch 5',
-    'Buch 6',
-    'Buch 7',
-    'Buch 8',
-    'Buch 9',
-    'Buch 10',
-    'Buch 11'
-];
-
 async function loadCSV() {
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
