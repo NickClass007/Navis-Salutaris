@@ -118,6 +118,16 @@ function populateTable(rows) {
                     });
                     infoDiv.appendChild(pdfButton);
 
+                } if (text === "Caesars_Bellum_Gallicum_I") {
+
+                    const pdfButton = document.createElement('button');
+                    pdfButton.innerText = "Downlaod Caesars Bellum Gallicum I.pdf";
+                    pdfButton.style.backgroundColor = 'gray';
+                    pdfButton.addEventListener('click', function() {
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank"); // PDF URL for Caesar
+                    });
+                    infoDiv.appendChild(pdfButton);
+                
                 } else {
                     // For other items, just display the "Sammlung" text
                     infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
