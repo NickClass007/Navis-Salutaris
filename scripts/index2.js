@@ -98,37 +98,36 @@ function populateTable(rows) {
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'info-div';
                 infoDiv.style.display = 'none'; // Initially hide the info
-                
-                if (text.includes("Caesars_Bellum_Gallicum_III")) {
-                    // For Caesar, display a gray button with a PDF link when clicked
+                 
+                if (/\bCaesars_Bellum_Gallicum_III\b/.test(text)) {
+                    // Für Caesars_Bellum_Gallicum_III, füge den Download-Button hinzu
                     const pdfButton = document.createElement('button');
                     pdfButton.innerText = "Download Caesars Bellum Gallicum III.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL for Caesar
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank"); // PDF URL für Caesar III
                     });
                     infoDiv.appendChild(pdfButton);
-                } if (text === "Caesars_Bellum_Gallicum_II") {
-                    const pdfButton = document.createElement('button'); 
+                } else if (/\bCaesars_Bellum_Gallicum_II\b/.test(text)) {
+                        // Für Caesars_Bellum_Gallicum_II, füge den Download-Button hinzu
+                    const pdfButton = document.createElement('button');
                     pdfButton.innerText = "Download Caesars Bellum Gallicum II.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank"); // PDF URL for Caesar II
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank"); // PDF URL für Caesar II
                     });
                     infoDiv.appendChild(pdfButton);
-
-                } if (text === "Caesars_Bellum_Gallicum_I") {
-
+                } else if (/\bCaesars_Bellum_Gallicum_I\b/.test(text)) {
+                    // Für Caesars_Bellum_Gallicum_I, füge den Download-Button hinzu
                     const pdfButton = document.createElement('button');
-                    pdfButton.innerText = "Downlaod Caesars Bellum Gallicum I.pdf";
+                    pdfButton.innerText = "Download Caesars Bellum Gallicum I.pdf";
                     pdfButton.style.backgroundColor = 'gray';
                     pdfButton.addEventListener('click', function() {
-                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank"); // PDF URL for Caesar
+                        window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank"); // PDF URL für Caesar I
                     });
                     infoDiv.appendChild(pdfButton);
-                
                 } else {
-                    // For other items, just display the "Sammlung" text
+    // Wenn der Text nicht mit "Caesars_Bellum_Gallicum_X" übereinstimmt, füge den Standardtext hinzu
                     infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                 }
 
