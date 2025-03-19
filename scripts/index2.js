@@ -19,8 +19,20 @@ const urls = [
 async function loadCSV() {
     const requests = urls.map(url => fetch(url).then(response => response.text()));
     const data = await Promise.all(requests);
+
+    // Überprüfen, ob die Daten korrekt geladen wurden
+    console.log(data); // Zeigt alle CSV-Daten in der Konsole
+
     const allRows = data.flatMap(csv => csv.split('\n'));
-    const groupedRows = groupAndMergeRows(allRows);  // Gruppiere und kombiniere Zeilen
+
+    // Überprüfen, ob die Zeilen korrekt zusammengeführt werden
+    console.log(allRows); // Zeigt alle Zeilen, die nach dem Splitten entstehen
+
+    const groupedRows = groupAndMergeRows(allRows);
+
+    // Überprüfen, ob das Gruppieren der Zeilen funktioniert hat
+    console.log(groupedRows); // Zeigt die zusammengeführten und gruppierten Zeilen
+
     populateTable(groupedRows);
 }
 
