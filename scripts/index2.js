@@ -35,27 +35,28 @@ function groupAndMergeRows(rows) {
 
             // Wenn der Wert in der ersten Spalte bereits existiert, füge die anderen Spalten hinzu
             if (grouped[firstColumnValue]) {
-                grouped[firstColumnValue].secondColumn.push(cols[1].trim());
-                grouped[firstColumnValue].thirdColumn.push(cols[2].trim());
-                grouped[firstColumnValue].fourthColumn.push(cols[3].trim());
+                // Verwende Set, um Duplikate zu vermeiden
+                grouped[firstColumnValue].secondColumn.add(cols[1].trim());
+                grouped[firstColumnValue].thirdColumn.add(cols[2].trim());
+                grouped[firstColumnValue].fourthColumn.add(cols[3].trim());
             } else {
                 // Andernfalls füge eine neue Gruppe hinzu
                 grouped[firstColumnValue] = {
-                    secondColumn: [cols[1].trim()],
-                    thirdColumn: [cols[2].trim()],
-                    fourthColumn: [cols[3].trim()]
+                    secondColumn: new Set([cols[1].trim()]), // Set initialisieren
+                    thirdColumn: new Set([cols[2].trim()]),
+                    fourthColumn: new Set([cols[3].trim()])
                 };
             }
         }
     });
 
-    // Konvertiere das gruppierte Objekt zurück in ein Array von Zeilen
+    // Konvertiere die Sets zurück in Arrays und kombiniere die Werte
     const result = Object.keys(grouped).map(key => {
         return [
             key,
-            grouped[key].secondColumn.join(', '),
-            grouped[key].thirdColumn.join(', '),
-            grouped[key].fourthColumn.join(', ')
+            Array.from(grouped[key].secondColumn).join(', '),
+            Array.from(grouped[key].thirdColumn).join(', '),
+            Array.from(grouped[key].fourthColumn).join(', ')
         ];
     });
 
