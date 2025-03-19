@@ -25,27 +25,33 @@ async function loadCSV() {
 }
 
 // Funktion zum Gruppieren und Zusammenführen der Zeilen
+// Funktion zum Gruppieren und Zusammenführen der Zeilen
 function groupAndMergeRows(rows) {
     const grouped = {};
 
     rows.forEach(row => {
         if (row.trim() !== "") {
             const cols = row.split(',');
-            const firstColumnValue = cols[0].trim(); // Wert aus der ersten Spalte
+            if (cols.length >= 4) {  // Stelle sicher, dass es mindestens 4 Spalten gibt
+                const firstColumnValue = cols[0].trim(); // Wert aus der ersten Spalte
+                const secondColumnValue = cols[1].trim(); // Wert aus der zweiten Spalte
+                const thirdColumnValue = cols[2].trim(); // Wert aus der dritten Spalte
+                const fourthColumnValue = cols[3].trim(); // Wert aus der vierten Spalte
 
-            // Wenn der Wert in der ersten Spalte bereits existiert, füge die anderen Spalten hinzu
-            if (grouped[firstColumnValue]) {
-                // Verwende Set, um Duplikate zu vermeiden
-                grouped[firstColumnValue].secondColumn.add(cols[1].trim());
-                grouped[firstColumnValue].thirdColumn.add(cols[2].trim());
-                grouped[firstColumnValue].fourthColumn.add(cols[3].trim());
-            } else {
-                // Andernfalls füge eine neue Gruppe hinzu
-                grouped[firstColumnValue] = {
-                    secondColumn: new Set([cols[1].trim()]), // Set initialisieren
-                    thirdColumn: new Set([cols[2].trim()]),
-                    fourthColumn: new Set([cols[3].trim()])
-                };
+                // Wenn der Wert in der ersten Spalte bereits existiert, füge die anderen Spalten hinzu
+                if (grouped[firstColumnValue]) {
+                    // Verwende Set, um Duplikate in den anderen Spalten zu vermeiden
+                    grouped[firstColumnValue].secondColumn.add(secondColumnValue);
+                    grouped[firstColumnValue].thirdColumn.add(thirdColumnValue);
+                    grouped[firstColumnValue].fourthColumn.add(fourthColumnValue);
+                } else {
+                    // Andernfalls füge eine neue Gruppe hinzu
+                    grouped[firstColumnValue] = {
+                        secondColumn: new Set([secondColumnValue]), // Set initialisieren
+                        thirdColumn: new Set([thirdColumnValue]),
+                        fourthColumn: new Set([fourthColumnValue])
+                    };
+                }
             }
         }
     });
@@ -54,9 +60,9 @@ function groupAndMergeRows(rows) {
     const result = Object.keys(grouped).map(key => {
         return [
             key,
-            Array.from(grouped[key].secondColumn).join(', '),
-            Array.from(grouped[key].thirdColumn).join(', '),
-            Array.from(grouped[key].fourthColumn).join(', ')
+            Array.from(grouped[key].secondColumn).join(', '),  // Kombiniere alle Werte der zweiten Spalte
+            Array.from(grouped[key].thirdColumn).join(', '),  // Kombiniere alle Werte der dritten Spalte
+            Array.from(grouped[key].fourthColumn).join(', ')  // Kombiniere alle Werte der vierten Spalte
         ];
     });
 
