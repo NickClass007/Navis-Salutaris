@@ -1,3 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vokabeltrainer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #progress-container {
+            width: 80%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background-color: #76c7c0;
+        }
+        #word-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .word {
+            width: 45%;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        canvas {
+            display: none;
+        }
+        #result-buttons {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            margin-top: 20px;
+        }
+        #retry, #go-to-menu {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #retry {
+            margin-right: 20px; /* Abstand zwischen den Buttons */
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="progress-text">0/0</div>
+    <div id="word-container">
+        <div class="word" id="latin-word"></div>
+        <div class="word" id="german-word" style="display: none;"></div>
+    </div>
+    <button id="show-answer">Antwort ansehen</button>
+    <div id="buttons" style="display: none;">
+        <button id="not-known">Nicht gewusst</button>
+        <button id="known">Gewusst</button>
+    </div>
+    <canvas id="result-chart" width="300" height="300"></canvas>
+    <div id="result-buttons" style="display: none;">
+        <button id="retry">Nochmal</button>
+        <button id="go-to-menu">Zum Menü zurück</button>
+    </div>
+    <script>
 let words = [];
 let currentWord = {};
 let progress = 0;
@@ -156,3 +247,6 @@ document.getElementById("retry").addEventListener("click", () => {
     updateProgress();
     getRandomWord();
 });
+</skript>
+    </body>
+    
