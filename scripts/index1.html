@@ -86,18 +86,19 @@ function populateTable(rows) {
             const td = document.createElement('td');
             
             if (colIndex === 3) { // Fourth column logic
-                // Wenn es mehrere Einträge gibt (Array), erzeugen wir für jeden Eintrag einen Button
-                col.forEach(text => {
+                // Füge für jeden Wert in der vierten Spalte einen eigenen Button hinzu
+                row[3].forEach(text => {
                     const button = document.createElement('button');
                     button.innerText = text;
                     button.style.backgroundColor = 'orange'; // Set the button color to orange
                     button.className = 'main-button';
 
-                    // Add PDF download buttons based on specific word matches
+                    // Info-Anzeige bei Klick
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'info-div';
                     infoDiv.style.display = 'none'; // Initially hide the info
 
+                    // Füge PDF-Download-Buttons hinzu, basierend auf dem Text
                     if (/\bCaesars_Bellum_Gallicum_III\b/.test(text)) {
                         const pdfButton = document.createElement('button');
                         pdfButton.innerText = "Download Caesars Bellum Gallicum III.pdf";
@@ -126,15 +127,24 @@ function populateTable(rows) {
                         infoDiv.innerText = "Sammlung ratio Lesebuch Latein Mittelstufe 1";
                     }
 
-                    // Append the button and info div to the table cell
+                    // Toggle die Sichtbarkeit der infoDiv beim Klicken auf den Button
+                    button.addEventListener('click', function() {
+                        if (infoDiv.style.display === 'none') {
+                            infoDiv.style.display = 'block'; // Zeige die Info an
+                        } else {
+                            infoDiv.style.display = 'none'; // Verstecke die Info
+                        }
+                    });
+
+                    // Füge den Button und das Info-Div zum Tabellenzelleninhalt hinzu
                     td.appendChild(button);
                     td.appendChild(infoDiv);
                 });
             } else {
-                td.innerText = col; // For other columns, display the text normally
+                td.innerText = col; // Für andere Spalten, den Text normal anzeigen
             }
 
-            td.setAttribute('title', books[rowIndex % books.length]); // Add hover text with book info
+            td.setAttribute('title', books[rowIndex % books.length]); // Füge Hover-Text mit Buchinfo hinzu
             bodyRow.appendChild(td);
         });
 
