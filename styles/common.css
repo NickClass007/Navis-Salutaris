@@ -170,60 +170,49 @@ body.light-mode #menu a:hover, body.light-mode #menu a.active {
 }
               
 
-/* Vokabeln untereinander anzeigen */
-#vocab-selection {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 80%;
-    max-width: 600px;
-    margin-top: 20px;
-    overflow-y: auto; /* Falls zu viele Vokabeln da sind */
-    flex-grow: 1; /* Damit der Bereich wächst und Buttons nach unten gedrückt werden */
-}
-
-#vocab-selection label {
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-}
-
-#vocab-selection input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-/* Buttons */
-button {
-    padding: 10px 20px;
-    font-size: 1.2em;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 50px
-    background-color: #76c7c0;
-    border: none;
-    border-radius: 5px;
-    color: white;
-}
-
-button:hover {
-    background-color: #68b0a5;
-}
-
-#start-training {
-    background-color: #4caf50;
-}
-
-#start-training:hover {
-    background-color: #45a049;
-}
-
-/* Container für Vokabeln und Buttons nach unten drücken */
-#file-selection, #vocab-selection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Buttons nach unten verschieben */
-    height: 100%;
-    padding-bottom: 20px;
-}
+        #file-selection {
+             background-color: white;
+             padding: 20px;
+             border-radius: 5px;
+             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+             width: 80%;
+             max-width: 600px;
+             text-align: center;
+             margin-top: 20px;
+         }
+         #vocab-selection {
+             display: flex;
+             flex-direction: column;
+             align-items: flex-start;
+             width: 80%;
+             max-width: 600px;
+             margin-top: 20px;
+         }
+         #vocab-selection label {
+             margin: 5px 0;
+             display: flex;
+             align-items: center;
+             font-size: 1.2em;
+         }
+         #vocab-selection input[type="checkbox"] {
+             margin-right: 10px;
+         }
+         button {
+             padding: 10px 20px;
+             font-size: 1.2em;
+             cursor: pointer;
+             margin-top: 20px;
+             background-color: #76c7c0;
+             border: none;
+             border-radius: 5px;
+             color: white;
+         }
+         button:hover {
+             background-color: #68b0a5;
+         }
+         #start-training {
+             background-color: #4caf50;
+         }
+         #start-training:hover {
+             background-color: #45a049;
+         }
