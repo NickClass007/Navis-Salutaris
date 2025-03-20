@@ -88,12 +88,12 @@ function populateTable(rows) {
             if (colIndex === 3) { // Fourth column logic
                 // Füge für jeden Wert in der vierten Spalte einen eigenen Button hinzu
                 row[3].forEach(text => {
-                    const button = document.createElement('button');
+                    const buttonInfo = document.createElement('button');
                     
-                    button.innerText = text;
-                    button.style.backgroundColor = 'orange'; // Set the button color to orange
-                    button.className = 'main-button';
-                    button.style.fontSize = "16px"; // Beispiel für die Textgröße
+                    buttonInfo.innerText = text;
+                    buttonInfo.style.backgroundColor = 'orange'; // Set the button color to orange
+                    buttonInfo.className = 'main-button';
+                    buttonInfo.style.fontSize = "5px"; // Beispiel für die Textgröße
                     // Info-Anzeige bei Klick
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'info-div';
@@ -138,7 +138,7 @@ function populateTable(rows) {
                     });
 
                     // Füge den Button und das Info-Div zum Tabellenzelleninhalt hinzu
-                    td.appendChild(button);
+                    td.appendChild(buttonInfo);
                     td.appendChild(infoDiv);
                 });
             } else {
