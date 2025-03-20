@@ -23,22 +23,12 @@ h2 {
     margin-bottom: 16px;
 }
 
-#menu-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
 #menu {
     display: flex;
-    flex-grow: 1;
+    justify-content: space-around;
     background-color: #444;
     padding: 10px;
     border-radius: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 #menu a {
@@ -53,21 +43,6 @@ h2 {
     background-color: #ff8c00;
 }
 
-#menu-button {
-    white-space: nowrap;
-    background-color: #ff8c00;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#menu-button:hover {
-    background-color: #ff6500;
-}
-
 .container {
     background-color: #363636; /* Hintergrundfarbe im Dark Mode */
     padding: 20px;
@@ -77,6 +52,101 @@ h2 {
 
 body.light-mode .container {
     background-color: #e0e0e0; /* Hintergrundfarbe im Light Mode */
+}
+
+input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    background-color: #d3d3d3; /* Leicht graues Suchfeld */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px; /* Abgerundete Ecken für die Tabelle */
+    overflow: hidden; /* Um abgerundete Ecken auch für Inhalte zu erlauben */
+}
+
+th, td {
+    padding: 16px; /* Größeres Padding für eine größere Höhe */
+    text-align: left;
+    border: 1px solid #555; /* Leicht dunklere Rahmenfarbe */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; /* Automatischer Zeilenumbruch bei Leerzeichen */
+    white-space: normal; /* Erlaubt Zeilenumbruch */
+    border-radius: 8px; /* Abgerundete Ecken für die Zellen */
+}
+
+th {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.light-mode th {
+    background-color: #ddd; /* Hintergrundfarbe für Tabellenköpfe im Lichtmodus */
+    color: #333; /* Schriftfarbe für Tabellenköpfe im Lichtmodus */
+}
+
+body.light-mode td {
+    border: 1px solid #ccc; /* Rahmenfarbe für Zellen im Lichtmodus */
+}
+
+.scroll {
+    display: block;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.scroll thead, .scroll tbody {
+    display: block;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Scroll */
+}
+
+.scroll thead tr {
+    display: flex;
+}
+
+.scroll tbody tr {
+    display: flex;
+    border-radius: 8px; /* Abgerundete Ecken für die Table Rows */
+}
+
+.scroll thead th, .scroll tbody td {
+    flex: 1;
+}
+
+.scroll tbody {
+    overflow-y: auto;
+    max-height: 300px; /* Größere max-height für die Tabelle */
+    scrollbar-width: none; /* Für Firefox */
+}
+
+.scroll tbody::-webkit-scrollbar {
+    display: none; /* Für Webkit-Browser - z.B. Chrome, Safari */
+}
+
+/* Style for Buttons */
+button {
+    background-color: #ff8c00; /* Orange Button Hintergrundfarbe */
+    color: #fff; /* Weiße Schriftfarbe */
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff6500; /* Dunklere Orange beim Hover */
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ff8c00; /* Orange Umrandung beim Fokussieren */
 }
 
 /* Light Mode */
@@ -98,112 +168,9 @@ body.light-mode #menu a:hover, body.light-mode #menu a.active {
     background-color: #ff8c00;
     color: #fff;
 }
+              
 
-/* Input-Felder */
-input[type="text"] {
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    width: 100%;
-    background-color: #d3d3d3; /* Leicht graues Suchfeld */
-}
-
-/* Tabellenstil */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 16px;
-    text-align: left;
-    border: 1px solid #555;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    white-space: normal;
-    border-radius: 8px;
-}
-
-th {
-    background-color: #666;
-    color: #e0e0e0;
-}
-
-body.light-mode th {
-    background-color: #ddd;
-    color: #333;
-}
-
-body.light-mode td {
-    border: 1px solid #ccc;
-}
-
-/* Scrollbare Tabelle */
-.scroll {
-    display: block;
-    overflow-x: auto;
-    margin-top: 10px;
-}
-
-.scroll thead, .scroll tbody {
-    display: block;
-    border-radius: 8px;
-}
-
-.scroll thead tr, .scroll tbody tr {
-    display: flex;
-    border-radius: 8px;
-}
-
-.scroll thead th, .scroll tbody td {
-    flex: 1;
-}
-
-.scroll tbody {
-    overflow-y: auto;
-    max-height: 300px;
-    scrollbar-width: none;
-}
-
-.scroll tbody::-webkit-scrollbar {
-    display: none;
-}
-
-/* Buttons */
-button {
-    background-color: #ff8c00;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #ff6500;
-}
-
-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #ff8c00;
-}
-
-#file-selection {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    margin-top: 20px;
-}
-
+/* Vokabeln untereinander anzeigen */
 #vocab-selection {
     display: flex;
     flex-direction: column;
@@ -211,6 +178,8 @@ button:focus {
     width: 80%;
     max-width: 600px;
     margin-top: 20px;
+    overflow-y: auto; /* Falls zu viele Vokabeln da sind */
+    flex-grow: 1; /* Damit der Bereich wächst und Buttons nach unten gedrückt werden */
 }
 
 #vocab-selection label {
@@ -224,10 +193,36 @@ button:focus {
     margin-right: 10px;
 }
 
+/* Buttons */
+button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: #76c7c0;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+button:hover {
+    background-color: #68b0a5;
+}
+
 #start-training {
     background-color: #4caf50;
 }
 
 #start-training:hover {
     background-color: #45a049;
+}
+
+/* Container für Vokabeln und Buttons nach unten drücken */
+#file-selection, #vocab-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Buttons nach unten verschieben */
+    height: 100%;
+    padding-bottom: 20px;
 }
