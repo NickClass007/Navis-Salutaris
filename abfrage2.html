@@ -8,18 +8,40 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
             padding: 20px;
-            background-color: #f0f0f0;
+            text-align: center;
         }
 
         #word-container {
-            text-align: center;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
         #progress-container {
-            text-align: center;
-            margin-bottom: 20px;
+            margin: 20px 0;
+        }
+
+        #progress-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            margin: 10px auto;
+        }
+
+        #progress-bar div {
+            height: 100%;
+            background-color: #76c7c0;
+            border-radius: 10px;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         #show-answer {
@@ -27,24 +49,16 @@
             margin-top: 20px;
         }
 
-        #buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        #result-buttons {
+            display: none;
+            margin-top: 20px;
         }
 
         #result-chart {
             width: 200px;
             height: 200px;
-            border-radius: 50%;
             margin: 20px auto;
             display: none;
-        }
-
-        #result-buttons {
-            display: none;
-            justify-content: center;
-            gap: 10px;
         }
 
         .button {
@@ -52,9 +66,9 @@
             background-color: #76c7c0;
             color: white;
             border: none;
-            cursor: pointer;
             font-size: 16px;
             border-radius: 5px;
+            cursor: pointer;
         }
 
         .button:hover {
@@ -69,20 +83,13 @@
             display: none;
         }
 
-        #progress-bar {
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-        }
-
-        #progress-bar div {
-            height: 100%;
-            background-color: #76c7c0;
-            border-radius: 10px;
+        #latin-word, #german-word {
+            display: inline-block;
+            margin: 5px;
         }
 
         #progress-text {
-            margin-top: 10px;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -90,7 +97,8 @@
     <h1>Vokabeltrainer - Abfrage</h1>
 
     <div id="word-container">
-        <span id="latin-word"></span> <span id="german-word"></span>
+        <span id="latin-word"></span>
+        <span id="german-word"></span>
     </div>
 
     <div id="progress-container">
@@ -163,22 +171,17 @@
             if (queryMethod === 'latin-to-german') {
                 document.getElementById("latin-word").textContent = currentWord.latin;
                 document.getElementById("german-word").style.display = "none";
-                document.getElementById("german-word").textContent = currentWord.german;
             } else if (queryMethod === 'german-to-latin') {
                 document.getElementById("german-word").textContent = currentWord.german;
                 document.getElementById("latin-word").style.display = "none";
-                document.getElementById("latin-word").textContent = currentWord.latin;
             } else if (queryMethod === 'mixed') {
-                // Zufällig entscheiden, ob Latein oder Deutsch angezeigt wird
                 const randomChoice = Math.random() > 0.5;
                 if (randomChoice) {
                     document.getElementById("latin-word").textContent = currentWord.latin;
                     document.getElementById("german-word").style.display = "none";
-                    document.getElementById("german-word").textContent = currentWord.german;
                 } else {
                     document.getElementById("german-word").textContent = currentWord.german;
                     document.getElementById("latin-word").style.display = "none";
-                    document.getElementById("latin-word").textContent = currentWord.latin;
                 }
             }
 
@@ -229,7 +232,8 @@
 
         // Benutzer will Antwort sehen
         document.getElementById("show-answer").addEventListener("click", () => {
-            document.getElementById("german-word").style.display = "block";
+            document.getElementById("german-word").style.display = "inline-block";
+            document.getElementById("latin-word").style.display = "inline-block";
             document.getElementById("buttons").style.display = "flex";
             document.getElementById("show-answer").style.display = "none";
         });
