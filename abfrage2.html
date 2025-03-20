@@ -98,6 +98,9 @@
         let flaggedWords = new Set();
         let totalWords = 0;
 
+        // Steuere, ob Deutsch oder Latein zuerst angezeigt wird
+        let isGermanFirst = false; // false = Latein zuerst, true = Deutsch zuerst
+
         // Laden der Vokabeln (aus LocalStorage oder CSV-Datei)
         if (localStorage.getItem('selectedWords')) {
             words = JSON.parse(localStorage.getItem('selectedWords'));
@@ -150,9 +153,17 @@
 
             const randomIndex = Math.floor(Math.random() * remainingWords.length);
             currentWord = remainingWords.splice(randomIndex, 1)[0];
-            document.getElementById("latin-word").textContent = currentWord.latin;
-            document.getElementById("german-word").textContent = currentWord.german;
-            document.getElementById("german-word").style.display = "none";
+
+            // Anpassen der Anzeige je nachdem, ob Deutsch oder Latein zuerst kommt
+            if (isGermanFirst) {
+                document.getElementById("latin-word").textContent = currentWord.latin;
+                document.getElementById("german-word").textContent = currentWord.german;
+            } else {
+                document.getElementById("latin-word").textContent = currentWord.latin;
+                document.getElementById("german-word").textContent = currentWord.german;
+            }
+
+            document.getElementById("german-word").style.display = "none"; // Verstecke das deutsche Wort zu Beginn
             document.getElementById("buttons").style.display = "none";
             document.getElementById("show-answer").style.display = "block";
         }
@@ -200,7 +211,7 @@
 
         // Beim Klicken auf "Antwort ansehen"
         document.getElementById("show-answer").addEventListener("click", () => {
-            document.getElementById("german-word").style.display = "block"; // Zeige die deutsche Übersetzung
+            document.getElementById("german-word").style.display = "block"; // Zeige das andere Wort
             document.getElementById("buttons").style.display = "flex"; // Buttons anzeigen
             document.getElementById("show-answer").style.display = "none"; // Button "Antwort anzeigen" verstecken
         });
