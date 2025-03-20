@@ -89,10 +89,11 @@ function populateTable(rows) {
                 // Füge für jeden Wert in der vierten Spalte einen eigenen Button hinzu
                 row[3].forEach(text => {
                     const button = document.createElement('button');
+                    
                     button.innerText = text;
                     button.style.backgroundColor = 'orange'; // Set the button color to orange
                     button.className = 'main-button';
-
+                    button.style.fontSize = "16px"; // Beispiel für die Textgröße
                     // Info-Anzeige bei Klick
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'info-div';
