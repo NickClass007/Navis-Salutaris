@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer - Abfrage</title>
-    <script>
-        // Zeigt den Inhalt des localStorage an, bevor die Seite geladen wird
-        window.onload = function() {
-            console.log("Inhalt des localStorage:");
-            console.log(localStorage);
-            // Speziell für 'selectedWords', falls vorhanden
-            const selectedWords = localStorage.getItem('selectedWords');
-            if (selectedWords) {
-                console.log("Ausgewählte Vokabeln:", JSON.parse(selectedWords));
-            } else {
-                console.log("Es sind keine Vokabeln im localStorage gespeichert.");
-            }
-        }
-    </script>
+    <title>Vokabeltrainer - LocalStorage anzeigen</title>
 </head>
 <body>
-    <!-- Deine HTML-Inhalte hier -->
     <h1>Vokabeltrainer</h1>
-    <!-- Der Rest deiner Seite ... -->
+    <p>Dies ist ein Beispiel, um den Inhalt von localStorage anzuzeigen.</p>
+
+    <script>
+        // Direktes Ausgeben von localStorage im Body
+        console.log("Inhalt von localStorage:");
+        console.log(localStorage);
+
+        // Ausgewählte Vokabeln anzeigen, falls vorhanden
+        const selectedWords = localStorage.getItem('selectedWords');
+        if (selectedWords) {
+            console.log("Ausgewählte Vokabeln:", JSON.parse(selectedWords));
+        } else {
+            console.log("Es wurden keine Vokabeln im localStorage gespeichert.");
+        }
+    </script>
 </body>
 </html>
