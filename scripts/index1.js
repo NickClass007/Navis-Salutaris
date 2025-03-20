@@ -87,13 +87,14 @@ function populateTable(rows) {
             
             if (colIndex === 3) { // Fourth column logic
                 // Füge für jeden Wert in der vierten Spalte einen eigenen Button hinzu
-                row[3].forEach(text => {
+                row[3].forEach((text, index) => {
                     const buttonInfo = document.createElement('button');
                     
                     buttonInfo.innerText = text;
                     buttonInfo.style.backgroundColor = 'orange'; // Set the button color to orange
-                    buttonInfo.className = 'main-button';
-                    buttonInfo.style.fontSize = "5px"; // Beispiel für die Textgröße
+                    buttonInfo.className = `lesson-button-${index}`; // Hier ist der neue Klassenname mit Index
+                    buttonInfo.style.fontSize = "14px"; // Beispiel für die Textgröße
+                    
                     // Info-Anzeige bei Klick
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'info-div';
@@ -129,7 +130,7 @@ function populateTable(rows) {
                     }
 
                     // Toggle die Sichtbarkeit der infoDiv beim Klicken auf den Button
-                    button.addEventListener('click', function() {
+                    buttonInfo.addEventListener('click', function() {
                         if (infoDiv.style.display === 'none') {
                             infoDiv.style.display = 'block'; // Zeige die Info an
                         } else {
