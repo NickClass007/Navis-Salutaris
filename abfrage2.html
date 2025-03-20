@@ -3,104 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer</title>
+    <title>Vokabeltrainer - Abfrage</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
         }
-        #progress-container {
-            width: 80%;
-            background-color: #e0e0e0;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        #progress-bar {
-            height: 20px;
-            width: 0%;
-            background-color: #76c7c0;
-        }
+
         #word-container {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-        }
-        .word {
-            width: 45%;
             text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
+            margin-bottom: 20px;
         }
-        #buttons {
+
+        #progress-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #show-answer {
+            display: none;
             margin-top: 20px;
+        }
+
+        #buttons {
             display: flex;
-            justify-content: space-between;
-            width: 80%;
+            justify-content: center;
+            gap: 10px;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        canvas {
+
+        #result-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
             display: none;
         }
+
         #result-buttons {
-            display: flex;
+            display: none;
             justify-content: center;
-            width: 80%;
-            margin-top: 20px;
+            gap: 10px;
         }
-        #retry, #go-to-menu {
-            display: inline-block;
+
+        .button {
             padding: 10px 20px;
-            font-size: 1em;
+            background-color: #76c7c0;
+            color: white;
+            border: none;
             cursor: pointer;
-            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
         }
+
+        .button:hover {
+            background-color: #5aa19b;
+        }
+
         #retry {
-            margin-right: 20px;
+            display: none;
+        }
+
+        #go-to-menu {
+            display: none;
+        }
+
+        #progress-bar {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+        }
+
+        #progress-bar div {
+            height: 100%;
+            background-color: #76c7c0;
+            border-radius: 10px;
+        }
+
+        #progress-text {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="progress-container">
-        <div id="progress-bar"></div>
-    </div>
-    <div id="progress-text">0/0</div>
+    <h1>Vokabeltrainer - Abfrage</h1>
+
     <div id="word-container">
-        <div class="word" id="latin-word"></div>
-        <div class="word" id="german-word" style="display: none;"></div>
+        <span id="latin-word"></span> <span id="german-word"></span>
     </div>
-    <button id="show-answer">Antwort ansehen</button>
-    <div id="buttons" style="display: none;">
-        <button id="not-known">Nicht gewusst</button>
-        <button id="known">Gewusst</button>
+
+    <div id="progress-container">
+        <div id="progress-bar"><div></div></div>
+        <div id="progress-text"></div>
     </div>
-    <canvas id="result-chart" width="300" height="300"></canvas>
-    <div id="result-buttons" style="display: none;">
-        <button id="retry">Nochmal</button>
-        <button id="go-to-menu">Zum Menü zurück</button>
+
+    <div id="buttons">
+        <button id="known" class="button">Gewusst</button>
+        <button id="not-known" class="button">Nicht gewusst</button>
+    </div>
+
+    <div id="show-answer">
+        <button class="button">Antwort anzeigen</button>
+    </div>
+
+    <canvas id="result-chart"></canvas>
+
+    <div id="result-buttons">
+        <button id="retry" class="button">Wiederholen</button>
+        <button id="go-to-menu" class="button">Zum Menü</button>
     </div>
 
     <script>
         let words = [];
-        let currentWord = {};
-        let progress = 0;
-        let correctCount = 0;
         let remainingWords = [];
         let incorrectWords = [];
-        let flaggedWords = new Set();
         let totalWords = 0;
-
-        // Die gewählte Abfragemethode laden (falls vorhanden)
-        let queryMethod = localStorage.getItem('queryMethod') || 'latin-to-german'; // Standard auf Latin → Deutsch setzen
+        let progress = 0;
+        let correctCount = 0;
+        let currentWord = null;
+        let flaggedWords = new Set();
+        let queryMethod = localStorage.getItem('queryMethod') || 'latin-to-german';
 
         // Wörter aus dem LocalStorage laden
         if (localStorage.getItem('selectedWords')) {
@@ -115,7 +138,7 @@
 
         // Fortschritt aktualisieren
         function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
+            const progressBar = document.getElementById('progress-bar').firstElementChild;
             const progressText = document.getElementById('progress-text');
             const progressPercentage = Math.floor((progress / totalWords) * 100);
             progressBar.style.width = `${progressPercentage}%`;
