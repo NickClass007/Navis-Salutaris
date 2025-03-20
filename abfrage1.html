@@ -53,91 +53,92 @@
     </div>
 
     <script>
-        let words = [];
-        let selectedWords = [];
+       let words = [];
+let selectedWords = [];
 
-        const csvUrls = {
-            'Caesars_Bellum_Gallicum_I': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
-            'Caesars_Bellum_Gallicum_II': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv',
-            'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
-        };
+const csvUrls = {
+    'Caesars_Bellum_Gallicum_I': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
+    'Caesars_Bellum_Gallicum_II': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv',
+    'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
+};
 
-        document.getElementById('load-file').addEventListener('click', () => {
-            const selectedCSV = document.getElementById('csv-select').value;
-            const url = csvUrls[selectedCSV];
-            loadCSV(url);
+document.getElementById('load-file').addEventListener('click', () => {
+    const selectedCSV = document.getElementById('csv-select').value;
+    const url = csvUrls[selectedCSV];
+    loadCSV(url);
+});
+
+function loadCSV(url) {
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            processCSVData(data);
+        })
+        .catch(error => {
+            console.error('Fehler beim Laden der CSV-Datei:', error);
+            alert('Fehler beim Laden der CSV-Datei.');
         });
+}
 
-        function loadCSV(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    processCSVData(data);
-                })
-                .catch(error => {
-                    console.error('Fehler beim Laden der CSV-Datei:', error);
-                    alert('Fehler beim Laden der CSV-Datei.');
-                });
+function processCSVData(data) {
+    words = [];
+    const rows = data.split('\n');
+    rows.forEach((row) => {
+        if (row.trim() === '') return;
+        const columns = row.split(',');
+        if (columns.length >= 3) {
+            words.push({ latin: columns[0], german: columns[2] });
         }
+    });
+    displayVocabSelection();
+}
 
-        function processCSVData(data) {
-            words = [];
-            const rows = data.split('\n');
-            rows.forEach((row) => {
-                if (row.trim() === '') return;
-                const columns = row.split(',');
-                if (columns.length >= 3) {
-                    words.push({ latin: columns[0], german: columns[2] });
-                }
-            });
-            displayVocabSelection();
-        }
+function displayVocabSelection() {
+    const vocabListDiv = document.getElementById('vocab-list');
+    vocabListDiv.innerHTML = '';
 
-        function displayVocabSelection() {
-            const vocabListDiv = document.getElementById('vocab-list');
-            vocabListDiv.innerHTML = '';
+    words.forEach((word, index) => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = index;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
+        vocabListDiv.appendChild(label);
+    });
 
-            words.forEach((word, index) => {
-                const label = document.createElement('label');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = index;
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
-                vocabListDiv.appendChild(label);
-            });
+    document.getElementById('vocab-selection').style.display = 'flex';
+}
 
-            document.getElementById('vocab-selection').style.display = 'flex';
-        }
+document.getElementById('start-training').addEventListener('click', () => {
+    selectedWords = [];
+    const checkboxes = document.querySelectorAll('#vocab-list input:checked');
+    checkboxes.forEach(checkbox => {
+        selectedWords.push(words[checkbox.value]);
+    });
 
-        document.getElementById('start-training').addEventListener('click', () => {
-            selectedWords = [];
-            const checkboxes = document.querySelectorAll('#vocab-list input:checked');
-            checkboxes.forEach(checkbox => {
-                selectedWords.push(words[checkbox.value]);
-            });
+    if (selectedWords.length === 0) {
+        alert('Bitte wählen Sie mindestens eine Vokabel aus!');
+        return;
+    }
 
-            if (selectedWords.length === 0) {
-                alert('Bitte wählen Sie mindestens eine Vokabel aus!');
-                return;
-            }
+    const queryMethod = document.getElementById('query-method').value;
+    localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
+    localStorage.setItem('queryMethod', queryMethod); // Speichern der Abfragemethode
 
-            const queryMethod = document.getElementById('query-method').value;
-            localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
-            localStorage.setItem('queryMethod', queryMethod); // Speichern der Abfragemethode
+    window.location.href = 'abfrage.html';
+});
 
-            window.location.href = 'abfrage.html';
-        });
+document.getElementById('select-all').addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('#vocab-list input');
+    checkboxes.forEach(checkbox => checkbox.checked = true);
+});
 
-        document.getElementById('select-all').addEventListener('click', () => {
-            const checkboxes = document.querySelectorAll('#vocab-list input');
-            checkboxes.forEach(checkbox => checkbox.checked = true);
-        });
+document.getElementById('deselect-all').addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('#vocab-list input');
+    checkboxes.forEach(checkbox => checkbox.checked = false);
+});
 
-        document.getElementById('deselect-all').addEventListener('click', () => {
-            const checkboxes = document.querySelectorAll('#vocab-list input');
-            checkboxes.forEach(checkbox => checkbox.checked = false);
-        });
     </script>
 </body>
 </html>
