@@ -17,7 +17,6 @@
             <select id="direction-select">
                 <option value="latin-to-german">Latein → Deutsch</option>
                 <option value="german-to-latin">Deutsch → Latein</option>
-                <option value="mixed">Mischmodus</option>
             </select>
         </div>
 
@@ -109,8 +108,15 @@
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.value = index;
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));
+
+                // Anzeige je nach gewählter Abfragerichtung
+                if (queryMethod === 'german-to-latin') {
+                    label.appendChild(document.createTextNode(`${word.german} - ${word.latin}`));  // Deutsch → Latein
+                } else {
+                    label.appendChild(document.createTextNode(`${word.latin} - ${word.german}`));  // Latein → Deutsch
+                }
+
+                label.insertBefore(checkbox, label.firstChild);
                 vocabListDiv.appendChild(label);
             });
 
