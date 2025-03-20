@@ -227,15 +227,33 @@ button:hover {
 /* Positionierung des Buttons "Laden" */
 #load-file {
     position: absolute;
-    top: 250px; /* Abstand vom oberen Rand */
-    left: 50%;
+    top: 150%; /* Abstand vom oberen Rand */
+    left: 75%;
     transform: translateX(-50%); /* Zentriert den Button */
 }
 
 /* Positionierung des Bereichs zur Vokabelauswahl */
+/* Vokabeln zweispaltig anzeigen */
 #vocab-selection {
-    position: absolute;
-    top: 350px; /* Abstandsregelung nach Bedarf anpassen */
-    left: 50%;
-    transform: translateX(-50%); /* Zentriert die Vokabelauswahl */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Zwei Spalten nebeneinander */
+    gap: 20px; /* Abstand zwischen den Vokabeln */
+    padding: 10px;
+    width: 80%;
+    max-width: 800px;
+    margin-top: 20px;
+    overflow-y: auto; /* Falls zu viele Vokabeln da sind */
+}
+
+/* Styling für jedes Label (Vokabel) */
+#vocab-selection label {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    justify-content: flex-start; /* Links ausgerichtet */
+}
+
+/* Styling für die Checkbox */
+#vocab-selection input[type="checkbox"] {
+    margin-right: 10px;
 }
