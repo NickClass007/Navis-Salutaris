@@ -169,16 +169,28 @@ body.light-mode #menu a:hover, body.light-mode #menu a.active {
     color: #fff;
 }
               
-/* Vokabeln zweispaltig anzeigen */
+
+/* Vokabeln untereinander anzeigen */
 #vocab-selection {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Zwei Spalten nebeneinander */
-    gap: 10px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width: 80%;
-    max-width: 800px;
+    max-width: 600px;
     margin-top: 20px;
     overflow-y: auto; /* Falls zu viele Vokabeln da sind */
+    flex-grow: 1; /* Damit der Bereich wächst und Buttons nach unten gedrückt werden */
+}
+
+#vocab-selection label {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+#vocab-selection input[type="checkbox"] {
+    margin-right: 10px;
 }
 
 /* Buttons */
@@ -187,7 +199,7 @@ button {
     font-size: 1.2em;
     cursor: pointer;
     margin-top: 20px;
-    margin-right: 50px;
+    margin-right: 50px
     background-color: #76c7c0;
     border: none;
     border-radius: 5px;
@@ -214,46 +226,4 @@ button:hover {
     justify-content: flex-start; /* Buttons nach unten verschieben */
     height: 100%;
     padding-bottom: 20px;
-}
-
-/* Positionierung des Dateiauswahlbereichs */
-#file-selection {
-    position: absolute;
-    top: 150px; /* Abstand vom oberen Rand */
-    left: 50%;
-    transform: translateX(-50%); /* Zentriert die Auswahl */
-}
-
-/* Positionierung des Buttons "Laden" */
-#load-file {
-    position: absolute;
-    top: 150%; /* Abstand vom oberen Rand */
-    left: 75%;
-    transform: translateX(-50%); /* Zentriert den Button */
-}
-
-/* Positionierung des Bereichs zur Vokabelauswahl */
-/* Vokabeln zweispaltig anzeigen */
-#vocab-selection {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Zwei Spalten nebeneinander */
-    gap: 20px; /* Abstand zwischen den Vokabeln */
-    padding: 10px;
-    width: 80%;
-    max-width: 800px;
-    margin-top: 20px;
-    overflow-y: auto; /* Falls zu viele Vokabeln da sind */
-}
-
-/* Styling für jedes Label (Vokabel) */
-#vocab-selection label {
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-    justify-content: flex-start; /* Links ausgerichtet */
-}
-
-/* Styling für die Checkbox */
-#vocab-selection input[type="checkbox"] {
-    margin-right: 10px;
 }
