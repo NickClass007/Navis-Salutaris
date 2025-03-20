@@ -105,6 +105,7 @@ function populateTable(rows) {
                         const pdfButton = document.createElement('button');
                         pdfButton.innerText = "Download Caesars Bellum Gallicum III.pdf";
                         pdfButton.style.backgroundColor = 'gray';
+                        pdfButton.style.fontSize = "14px";
                         pdfButton.addEventListener('click', function() {
                             window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.pdf", "_blank");
                         });
@@ -113,6 +114,7 @@ function populateTable(rows) {
                         const pdfButton = document.createElement('button');
                         pdfButton.innerText = "Download Caesars Bellum Gallicum II.pdf";
                         pdfButton.style.backgroundColor = 'gray';
+                        pdfButton.style.fontSize = "14px";
                         pdfButton.addEventListener('click', function() {
                             window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.pdf", "_blank");
                         });
@@ -121,6 +123,7 @@ function populateTable(rows) {
                         const pdfButton = document.createElement('button');
                         pdfButton.innerText = "Download Caesars Bellum Gallicum I.pdf";
                         pdfButton.style.backgroundColor = 'gray';
+                        pdfButton.style.fontSize = "14px";
                         pdfButton.addEventListener('click', function() {
                             window.open("https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.pdf", "_blank");
                         });
