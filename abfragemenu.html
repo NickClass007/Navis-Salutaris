@@ -21,6 +21,17 @@
         <div id="file-selection">
             <h3>Wählen Sie eine CSV-Datei</h3>
             <select id="csv-select">
+                <option value="LW_Hygin_1">LW Hygin 1</option>
+                <option value="LW_Hygin_2">LW Hygin 2</option>
+                <option value="LW_Hygin_3">LW Hygin 3</option>
+                <option value="LW_Hygin_4">LW Hygin 4</option>
+                <option value="LW_Hygin_5">LW Hygin 5</option>
+                <option value="LW_Hygin_6">LW Hygin 6</option>
+                <option value="LW_Hygin_7">LW Hygin 7</option>
+                <option value="LW_Hygin_8">LW Hygin 8</option>
+                <option value="LW_Historia_Apollonii_1">LW Historia Apollonii 1</option>
+                <option value="LW_Historia_Apollonii_2">LW Historia Apollonii 2</option>
+                <option value="LW_Historia_Apollonii_3">LW Historia Apollonii 3</option>
                 <option value="Caesars_Bellum_Gallicum_I">Caesars Bellum Gallicum I</option>
                 <option value="Caesars_Bellum_Gallicum_II">Caesars Bellum Gallicum II</option>
                 <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
@@ -44,6 +55,17 @@
         let selectedWords = [];
 
         const csvUrls = {
+            'LW_Hygin_1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW1.csv'
+            'LW_Hygin_2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW2.csv',
+            'LW_Hygin_3': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW3.csv',
+            'LW_Hygin_4': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW4.csv',
+            'LW_Hygin_5': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW5.csv',
+            'LW_Hygin_6': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW6.csv',
+            'LW_Hygin_7': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW7.csv',
+            'LW_Hygin_8': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW8.csv',
+            'LW_Historia_Apollonii_1': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW9.csv',
+            'LW_Historia_Apollonii_2': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW10.csv',
+            'LW_Historia_Apollonii_3': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/LW11.csv',
             'Caesars_Bellum_Gallicum_I': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
             'Caesars_Bellum_Gallicum_II': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_II.csv',
             'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
