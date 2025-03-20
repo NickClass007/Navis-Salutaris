@@ -7,15 +7,24 @@
     <title>Vokabeltrainer</title>
 </head>
 <body>
-    
     <div id="container">
         <h1>Navis Salutaris</h1>
         <h2>Vokabeltrainer</h2>
-    
+
+        <!-- Auswahl der Richtung für die Abfrage -->
+        <div id="direction-selection">
+            <h3>Wählen Sie die Abfragerichtung:</h3>
+            <select id="direction-select">
+                <option value="latin-to-german">Latein → Deutsch</option>
+                <option value="german-to-latin">Deutsch → Latein</option>
+                <option value="mixed">Mischmodus</option>
+            </select>
+        </div>
+
         <div id="menu">
             <a href="index.html" id="dictionary-link">Wörterbuch</a>
             <a href="declination.html" id="declination-link">Deklinations</a>
-            <a href="abfragemenu.html" id="abfragemenu-link">Vokabeltrainer</a> <!-- Korrektur des Fehlers hier -->
+            <a href="abfragemenu.html" id="abfragemenu-link">Vokabeltrainer</a>
             <a href="settings.html" id="settings-link">Einstellung</a>
         </div>
 
@@ -43,6 +52,7 @@
     <script>
         let words = [];
         let selectedWords = [];
+        let queryMethod = 'latin-to-german'; // Standardabfragerichtung
 
         const csvUrls = {
             'Caesars_Bellum_Gallicum_I': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_I.csv',
@@ -50,12 +60,19 @@
             'Caesars_Bellum_Gallicum_III': 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv'
         };
 
+        // Speichern der Richtungsauswahl
+        document.getElementById('direction-select').addEventListener('change', (event) => {
+            queryMethod = event.target.value;  // Speichern der Auswahl
+        });
+
+        // Beim Klicken auf den "Vokabeln Laden"-Button wird die CSV geladen
         document.getElementById('load-file').addEventListener('click', () => {
             const selectedCSV = document.getElementById('csv-select').value;
             const url = csvUrls[selectedCSV];
             loadCSV(url);
         });
 
+        // CSV-Daten laden
         function loadCSV(url) {
             fetch(url)
                 .then(response => response.text())
@@ -68,6 +85,7 @@
                 });
         }
 
+        // CSV-Daten verarbeiten und Vokabeln anzeigen
         function processCSVData(data) {
             words = [];
             const rows = data.split('\n');
@@ -81,6 +99,7 @@
             displayVocabSelection();
         }
 
+        // Vokabeln im Auswahlbereich anzeigen
         function displayVocabSelection() {
             const vocabListDiv = document.getElementById('vocab-list');
             vocabListDiv.innerHTML = '';
@@ -98,6 +117,7 @@
             document.getElementById('vocab-selection').style.display = 'flex';
         }
 
+        // Wenn der Benutzer das Training starten will
         document.getElementById('start-training').addEventListener('click', () => {
             selectedWords = [];
             const checkboxes = document.querySelectorAll('#vocab-list input:checked');
@@ -109,15 +129,21 @@
                 return;
             }
 
+            // Die gewählten Vokabeln und die Abfragerichtung im localStorage speichern
             localStorage.setItem('selectedWords', JSON.stringify(selectedWords));
-            window.location.href = 'abfrage3.html'; // Weiterleitung zur Abfrageseite
+            localStorage.setItem('queryMethod', queryMethod);
+
+            // Weiterleitung zur Abfrageseite
+            window.location.href = 'abfrage.html';
         });
 
+        // Alle Vokabeln auswählen
         document.getElementById('select-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
             checkboxes.forEach(checkbox => checkbox.checked = true);
         });
 
+        // Alle Vokabeln abwählen
         document.getElementById('deselect-all').addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('#vocab-list input');
             checkboxes.forEach(checkbox => checkbox.checked = false);
