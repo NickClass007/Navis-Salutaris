@@ -1,36 +1,158 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer - Auswahl</title>
-    <style>
-        /* Stil-Anpassungen */
-    </style>
-</head>
-<body>
-    <h1>Vokabeltrainer</h1>
-    <h2>Wählen Sie die Abfragemethode</h2>
-    <button id="latin-to-german">Latein → Deutsch</button>
-    <button id="german-to-latin">Deutsch → Latein</button>
-    <button id="mixed">Mischmodus</button>
+let words = [];
+let currentWord = {};
+let progress = 0;
+let correctCount = 0;
+let remainingWords = [];
+let incorrectWords = [];
+let flaggedWords = new Set();
+let totalWords = 0;
 
-    <script>
-        // Speichern der gewählten Abfragemethode in localStorage
-        document.getElementById("latin-to-german").addEventListener("click", () => {
-            localStorage.setItem('queryMethod', 'latin-to-german');
-            window.location.href = "abfrage2.html";  // Weiterleitung zu abfrage2.html
-        });
+// Abfragerichtung aus dem LocalStorage holen
+let queryMethod = localStorage.getItem('queryMethod') || 'latin-to-german'; // Standard auf "latin-to-german"
 
-        document.getElementById("german-to-latin").addEventListener("click", () => {
-            localStorage.setItem('queryMethod', 'german-to-latin');
-            window.location.href = "abfrage2.html";  // Weiterleitung zu abfrage2.html
-        });
+if (localStorage.getItem('selectedWords')) {
+    words = JSON.parse(localStorage.getItem('selectedWords'));
+    remainingWords = [...words];
+    totalWords = words.length;
+    updateProgress();
+    getRandomWord();
+} else {
+    const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';
 
-        document.getElementById("mixed").addEventListener("click", () => {
-            localStorage.setItem('queryMethod', 'mixed');
-            window.location.href = "abfrage2.html";  // Weiterleitung zu abfrage2.html
-        });
-    </script>
-</body>
-</html>
+    fetch(csvUrl)
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n');
+            rows.forEach((row, index) => {
+                const columns = row.split(',');
+                if (index > 0 && columns.length >= 3) {
+                    words.push({ latin: columns[0], german: columns[2] });
+                }
+            });
+
+            localStorage.setItem('selectedWords', JSON.stringify(words));
+            remainingWords = [...words];
+            totalWords = words.length;
+            updateProgress();
+            getRandomWord();
+        })
+        .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
+}
+
+function updateProgress() {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const progressPercentage = Math.floor((progress / totalWords) * 100);
+    progressBar.style.width = `${progressPercentage}%`;
+    progressText.textContent = `${progress}/${totalWords}`;
+}
+
+function getRandomWord() {
+    if (remainingWords.length === 0 && incorrectWords.length === 0) {
+        showResults();
+        return;
+    }
+    if (remainingWords.length === 0) {
+        remainingWords = [...incorrectWords];
+        incorrectWords = [];
+    }
+    const randomIndex = Math.floor(Math.random() * remainingWords.length);
+    currentWord = remainingWords.splice(randomIndex, 1)[0];
+
+    // Anzeige abhängig von der Abfragerichtung
+    if (queryMethod === 'german-to-latin') {
+        document.getElementById("latin-word").textContent = currentWord.latin;
+        document.getElementById("german-word").textContent = currentWord.german;
+    } else {
+        document.getElementById("latin-word").textContent = currentWord.latin;
+        document.getElementById("german-word").textContent = currentWord.german;
+    }
+
+    // Anzeige-Logik
+    document.getElementById("german-word").style.display = "none";  // Antwort verstecken
+    document.getElementById("buttons").style.display = "none";
+    document.getElementById("show-answer").style.display = "block";
+}
+
+function showResults() {
+    const canvas = document.getElementById('result-chart');
+    canvas.style.display = 'block';
+    const ctx = canvas.getContext('2d');
+    const percentage = Math.floor((correctCount / totalWords) * 100);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const radius = canvas.width / 2;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, 0, (2 * Math.PI * correctCount) / totalWords);
+    ctx.lineTo(centerX, centerY);
+    ctx.fillStyle = '#76c7c0';
+    ctx.fill();
+
+    ctx.fillStyle = '#000';
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${percentage}% Gewusst`, centerX, centerY);
+
+    document.getElementById('result-buttons').style.display = 'flex';
+    document.getElementById('word-container').style.display = 'none';
+    document.getElementById('progress-container').style.display = 'none';
+    document.getElementById('progress-text').style.display = 'none';
+    document.getElementById('show-answer').style.display = 'none';
+    document.getElementById('buttons').style.display = 'none';
+
+    document.getElementById('retry').style.display = 'inline-block';
+    document.getElementById('go-to-menu').style.display = 'inline-block';
+}
+
+function goToMenu() {
+    window.location.href = "abfragemenu.html"; // Ersetze dies mit der richtigen URL für dein Menü
+}
+
+document.getElementById("go-to-menu").addEventListener("click", goToMenu);
+
+document.getElementById("show-answer").addEventListener("click", () => {
+    document.getElementById("german-word").style.display = "block";
+    document.getElementById("buttons").style.display = "flex";
+    document.getElementById("show-answer").style.display = "none";
+});
+
+document.getElementById("not-known").addEventListener("click", () => {
+    incorrectWords.push(currentWord);
+    flaggedWords.add(currentWord);
+    getRandomWord();
+});
+
+document.getElementById("known").addEventListener("click", () => {
+    if (!flaggedWords.has(currentWord)) {
+        correctCount++;
+    }
+    progress++;
+    updateProgress();
+    getRandomWord();
+});
+
+document.getElementById("retry").addEventListener("click", () => {
+    progress = 0;
+    correctCount = 0;
+    remainingWords = [...words];
+    incorrectWords = [];
+    flaggedWords.clear();
+
+    document.getElementById('result-chart').style.display = 'none';
+    document.getElementById('result-buttons').style.display = 'none';
+    document.getElementById('word-container').style.display = 'flex';
+    document.getElementById('progress-container').style.display = 'block';
+    document.getElementById('progress-text').style.display = 'block';
+    updateProgress();
+    getRandomWord();
+});
