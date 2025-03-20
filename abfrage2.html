@@ -3,137 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokabeltrainer - Abfrage</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Vokabeltrainer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            padding: 20px;
-            text-align: center;
-        }
-
-        #word-container {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        #progress-container {
-            margin: 20px 0;
-        }
-
-        #progress-bar {
-            width: 80%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            margin: 10px auto;
-        }
-
-        #progress-bar div {
-            height: 100%;
-            background-color: #76c7c0;
-            border-radius: 10px;
-        }
-
-        #buttons {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
+            height: 100vh;
+            margin: 0;
         }
-
-        #show-answer {
-            display: none;
-            margin-top: 20px;
+        #progress-container {
+            width: 80%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
         }
-
-        #result-buttons {
-            display: none;
-            margin-top: 20px;
-        }
-
-        #result-chart {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            display: none;
-        }
-
-        .button {
-            padding: 10px 20px;
+        #progress-bar {
+            height: 20px;
+            width: 0%;
             background-color: #76c7c0;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
+        }
+        #word-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .word {
+            width: 45%;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
             cursor: pointer;
         }
-
-        .button:hover {
-            background-color: #5aa19b;
-        }
-
-        #retry {
+        canvas {
             display: none;
         }
-
-        #go-to-menu {
-            display: none;
+        #result-buttons {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            margin-top: 20px;
         }
-
-        #latin-word, #german-word {
+        #retry, #go-to-menu {
             display: inline-block;
-            margin: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 10px;
         }
-
-        #progress-text {
-            font-size: 18px;
+        #retry {
+            margin-right: 20px; /* Abstand zwischen den Buttons */
         }
     </style>
 </head>
 <body>
-    <h1>Vokabeltrainer - Abfrage</h1>
-
-    <div id="word-container">
-        <span id="latin-word"></span>
-        <span id="german-word"></span>
-    </div>
-
     <div id="progress-container">
-        <div id="progress-bar"><div></div></div>
-        <div id="progress-text"></div>
+        <div id="progress-bar"></div>
     </div>
-
-    <div id="buttons">
-        <button id="known" class="button">Gewusst</button>
-        <button id="not-known" class="button">Nicht gewusst</button>
+    <div id="progress-text">0/0</div>
+    <div id="word-container">
+        <div class="word" id="latin-word"></div>
+        <div class="word" id="german-word" style="display: none;"></div>
     </div>
-
-    <div id="show-answer">
-        <button class="button">Antwort anzeigen</button>
+    <button id="show-answer">Antwort ansehen</button>
+    <div id="buttons" style="display: none;">
+        <button id="not-known">Nicht gewusst</button>
+        <button id="known">Gewusst</button>
     </div>
-
-    <canvas id="result-chart"></canvas>
-
-    <div id="result-buttons">
-        <button id="retry" class="button">Wiederholen</button>
-        <button id="go-to-menu" class="button">Zum Menü</button>
+    <canvas id="result-chart" width="300" height="300"></canvas>
+    <div id="result-buttons" style="display: none;">
+        <button id="retry">Nochmal</button>
+        <button id="go-to-menu">Zum Menü zurück</button>
     </div>
-
     <script>
         let words = [];
-        let remainingWords = [];
-        let incorrectWords = [];
-        let totalWords = 0;
+        let currentWord = {};
         let progress = 0;
         let correctCount = 0;
-        let currentWord = null;
+        let remainingWords = [];
+        let incorrectWords = [];
         let flaggedWords = new Set();
-        let queryMethod = localStorage.getItem('queryMethod') || 'latin-to-german';
+        let totalWords = 0;
 
-        // Wörter aus dem LocalStorage laden
+        // Laden der Vokabeln (aus LocalStorage oder CSV-Datei)
         if (localStorage.getItem('selectedWords')) {
             words = JSON.parse(localStorage.getItem('selectedWords'));
             remainingWords = [...words];
@@ -141,19 +106,38 @@
             updateProgress();
             getRandomWord();
         } else {
-            alert('Keine Vokabeln im LocalStorage gefunden!');
+            const csvUrl = 'https://raw.githubusercontent.com/nickclass007/Navis-Salutaris/main/Woerter/Caesars_Bellum_Gallicum/Caesars_Bellum_Gallicum_III.csv';
+
+            fetch(csvUrl)
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    rows.forEach((row, index) => {
+                        const columns = row.split(',');
+                        if (index > 0 && columns.length >= 3) {
+                            words.push({ latin: columns[0], german: columns[2] });
+                        }
+                    });
+
+                    localStorage.setItem('selectedWords', JSON.stringify(words));
+                    remainingWords = [...words];
+                    totalWords = words.length;
+                    updateProgress();
+                    getRandomWord();
+                })
+                .catch(error => console.error('Fehler beim Laden der CSV-Datei:', error));
         }
 
-        // Fortschritt aktualisieren
+        // Fortschrittsanzeige aktualisieren
         function updateProgress() {
-            const progressBar = document.getElementById('progress-bar').firstElementChild;
+            const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
             const progressPercentage = Math.floor((progress / totalWords) * 100);
             progressBar.style.width = `${progressPercentage}%`;
             progressText.textContent = `${progress}/${totalWords}`;
         }
 
-        // Ein zufälliges Wort aus den verbleibenden Vokabeln auswählen
+        // Zufälliges Wort auswählen
         function getRandomWord() {
             if (remainingWords.length === 0 && incorrectWords.length === 0) {
                 showResults();
@@ -166,30 +150,14 @@
 
             const randomIndex = Math.floor(Math.random() * remainingWords.length);
             currentWord = remainingWords.splice(randomIndex, 1)[0];
-
-            // Abhängig von der gewählten Methode, Latein oder Deutsch anzeigen
-            if (queryMethod === 'latin-to-german') {
-                document.getElementById("latin-word").textContent = currentWord.latin;
-                document.getElementById("german-word").style.display = "none";
-            } else if (queryMethod === 'german-to-latin') {
-                document.getElementById("german-word").textContent = currentWord.german;
-                document.getElementById("latin-word").style.display = "none";
-            } else if (queryMethod === 'mixed') {
-                const randomChoice = Math.random() > 0.5;
-                if (randomChoice) {
-                    document.getElementById("latin-word").textContent = currentWord.latin;
-                    document.getElementById("german-word").style.display = "none";
-                } else {
-                    document.getElementById("german-word").textContent = currentWord.german;
-                    document.getElementById("latin-word").style.display = "none";
-                }
-            }
-
+            document.getElementById("latin-word").textContent = currentWord.latin;
+            document.getElementById("german-word").textContent = currentWord.german;
+            document.getElementById("german-word").style.display = "none";
             document.getElementById("buttons").style.display = "none";
             document.getElementById("show-answer").style.display = "block";
         }
 
-        // Ergebnis anzeigen (wenn alle Vokabeln abgefragt wurden)
+        // Ergebnisse anzeigen, wenn alle Vokabeln abgefragt wurden
         function showResults() {
             const canvas = document.getElementById('result-chart');
             canvas.style.display = 'block';
@@ -230,22 +198,21 @@
             document.getElementById('go-to-menu').style.display = 'inline-block';
         }
 
-        // Benutzer will Antwort sehen
+        // Beim Klicken auf "Antwort ansehen"
         document.getElementById("show-answer").addEventListener("click", () => {
-            document.getElementById("german-word").style.display = "inline-block";
-            document.getElementById("latin-word").style.display = "inline-block";
-            document.getElementById("buttons").style.display = "flex";
-            document.getElementById("show-answer").style.display = "none";
+            document.getElementById("german-word").style.display = "block"; // Zeige die deutsche Übersetzung
+            document.getElementById("buttons").style.display = "flex"; // Buttons anzeigen
+            document.getElementById("show-answer").style.display = "none"; // Button "Antwort anzeigen" verstecken
         });
 
-        // Wort als "Nicht gewusst" markieren
+        // Markiere das Wort als "Nicht gewusst"
         document.getElementById("not-known").addEventListener("click", () => {
             incorrectWords.push(currentWord);
             flaggedWords.add(currentWord);
             getRandomWord();
         });
 
-        // Wort als "Gewusst" markieren
+        // Markiere das Wort als "Gewusst"
         document.getElementById("known").addEventListener("click", () => {
             if (!flaggedWords.has(currentWord)) {
                 correctCount++;
@@ -255,7 +222,7 @@
             getRandomWord();
         });
 
-        // Wiederholen des Trainings
+        // Beim Klick auf "Nochmal"
         document.getElementById("retry").addEventListener("click", () => {
             progress = 0;
             correctCount = 0;
@@ -270,6 +237,11 @@
             document.getElementById('progress-text').style.display = 'block';
             updateProgress();
             getRandomWord();
+        });
+
+        // Weiterleitung zum Menü
+        document.getElementById("go-to-menu").addEventListener("click", () => {
+            window.location.href = "abfragemenu.html"; // Ersetze dies mit der richtigen URL
         });
     </script>
 </body>
