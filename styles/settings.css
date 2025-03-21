@@ -54,6 +54,8 @@ h3 {
 
 .switch {
   position: relative;
+  left: 25px;
+  top: 50px;
   display: inline-block;
   width: 60px;
   height: 34px;
