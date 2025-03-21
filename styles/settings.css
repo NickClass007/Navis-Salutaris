@@ -23,7 +23,10 @@ h2 {
 }
 
 h3 {
-    font-size: 12px;
+    position: relative;
+    right: 25px;
+    top: 50px;
+    font-size: 18px;
     margin-bottom: 8px;
 }
 
