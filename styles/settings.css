@@ -69,7 +69,7 @@ h3 {
 }
 
 .slider {
-    position:relative;
+    position:absolut;
     left: 25px;
     top: 50px;
     cursor: pointer;
