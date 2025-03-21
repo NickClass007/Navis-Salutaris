@@ -83,7 +83,9 @@ h3 {
 }
 
 .slider:before {
-    position: absolute;
+    position: relative;
+    left: 25px;
+    top: 50px;
     content: "";
     height: 26px;
     width: 26px;
