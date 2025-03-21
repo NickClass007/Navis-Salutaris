@@ -56,7 +56,7 @@ h3 {
 /* The switch - the box around the slider */
 .switch {
   position: relative;
-  right: 10%;
+  right: 20px;
   top: 100px;
   display: inline-block;
   width: 60px;
