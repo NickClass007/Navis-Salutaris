@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/common.css">
+    <link rel="stylesheet" herf="styles/queryindex.css">
+    <title>Vokabeltrainer</title>
+</head>
+<body>
+    
+    <div id="container">
+        <h1>Navis Salutaris</h1>
+        <h2>Vokabeltrainer</h2>
+    
+        <div id="menu">
+            <a href="index.html" id="dictionary-link">Wörterbuch</a>
+            <a href="declination.html" id="declination-link">Deklinations</a>
+            <a href="#" id=abfragemenu-link">Vokabeltrainer</a>
+            <a herf="text.html" id="text-link">Texte<a>
+            <a href="settings.html" id="settings-link">Einstellung</a>
+
+        </div>        
+        <div id="file-selection">
+            <h3>Wählen Sie eine CSV-Datei</h3>
+            <select id="csv-select">
+                <option value="LW_Hygin_1">LW Hygin 1</option>
+                <option value="LW_Hygin_2">LW Hygin 2</option>
+                <option value="LW_Hygin_3">LW Hygin 3</option>
+                <option value="LW_Hygin_4">LW Hygin 4</option>
+                <option value="LW_Hygin_5">LW Hygin 5</option>
+                <option value="LW_Hygin_6">LW Hygin 6</option>
+                <option value="LW_Hygin_7">LW Hygin 7</option>
+                <option value="LW_Hygin_8">LW Hygin 8</option>
+                <option value="LW_Historia_Apollonii_1">LW Historia Apollonii 1</option>
+                <option value="LW_Historia_Apollonii_2">LW Historia Apollonii 2</option>
+                <option value="LW_Historia_Apollonii_3">LW Historia Apollonii 3</option>
+                <option value="Caesars_Bellum_Gallicum_I">Caesars Bellum Gallicum I</option>
+                <option value="Caesars_Bellum_Gallicum_II">Caesars Bellum Gallicum II</option>
+                <option value="Caesars_Bellum_Gallicum_III">Caesars Bellum Gallicum III</option>
+            </select>
+            <button id="load-file">Vokabeln Laden</button>
+        </div>
+
+        <div id="vocab-selection" style="display:none;">
+            <h2>Vokabeln auswählen</h2>
+            <div id="vocab-list"></div>
+            <div style="margin-top: 20px;">
+                <button id="select-all">Alle auswählen</button>
+                <button id="deselect-all">Alle abwählen</button>
+            </div>
+            <button id="start-training">Training starten</button>
+            </div>
+        </div>
+
+    <script scr="scripts/queryindex.js"></script>
+    <script src="scripts/common.js"></script>
+</body>
+</html>
