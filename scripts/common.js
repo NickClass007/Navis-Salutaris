@@ -32,6 +32,11 @@ document.getElementById('declination-link').addEventListener('click', function()
     history.pushState(null, '', 'declination.html');
 });
 
+document.getElementById('queryindex-link').addEventListener('click', function() {
+    document.getElementById('queryindex-selection').syle.dispaly = 'block';
+    history.pushState(null, '', 'queryindex.html');
+});
+  
 document.getElementById('text-link').addEventListener('click', function() {
     document.getElementById('text-section').style.display = 'block';
     history.pushState(null, '', 'text.html');
