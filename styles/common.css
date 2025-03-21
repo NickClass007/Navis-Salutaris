@@ -172,7 +172,9 @@ body.light-mode #menu a:hover, body.light-mode #menu a.active {
 
 /* Vokabeln untereinander anzeigen */
 #vocab-selection {
-    display: flex;
+    display: absolute;
+    left: 40px;
+    top: 100px;
     flex-direction: column;
     align-items: flex-start;
     width: 80%;
