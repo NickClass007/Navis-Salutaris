@@ -70,8 +70,6 @@ h3 {
 
 .slider {
     position:absolut;
-    left: 25px;
-    top: 50px;
     cursor: pointer;
     top: 0;
     left: 0;
@@ -83,9 +81,7 @@ h3 {
 }
 
 .slider:before {
-    position: relative;
-    left: 25px;
-    top: 50px;
+    position: absolute;
     content: "";
     height: 26px;
     width: 26px;
