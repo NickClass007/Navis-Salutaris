@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d; /* Dunkler Hintergrund für modernen Look */
+    color: #e0e0e0; /* Hellere Schriftfarbe für Kontrast */
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #ff8c00;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
