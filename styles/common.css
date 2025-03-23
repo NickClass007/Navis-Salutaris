@@ -32,6 +32,8 @@ h2 {
 }
 
 #menu a {
+    display: flex;
+    justify-content: space-between;
     color: #e0e0e0;
     text-decoration: none;
     padding: 10px 20px;
