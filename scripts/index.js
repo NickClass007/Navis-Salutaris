@@ -187,6 +187,11 @@ document.getElementById('declination-link').addEventListener('click', function()
     history.pushState(null, '', 'declination.html');
 });
 
+document.getElementById('querymenu-link').addEventListener('click', function() {
+    document.getElementById('querymenu-section').style.display = 'block';
+    history.pushState(null, '', 'querymenu.html');
+});
+
 document.getElementById('text-link').addEventListener('click', function() {
     document.getElementById('dictionary-section').style.display = 'block';
     history.pushState(null, '', 'text.html');
