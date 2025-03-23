@@ -40,6 +40,8 @@ h3 {
 }
 
 #menu a {
+    position: flex;
+    justify-content: space-between; 
     color: #fff;
     text-decoration: none;
     padding: 10px 20px;
