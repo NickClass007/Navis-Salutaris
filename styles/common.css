@@ -1,0 +1,305 @@
+/* Allgemeine Einstellungen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #ff8c00;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 18px;
+    position: relative;
+    left: 30px;
+    top: 100px;
+}
+
+/* Dark Mode */
+body {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#menu a {
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#menu a:hover, #menu a.active {
+    background-color: #ff8c00;
+}
+
+body.light-mode #menu {
+    background-color: #ddd;
+}
+
+body.light-mode #menu a {
+    color: #333;
+}
+
+body.light-mode #menu a:hover {
+    background-color: #ff8c00;
+    color: #fff;
+}
+
+/* Container */
+.container {
+    background-color: #363636;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .container {
+    background-color: #e0e0e0;
+}
+
+/* Eingabefelder */
+input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    background-color: #d3d3d3;
+}
+
+body.light-mode input[type="text"] {
+    background-color: #ccc;
+}
+
+/* Tabellen */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border: 1px solid #555;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+    border-radius: 8px;
+}
+
+th {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.light-mode th {
+    background-color: #ddd;
+    color: #333;
+}
+
+body.light-mode td {
+    border: 1px solid #ccc;
+}
+
+/* Scrollbare Tabelle */
+.scroll {
+    display: block;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.scroll thead, .scroll tbody {
+    display: block;
+    border-radius: 8px;
+}
+
+.scroll thead tr {
+    display: flex;
+}
+
+.scroll tbody tr {
+    display: flex;
+}
+
+.scroll thead th, .scroll tbody td {
+    flex: 1;
+}
+
+.scroll tbody {
+    overflow-y: auto;
+    max-height: 300px;
+    scrollbar-width: none;
+}
+
+.scroll tbody::-webkit-scrollbar {
+    display: none;
+}
+
+/* Buttons */
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff6500;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ff8c00;
+}
+
+/* Lichtmodus */
+body.light-mode button {
+    background-color: #76c7c0;
+}
+
+body.light-mode button:hover {
+    background-color: #68b0a5;
+}
+
+#start-training {
+    background-color: #4caf50;
+}
+
+#start-training:hover {
+    background-color: #45a049;
+}
+
+/* Vokabeln und Auswahl */
+#vocab-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 80%;
+    max-width: 600px;
+    margin-top: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#vocab-selection label {
+    margin: 5px 0;
+    font-size: 1.2em;
+}
+
+#vocab-selection input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Schalter für Dark/Light Mode */
+.switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.switch {
+    position: relative;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Vokabeln und Buttons */
+#file-selection, #vocab-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    padding-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: #76c7c0;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+button:hover {
+    background-color: #68b0a5;
+}
