@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .texts {
+      position: relative;
+      border: none;
+      color: white;
+      padding: 10px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px;
+      cursor: pointer;
+      border-radius: 10px; /* Rundung */
+      background-color: #4CAF50; /* Hintergrundfarbe des Buttons */
+    }
+
+    /* Optional: Stil für den Zurück-Button */
+    #backButton {
+      background-color: #f44336; /* Rote Farbe für den Zurück-Button */
+    }
+
+    /* Die Buttons nebeneinander ausrichten */
+    .button-container {
+      display: flex;
+      justify-content: center;  /* Zentriert die Buttons horizontal */
+      gap: 10px;  /* Abstand zwischen den Buttons */
+    }
+
+    /* Container, der den Text und den "Zurück"-Button enthält */
+    #messageContainer {
+      display: none;
+      text-align: center; /* Zentriert den Text und den Button */
+    }
+  </style>
+</head>
+<body>
+
+<h1>The button Element</h1>
+
+<!-- Container für die Buttons nebeneinander -->
+<div class="button-container">
+  <button class="texts" type="button" onclick="displayMessage('Hello World')">Button 1</button>
+  <button class="texts" type="button" onclick="displayMessage('This is button 2')">Button 2</button>
+  <button class="texts" type="button" onclick="displayMessage('Here is button 3')">Button 3</button>
+</div>
+
+<!-- Der Text und der Zurück-Button -->
+<div id="messageContainer">
+  <h2 id="message"></h2>
+  <button id="backButton" class="texts" type="button" onclick="goBack()">Zurück</button>
+</div>
+
+<script>
+function displayMessage(text) {
+    // Alle Buttons ausblenden
+    var buttons = document.querySelectorAll('.texts');
+    buttons.forEach(function(button) {
+        button.style.display = "none";
+    });
+
+    // Den Text anzeigen
+    document.getElementById("message").textContent = text;
+
+    // Den Text und den "Zurück"-Button anzeigen
+    document.getElementById("messageContainer").style.display = "block";
+}
+
+function goBack() {
+    // Text und "Zurück"-Button ausblenden
+    document.getElementById("messageContainer").style.display = "none";
+
+    // Alle Buttons wieder anzeigen
+    var buttons = document.querySelectorAll('.texts');
+    buttons.forEach(function(button) {
+        button.style.display = "inline-block";
+    });
+}
+</script>
+
+</body>
+</html>
